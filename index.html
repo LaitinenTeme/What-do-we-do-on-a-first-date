@@ -1,21 +1,343 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset / Yellow</option>  <meta charset="UTF-8" />
+          <option value="gray">Harmaa / Gray</option>
+        </select>
+
+        <div id="colorMessage" class="message hidden"></div>
+
+        <button id="step3Btn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="step" id="step-4">
+      <div class="card">
+        <h1>Step 4: Valitaan vielä fontti</h1>
+        <p>Harkitse tarkkaan, tämä valinta kertoo paljon sinusta ihmisenä.</p>
+
+        <label for="fontSelect">Lempifontti</label>
+        <select id="fontSelect">
+          <option value="">Valitse fontti</option>
+          <option value="Arial, sans-serif">Arial</option>
+          <option value="'Times New Roman', serif">Times New Roman</option>
+          <option value="Calibri, sans-serif">Calibri</option>
+          <option value="'Aptos', Arial, sans-serif">Aptos</option>
+        </select>
+
+        <div id="fontMessage" class="message hidden"></div>
+
+        <div id="fontFactBox" class="fact-box hidden">
+          <strong>Tiesitkö!</strong>
+          <p id="fontFactText"></p>
+        </div>
+
+        <button id="step4Btn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- STEP 5 TEST -->
+    <section class="step" id="step-5">
+      <div class="card">
+        <h1>Step 5 toimii ✅</h1>
+        <p id="finalTestText"></p>
+        <p>Jos näet tämän vain tämän sivun eikä muita steppejä, step-logiikka toimii nyt.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const state = {
+      name: "",
+      language: "fi",
+      color: "",
+      font: ""
+    };
+
+    const colorThemes = {
+      blue: ["#dff1ff", "#b9d8ff"],
+      green: ["#e7f7e8", "#c6efce"],
+      red: ["#ffe6e6", "#ffc9c9"],
+      purple: ["#f1e7ff", "#dcc8ff"],
+      pink: ["#ffe8f4", "#ffd1e8"],
+      orange: ["#fff0e0", "#ffd6ad"],
+      yellow: ["#fffbe0", "#fff0a8"],
+      gray: ["#f4f4f4", "#dddddd"]
+    };
+
+    const fontFacts = {
+      "Arial, sans-serif":
+        "Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.",
+      "'Times New Roman', serif":
+        "Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.",
+      "Calibri, sans-serif":
+        "Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.",
+      "'Aptos', Arial, sans-serif":
+        "Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa."
+    };
+
+    function showStep(stepId) {
+      document.querySelectorAll(".step").forEach((step) => {
+        step.classList.remove("active");
+      });
+
+      document.getElementById(stepId).classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showMessage(id, text) {
+      const box = document.getElementById(id);
+      box.textContent = text;
+      box.classList.remove("hidden");
+    }
+
+    function hideMessage(id) {
+      document.getElementById(id).classList.add("hidden");
+    }
+
+    function applyColor(color) {
+      const theme = colorThemes[color] || ["#ffffff", "#ffffff"];
+      document.documentElement.style.setProperty("--bg1", theme[0]);
+      document.documentElement.style.setProperty("--bg2", theme[1]);
+    }
+
+    function applyFont(font) {
+      document.documentElement.style.setProperty("--font-main", font || "Arial, sans-serif");
+    }
+
+    document.getElementById("step1Btn").addEventListener("click", () => {
+      const language = document.getElementById("languageSelect").value;
+
+      if (language === "fi" || language === "en") {
+        state.language = language;
+        hideMessage("languageMessage");
+      } else {
+        state.language = "en";
+        showMessage(
+          "languageMessage",
+          "Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla."
+        );
+      }
+
+      showStep("step-2");
+    });
+
+    document.getElementById("step2Btn").addEventListener("click", () => {
+      const name = document.getElementById("nameInput").value.trim();
+
+      if (!name) {
+        showMessage("nameMessage", "Kirjoita nimi ennen jatkamista.");
+        return;
+      }
+
+      hideMessage("nameMessage");
+      state.name = name;
+
+      document.getElementById("colorTitle").textContent =
+        `Step 3: Terve ${state.name}, muokataan vielä muutamaa asetusta`;
+
+      showStep("step-3");
+    });
+
+    document.getElementById("colorSelect").addEventListener("change", () => {
+      const color = document.getElementById("colorSelect").value;
+      state.color = color;
+      applyColor(color);
+    });
+
+    document.getElementById("step3Btn").addEventListener("click", () => {
+      const color = document.getElementById("colorSelect").value;
+
+      if (!color) {
+        showMessage("colorMessage", "Valitse väri ennen jatkamista.");
+        return;
+      }
+
+      hideMessage("colorMessage");
+      state.color = color;
+      applyColor(color);
+      showStep("step-4");
+    });
+
+    document.getElementById("fontSelect").addEventListener("change", () => {
+      const font = document.getElementById("fontSelect").value;
+      state.font = font;
+      applyFont(font);
+
+      if (font) {
+        document.getElementById("fontFactText").textContent = fontFacts[font];
+        document.getElementById("fontFactBox").classList.remove("hidden");
+      }
+    });
+
+    document.getElementById("step4Btn").addEventListener("click", () => {
+      const font = document.getElementById("fontSelect").value;
+
+      if (!font) {
+        showMessage("fontMessage", "Valitse fontti ennen jatkamista.");
+        return;
+      }
+
+      hideMessage("fontMessage");
+      state.font = font;
+      applyFont(font);
+
+      document.getElementById("finalTestText").textContent =
+        `Hyvä ${state.name}! Kieli, väri ja fontti on nyt valittu.`;
+
+      showStep("step-5");
+    });
+  </script>
+</body>
+</html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>What do we do on a first date?</title>
-  <link rel="stylesheet" href="./style.css" />
+
+  <style>
+    :root {
+      --bg1: #ffffff;
+      --bg2: #ffffff;
+      --text: #111111;
+      --card: rgba(255, 255, 255, 0.92);
+      --border: rgba(0, 0, 0, 0.12);
+      --shadow: 0 14px 40px rgba(0, 0, 0, 0.08);
+      --accent: #1f6feb;
+      --accent-hover: #1258bc;
+      --font-main: Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: var(--font-main);
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      transition: background 350ms ease, font-family 200ms ease;
+    }
+
+    #app {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+
+    .step {
+      display: none;
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .step.active {
+      display: block;
+      animation: fadeIn 220ms ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 32px;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      margin-top: 0;
+      line-height: 1.15;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin: 16px 0 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      background: white;
+    }
+
+    button {
+      margin-top: 20px;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+    }
+
+    button:hover {
+      background: var(--accent-hover);
+    }
+
+    .message {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .fact-box {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.85);
+    }
+  </style>
 </head>
+
 <body>
   <main id="app">
-    <!-- STEP 1: LANGUAGE -->
-    <section class="step active" id="step-language">
-      <div class="card card-narrow">
-        <h1 id="languageTitle">Valitse kieli</h1>
-        <p id="languageSubtitle">Aloitetaan aivan rauhallisesti.</p>
+    <!-- STEP 1 -->
+    <section class="step active" id="step-1">
+      <div class="card">
+        <h1>Step 1: Valitse kieli</h1>
+        <p>Aloitetaan aivan rauhallisesti.</p>
 
-        <label for="languageSelect" class="label">Kieli</label>
-        <select id="languageSelect" class="input">
+        <label for="languageSelect">Kieli</label>
+        <select id="languageSelect">
           <option value="fi">Suomi</option>
           <option value="en">English</option>
           <option value="sv">Svenska</option>
@@ -26,33 +348,33 @@
 
         <div id="languageMessage" class="message hidden"></div>
 
-        <button class="btn btn-primary" id="languageContinueBtn">Jatka</button>
+        <button id="step1Btn">Jatka</button>
       </div>
     </section>
 
-    <!-- STEP 2: NAME -->
-    <section class="step" id="step-name">
-      <div class="card card-narrow">
-        <h1 id="nameTitle">Kuka sinä olet?</h1>
-        <p id="nameSubtitle">Voit kirjoittaa nimesi tähän.</p>
+    <!-- STEP 2 -->
+    <section class="step" id="step-2">
+      <div class="card">
+        <h1>Step 2: Kuka sinä olet?</h1>
+        <p>Voit kirjoittaa nimesi tähän.</p>
 
-        <label for="nameInput" class="label" id="nameLabel">Nimi</label>
-        <input id="nameInput" class="input" type="text" placeholder="Kirjoita nimesi" />
+        <label for="nameInput">Nimi</label>
+        <input id="nameInput" type="text" placeholder="Kirjoita nimesi" />
 
         <div id="nameMessage" class="message hidden"></div>
 
-        <button class="btn btn-primary" id="nameContinueBtn">Jatka</button>
+        <button id="step2Btn">Jatka</button>
       </div>
     </section>
 
-    <!-- STEP 3: COLOR -->
-    <section class="step" id="step-color">
-      <div class="card card-narrow">
-        <h1 id="colorTitle">Muokataan vielä muutamaa asetusta</h1>
-        <p id="colorSubtitle"></p>
+    <!-- STEP 3 -->
+    <section class="step" id="step-3">
+      <div class="card">
+        <h1 id="colorTitle">Step 3: Muokataan vielä muutamaa asetusta</h1>
+        <p>Valitse lempivärisi. Tausta muuttuu valinnan mukaan.</p>
 
-        <label for="colorSelect" class="label" id="colorLabel">Mikä on lempivärisi?</label>
-        <select id="colorSelect" class="input">
+        <label for="colorSelect">Mikä on lempivärisi?</label>
+        <select id="colorSelect">
           <option value="">Valitse väri</option>
           <option value="blue">Sininen / Blue</option>
           <option value="green">Vihreä / Green</option>
@@ -60,363 +382,3 @@
           <option value="purple">Violetti / Purple</option>
           <option value="pink">Pinkki / Pink</option>
           <option value="orange">Oranssi / Orange</option>
-          <option value="yellow">Keltainen / Yellow</option>
-          <option value="gray">Harmaa / Gray</option>
-          <option value="black">Musta / Black</option>
-        </select>
-
-        <div id="colorMessage" class="message hidden"></div>
-
-        <button class="btn btn-primary" id="colorContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <!-- STEP 4: FONT -->
-    <section class="step" id="step-font">
-      <div class="split-layout">
-        <div class="card card-narrow">
-          <h1 id="fontTitle">Valitaan vielä fontti</h1>
-          <p id="fontSubtitle">Harkitse tarkkaan, tämä valinta kertoo paljon sinusta ihmisenä.</p>
-
-          <label for="fontSelect" class="label" id="fontLabel">Lempifontti</label>
-          <select id="fontSelect" class="input">
-            <option value="">Valitse fontti</option>
-            <option value="Arial, sans-serif">Arial</option>
-            <option value="'Times New Roman', serif">Times New Roman</option>
-            <option value="Calibri, sans-serif">Calibri</option>
-            <option value="'Aptos', Arial, sans-serif">Aptos</option>
-          </select>
-
-          <div id="fontMessage" class="message hidden"></div>
-
-          <button class="btn btn-primary" id="fontContinueBtn">Jatka</button>
-        </div>
-
-        <aside class="fact-box hidden" id="fontFactBox">
-          <h3 id="fontFactTitle">Tiesitkö!</h3>
-          <p id="fontFactText"></p>
-        </aside>
-      </div>
-    </section>
-
-    <!-- STEP 5: INTEREST -->
-    <section class="step" id="step-interest">
-      <div class="card">
-        <h1 id="interestTitle">Nyt päästään itse aiheeseen</h1>
-        <p id="interestText"></p>
-
-        <div class="button-row">
-          <button class="btn btn-secondary" id="declineBtn">Kiitos mutta ei kiitos</button>
-          <button class="btn btn-primary" id="acceptBtn">No miksipäs ei…</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- STEP 5B: DECLINE -->
-    <section class="step" id="step-decline">
-      <div class="card card-narrow">
-        <h1 id="declineTitle">Ymmärretty</h1>
-        <p id="declineText">
-          Kiitos rehellisestä vastauksesta. Tämä sivu kuittaa valinnan kohteliaasti ja toivottaa hyvää päivänjatkoa.
-        </p>
-
-        <button class="btn btn-primary" id="declineFinishBtn">Lopeta</button>
-      </div>
-    </section>
-
-    <!-- STEP 6: INTRO TO CV -->
-    <section class="step" id="step-intro">
-      <div class="card">
-        <h1 id="introTitle">Mukava nähdä, että jatkoit matkaa</h1>
-        <p id="introText"></p>
-
-        <button class="btn btn-primary" id="introContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <!-- STEP 7: CV -->
-    <section class="step" id="step-cv">
-      <div class="card">
-        <h1 id="cvTitle">Pikaesittely</h1>
-
-        <div class="cv-layout">
-          <div class="cv-info">
-            <p><strong id="cvNameLabel">Nimi:</strong> Teemu</p>
-            <p><strong id="cvAgeLabel">Ikä:</strong> <span id="cvAgeText"></span></p>
-            <p><strong id="cvJobLabel">Ammatti:</strong> <span id="cvJobText"></span></p>
-            <p><strong id="cvNatureLabel">Luonne:</strong> <span id="cvNatureText"></span></p>
-          </div>
-
-          <div class="cv-photo">
-            <div class="photo-placeholder" id="photoPlaceholderText">Kuva tähän myöhemmin</div>
-          </div>
-        </div>
-
-        <div class="truth-game">
-          <h2 id="truthTitle">4 totuutta ja 1 valhe… tai no, melkein</h2>
-          <p id="truthSubtitle">Valitse mikä väitteistä on valhe.</p>
-
-          <div class="truth-grid">
-            <button class="btn btn-option truth-btn" data-index="0" id="truthBtn0">Olen asunut Kanadassa yli 2 vuotta.</button>
-            <button class="btn btn-option truth-btn" data-index="1" id="truthBtn1">Olen käynyt Euroopan suurimmalla kultakaivoksella.</button>
-            <button class="btn btn-option truth-btn" data-index="2" id="truthBtn2">Puhun ranskaa paremmin kuin ruotsia.</button>
-            <button class="btn btn-option truth-btn" data-index="3" id="truthBtn3">Olen ollut osa SM-pikaviestijoukkuetta.</button>
-          </div>
-
-          <div id="truthMessage" class="message hidden"></div>
-        </div>
-
-        <button class="btn btn-primary hidden" id="cvContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <!-- STEP 8: ACTIVITY CHOICE METHOD -->
-    <section class="step" id="step-method">
-      <div class="card">
-        <h1 id="methodTitle">Nyt selvitetään paras treffiaktiviteetti</h1>
-        <p id="methodText"></p>
-
-        <div class="button-row">
-          <button class="btn btn-primary" id="methodQuestionsBtn">1) Vastaan kysymyksiin</button>
-          <button class="btn btn-secondary" id="methodWheelBtn">2) Pyöräytän onnenpyörää</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- QUESTION STEPS -->
-    <section class="step" id="step-q1">
-      <div class="card card-narrow">
-        <h1 id="q1Title">Kysymys 1 / 10</h1>
-        <p id="q1Text">Haittaako jos kastut?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q1" value="yes" /> <span id="yesLabelQ1">Kyllä</span></label>
-          <label><input type="radio" name="q1" value="no" /> <span id="noLabelQ1">Ei</span></label>
-        </div>
-        <div id="q1Message" class="message hidden"></div>
-        <button class="btn btn-primary" id="q1ContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <section class="step" id="step-q2">
-      <div class="card card-narrow">
-        <h1 id="q2Title">Kysymys 2 / 10</h1>
-        <p id="q2Text">Pelkäätkö korkeita paikkoja?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q2" value="yes" /> <span>Kyllä</span></label>
-          <label><input type="radio" name="q2" value="no" /> <span>Ei</span></label>
-        </div>
-        <div id="q2Message" class="message hidden"></div>
-        <button class="btn btn-primary" id="q2ContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <section class="step" id="step-q3">
-      <div class="card card-narrow">
-        <h1 id="q3Title">Kysymys 3 / 10</h1>
-        <p id="q3Text">Ruukkaatko valvoa myöhään?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q3" value="yes" /> <span>Kyllä</span></label>
-          <label><input type="radio" name="q3" value="no" /> <span>Ei</span></label>
-        </div>
-        <div id="q3Message" class="message hidden"></div>
-        <button class="btn btn-primary" id="q3ContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <section class="step" id="step-q4">
-      <div class="card card-narrow">
-        <h1 id="q4Title">Kysymys 4 / 10</h1>
-        <p id="q4Text">Oletko valmis matkustamaan 150 km säteellä kodistasi?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q4" value="yes" /> <span>Kyllä</span></label>
-          <label><input type="radio" name="q4" value="no" /> <span>Ei</span></label>
-        </div>
-        <div id="q4Message" class="message hidden"></div>
-        <button class="btn btn-primary" id="q4ContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <section class="step" id="step-q5">
-      <div class="card card-narrow">
-        <h1 id="q5Title">Kysymys 5 / 10</h1>
-        <p id="q5Text">Suositko tyylikkäitä ja hienoja vaatteita enemmän kuin rentoja käytännöllisiä vaatteita?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q5" value="yes" /> <span>Kyllä</span></label>
-          <label><input type="radio" name="q5" value="no" /> <span>Ei</span></label>
-        </div>
-        <div id="q5Message" class="message hidden"></div>
-        <button class="btn btn-primary" id="q5ContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <section class="step" id="step-q6">
-      <div class="card card-narrow">
-        <h1 id="q6Title">Kysymys 6 / 10</h1>
-        <p id="q6Text">Alkoholi?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q6" value="yes" /> <span>Kyllä</span></label>
-          <label><input type="radio" name="q6" value="no" /> <span>Ei</span></label>
-        </div>
-        <div id="q6Message" class="message hidden"></div>
-        <button class="btn btn-primary" id="q6ContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <section class="step" id="step-q7">
-      <div class="card card-narrow">
-        <h1 id="q7Title">Kysymys 7 / 10</h1>
-        <p id="q7Text">Onko päivä parempi kuin ilta?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q7" value="yes" /> <span>Kyllä</span></label>
-          <label><input type="radio" name="q7" value="no" /> <span>Ei</span></label>
-        </div>
-        <div id="q7Message" class="message hidden"></div>
-        <button class="btn btn-primary" id="q7ContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <section class="step" id="step-q8">
-      <div class="card card-narrow">
-        <h1 id="q8Title">Kysymys 8 / 10</h1>
-        <p id="q8Text">Onko rahankäyttö hyvän treffin tunnusmerkki?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q8" value="yes" /> <span>Kyllä</span></label>
-          <label><input type="radio" name="q8" value="no" /> <span>Ei</span></label>
-        </div>
-        <div id="q8Message" class="message hidden"></div>
-        <button class="btn btn-primary" id="q8ContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <section class="step" id="step-q9">
-      <div class="card card-narrow">
-        <h1 id="q9Title">Kysymys 9 / 10</h1>
-        <p id="q9Text">Pelkäätkö eläimiä?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q9" value="yes" /> <span>Kyllä</span></label>
-          <label><input type="radio" name="q9" value="no" /> <span>Ei</span></label>
-        </div>
-        <div id="q9Message" class="message hidden"></div>
-        <button class="btn btn-primary" id="q9ContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <section class="step" id="step-q10">
-      <div class="card card-narrow">
-        <h1 id="q10Title">Kysymys 10 / 10</h1>
-        <p id="q10Text">Osaatko tehdä kuperkeikan tai kärrynpyörän?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q10" value="yes" /> <span>Kyllä</span></label>
-          <label><input type="radio" name="q10" value="no" /> <span>Ei</span></label>
-        </div>
-        <div id="q10Message" class="message hidden"></div>
-        <button class="btn btn-primary" id="q10ContinueBtn">Näytä tulos</button>
-      </div>
-    </section>
-
-    <!-- RESULT FROM QUESTIONS -->
-    <section class="step" id="step-question-result">
-      <div class="card">
-        <h1 id="questionResultTitle">Sinulle sopivin aktiviteetti</h1>
-        <div id="questionResultContent"></div>
-        <button class="btn btn-primary" id="questionResultContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <!-- WHEEL -->
-    <section class="step" id="step-wheel">
-      <div class="card">
-        <h1 id="wheelTitle">Onnenpyörä</h1>
-        <p id="wheelSubtitle">Saat 3 pyöräytystä.</p>
-
-        <div class="wheel-wrap">
-          <div class="wheel-pointer"></div>
-          <canvas id="wheelCanvas" width="520" height="520"></canvas>
-        </div>
-
-        <div id="wheelMessage" class="message hidden"></div>
-
-        <div class="button-row center">
-          <button class="btn btn-primary" id="wheelSpinBtn">Pyöräytä</button>
-          <button class="btn btn-secondary hidden" id="wheelSpinAgainBtn">Pyöräytä uudelleen</button>
-          <button class="btn btn-primary hidden" id="wheelContinueBtn">Jatka seuraavalle sivulle</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- CHOSEN ACTIVITY -->
-    <section class="step" id="step-chosen">
-      <div class="card">
-        <h1 id="chosenTitle">Valinta tehty</h1>
-        <p id="chosenText"></p>
-        <button class="btn btn-primary" id="chosenContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <!-- CONTACT METHOD -->
-    <section class="step" id="step-contact-method">
-      <div class="card">
-        <h1 id="contactMethodTitle">Treffien aikataulu ja tiedonkulku</h1>
-        <p id="contactMethodSubtitle">Valitse yhteydenpitotapa.</p>
-
-        <div class="contact-grid">
-          <button class="btn btn-option contact-method-btn" data-method="Instagram DM">Instagram DM</button>
-          <button class="btn btn-option contact-method-btn" data-method="WhatsApp">WhatsApp</button>
-          <button class="btn btn-option contact-method-btn" data-method="Puhelinnumero">Puhelinnumero</button>
-          <button class="btn btn-option" id="smokeBtn">Savumerkit</button>
-          <button class="btn btn-option contact-method-btn" data-method="Sähköposti">Sähköposti</button>
-          <button class="btn btn-option contact-method-btn" data-method="Snapchat">Snapchat</button>
-        </div>
-
-        <div id="smokeMessage" class="message hidden"></div>
-      </div>
-    </section>
-
-    <!-- CONTACT INPUT -->
-    <section class="step" id="step-contact-input">
-      <div class="card card-narrow">
-        <h1 id="contactInputTitle">Anna yhteystieto</h1>
-        <p id="contactInputSubtitle"></p>
-
-        <label for="contactInput" class="label" id="contactInputLabel">Yhteystieto</label>
-        <input id="contactInput" class="input" type="text" placeholder="Kirjoita tähän" />
-
-        <div class="message info">
-          <strong>Huom:</strong> Tämä GitHub Pages -versio ei lähetä tietoa automaattisesti minnekään. Tieto jää vain selaimeen näkyviin.
-        </div>
-
-        <button class="btn btn-primary" id="contactInputContinueBtn">Jatka</button>
-      </div>
-    </section>
-
-    <!-- FINAL 1 -->
-    <section class="step" id="step-final-1">
-      <div class="card card-narrow">
-        <h1 id="final1Title">Tämä on viimeinen sivu</h1>
-        <p id="final1Text"></p>
-        <button class="btn btn-primary" id="final1ContinueBtn">Lopeta</button>
-      </div>
-    </section>
-
-    <!-- FINAL 2 -->
-    <section class="step" id="step-final-2">
-      <div class="card card-narrow">
-        <h1 id="final2Title">P.s. vielä yksi juttu</h1>
-        <p id="final2Text"></p>
-        <button class="btn btn-primary" id="realFinishBtn">Oikeasti lopeta</button>
-      </div>
-    </section>
-
-    <!-- REAL FINISH -->
-    <section class="step" id="step-finished">
-      <div class="card card-narrow center-text">
-        <h1 id="finishedTitle">Kiitos!</h1>
-        <p id="finishedText">Sivu on nyt oikeasti lopussa.</p>
-      </div>
-    </section>
-  </main>
-
-  <script src="./script.js" defer></script>
-</body>
-</html>
-``
