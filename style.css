@@ -1,66 +1,886 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #f8d3e0, #d6e4ff);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+// ======================================================
+// STATE
+// ======================================================
+const state = {
+  lang: "fi",
+  name: "",
+  favoriteColor: "",
+  font: "Arial, sans-serif",
+  selectedActivity: "",
+  selectedContactMethod: "",
+  contactValue: "",
+  wheelSpins: 0,
+  truthClicks: 0
+};
+
+// ======================================================
+// I18N
+// ======================================================
+const i18n = {
+  fi: {
+    langTitle: "Valitse kieli",
+    langSubtitle: "Aloitetaan aivan rauhallisesti.",
+    continue: "Jatka",
+    unsupportedLang:
+      "Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.",
+    whoAreYou: "Kuka sinä olet?",
+    writeName: "Voit kirjoittaa nimesi tähän.",
+    namePlaceholder: "Kirjoita nimesi",
+    nameRequired: "Nimi tarvitaan ennen jatkamista.",
+    colorTitle: "Terve {name}, muokataan vielä muutamaa asetusta",
+    colorSubtitle: "Sen jälkeen voidaan aloittaa.",
+    fontTitle: "Valitaan vielä fontti",
+    fontSubtitle:
+      "Harkitse tarkkaan, tämä valinta kertoo paljon sinusta ihmisenä.",
+    interestTitle: "Nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen",
+    interestText:
+      "Moi {name}, on kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää sinua mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä sinut ulos. Valitse seuraavaksi, miten haluat edetä.",
+    declineBtn: "Kiitos mutta ei kiitos",
+    acceptBtn: "No miksipäs ei…",
+    declineTitle: "Ymmärretty",
+    declineText:
+      "Kiitos rehellisestä vastauksesta. Tämä sivu kuittaa valinnan kohteliaasti ja toivottaa hyvää päivänjatkoa.",
+    introTitle: "Mukava nähdä, että mielenkiintosi voitti",
+    introText:
+      "Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä hieman paremmin. Seuraavalla sivulla näytän pienen CV:n ja pelataan kevyt 4 totuutta ja 1 valhe -peli.",
+    cvAgeText: "Cheekin Jippikayjei oli hitti, kun olin peruskoulussa",
+    cvJobText: "korkeasti koulutettu erikoismies",
+    cvNatureText: "looginen mutta aina pilke silmäkulmassa",
+    gameTitle: "4 totuutta ja 1 valhe… tai no, melkein",
+    gameSubtitle: "Valitse mikä väitteistä on valhe.",
+    truthTryAgain: "Tämä vaihtoehto on totta, yritä uudelleen.",
+    truthFinal:
+      "Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.",
+    activityTitle: "Nyt selvitetään mikä olisi paras treffiaktiviteetti",
+    activityIntro:
+      "Tässä on nyt kaksi vaihtoehtoa: 1) vastaa kysymyksiin, jotka rajaavat sopivimmat aktiviteetit, tai 2) pyöräytä onnenpyörää ja katso minne kohtalosi sinut johdattaa.",
+    questionnaireTitle: "Kysymykset",
+    questionError: "Vastaa kaikkiin kysymyksiin ennen laskentaa.",
+    resultTitle: "Sinulle sopivin aktiviteetti",
+    bestChoiceLead:
+      "Analyysin perusteella sinulle sopisi parhaiten:",
+    topChoicesLead:
+      "Tässä myös muutama muu varteenotettava vaihtoehto:",
+    wheelTitle: "Onnenpyörä",
+    wheelSubtitle: "Saat 3 pyöräytystä.",
+    wheelResultPrefix: "Onnenpyörä valitsi:",
+    wheelSpinsOver: "Kolme pyöräytystä käytetty. Nyt on päätöksen aika.",
+    chosenTitle: "Valinta tehty",
+    chosenText:
+      "Noniin {name}, valitsit siis {activity}. Loistava päätös — en olisi itse osannut valita paremmin. Olet selvästi päätöksentekijä!",
+    contactMethodTitle: "Treffien aikataulu ja tiedonkulku",
+    contactMethodSubtitle: "Valitse yhteydenpitotapa.",
+    smokeText: "Savumerkit katosivat savun lailla. Yllättävää, mutta samalla täysin odotettua.",
+    contactInputTitle: "Anna yhteystieto",
+    contactInputSubtitle:
+      "Valitsit yhteydenpitotavaksi: {method}",
+    final1Title: "Tämä on viimeinen sivu",
+    final1Text:
+      "Kiva kun pääsit tänne asti, {name}! Voit odottaa yhteydenottoa minulta muutaman arkipäivän kuluessa. Valittu aktiviteetti oli: {activity}.",
+    final2Title: "P.s. vielä yksi juttu",
+    final2Text:
+      "Tiedän tiedän — sanoin että äskeinen sivu oli viimeinen, mutta ei ollut. Halusin vain sanoa, että odotan innolla treffejämme {activity} merkeissä, joten valmistaudu: siitä tulee kivaa!",
+    realEnd: "Oikeasti lopeta"
+  },
+  en: {
+    langTitle: "Choose language",
+    langSubtitle: "Let’s begin in a calm and civilized manner.",
+    continue: "Continue",
+    unsupportedLang:
+      "Haha, let’s not get too adventurous with the language settings — we’ll continue in English.",
+    whoAreYou: "Who are you?",
+    writeName: "Please type your name.",
+    namePlaceholder: "Type your name",
+    nameRequired: "Please enter your name before continuing.",
+    colorTitle: "Hello {name}, let’s adjust a few final settings",
+    colorSubtitle: "After that, we can begin.",
+    fontTitle: "Let’s choose a font",
+    fontSubtitle:
+      "Think carefully — this choice says a lot about you as a person.",
+    interestTitle: "Now that the settings are done, we can move to the actual topic",
+    interestText:
+      "Hi {name}, here’s the situation: the sender of this website finds you interesting and charming and would like to take you out. Please choose how you’d like to proceed.",
+    declineBtn: "Thanks, but no thanks",
+    acceptBtn: "Well… why not?",
+    declineTitle: "Understood",
+    declineText:
+      "Thank you for the honest answer. This page respectfully acknowledges your choice and wishes you a lovely day.",
+    introTitle: "Nice to see that curiosity won",
+    introText:
+      "Excellent. But before we get to the big questions, allow me to introduce myself a little better. On the next page I’ll show you a mini CV and we’ll play a light 4 truths and 1 lie game.",
+    cvAgeText: "Cheek’s Jippikayjei was a hit when I was in basic school",
+    cvJobText: "highly educated specialist gentleman",
+    cvNatureText: "logical, but always with a sparkle in the eye",
+    gameTitle: "4 truths and 1 lie… or something close to that",
+    gameSubtitle: "Pick the one you think is the lie.",
+    truthTryAgain: "This one is actually true. Try again.",
+    truthFinal:
+      "Oops, this one is true too. Apparently I do not fully understand the rules of this game… but at least now you know a few interesting facts about me.",
+    activityTitle: "Now let’s find the best date activity",
+    activityIntro:
+      "You have two options: 1) answer a few questions to narrow down the best activities, or 2) spin the wheel of fate and let destiny decide.",
+    questionnaireTitle: "Questions",
+    questionError: "Please answer all questions before calculating the result.",
+    resultTitle: "Best activity for you",
+    bestChoiceLead:
+      "Based on the analysis, your best match would be:",
+    topChoicesLead:
+      "Here are also a few other strong options:",
+    wheelTitle: "Wheel of Fortune",
+    wheelSubtitle: "You get 3 spins.",
+    wheelResultPrefix: "The wheel chose:",
+    wheelSpinsOver: "All 3 spins used. Time to embrace your destiny.",
+    chosenTitle: "Choice confirmed",
+    chosenText:
+      "Alright {name}, you chose {activity}. Excellent decision — I honestly couldn’t have chosen better myself. You clearly know how to make decisions.",
+    contactMethodTitle: "Date logistics and communication",
+    contactMethodSubtitle: "Choose your preferred contact method.",
+    smokeText: "Smoke signals disappeared like smoke. Unexpected, and yet somehow completely expected.",
+    contactInputTitle: "Enter your contact detail",
+    contactInputSubtitle:
+      "You selected: {method}",
+    final1Title: "This is the final page",
+    final1Text:
+      "Lovely that you made it this far, {name}! You can expect to hear from me within a few business days. The chosen activity was: {activity}.",
+    final2Title: "P.S. one more thing",
+    final2Text:
+      "I know, I know — I said the previous page was the final one, but it was not. I just wanted to say I’m genuinely looking forward to our date in the spirit of {activity}, so prepare yourself: it’s going to be fun.",
+    realEnd: "Actually finish"
+  }
+};
+
+// ======================================================
+// FONT FUN FACTS
+// ======================================================
+const fontFacts = {
+  fi: {
+    "Arial, sans-serif":
+      "Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.",
+    "'Times New Roman', serif":
+      "Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.",
+    "Calibri, sans-serif":
+      "Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.",
+    "Aptos, Arial, sans-serif":
+      "Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa."
+  },
+  en: {
+    "Arial, sans-serif":
+      "Fun fact! A person who chooses Arial is usually straightforward, low-drama, and most likely a green flag.",
+    "'Times New Roman', serif":
+      "Fun fact! A person who chooses Times New Roman is usually a little old-school, a little intense, but undeniably reliable.",
+    "Calibri, sans-serif":
+      "Fun fact! A person who chooses Calibri is usually warm, charming, and dangerously easy to like.",
+    "Aptos, Arial, sans-serif":
+      "Fun fact! A person who chooses Aptos is usually modern, smooth, and effortlessly attractive without trying too hard."
+  }
+};
+
+// ======================================================
+// COLOR THEMES
+// ======================================================
+const colorThemes = {
+  blue: ["#dff1ff", "#b9d8ff"],
+  green: ["#e6f7e8", "#c6efce"],
+  red: ["#ffe5e5", "#ffc9c9"],
+  purple: ["#f0e6ff", "#d8c2ff"],
+  pink: ["#ffe7f3", "#ffcde5"],
+  orange: ["#fff0df", "#ffd6ad"],
+  yellow: ["#fffbe0", "#fff0a8"],
+  black: ["#f1f1f1", "#d7d7d7"],
+  gray: ["#f4f4f4", "#dedede"]
+};
+
+// ======================================================
+// MASTER LOGIC TABLE
+// ======================================================
+const logicTable = [
+  { question_id: "gettingWetBothers", answer_value: "yes", activity_id: "arcticSwim", score: -4, reason: "kastuminen haittaa selvästi" },
+  { question_id: "gettingWetBothers", answer_value: "yes", activity_id: "halti", score: -1, reason: "märkä ulkoilu ei houkuttele" },
+  { question_id: "gettingWetBothers", answer_value: "yes", activity_id: "restaurantLunch", score: 1, reason: "sisäaktiviteetti sopii paremmin" },
+  { question_id: "gettingWetBothers", answer_value: "yes", activity_id: "cookDinner", score: 1, reason: "sisäaktiviteetti sopii paremmin" },
+  { question_id: "gettingWetBothers", answer_value: "yes", activity_id: "winePaint", score: 1, reason: "sisäaktiviteetti sopii paremmin" },
+  { question_id: "gettingWetBothers", answer_value: "yes", activity_id: "standup", score: 1, reason: "sisäaktiviteetti sopii paremmin" },
+  { question_id: "gettingWetBothers", answer_value: "yes", activity_id: "theatre", score: 1, reason: "sisäaktiviteetti sopii paremmin" },
+  { question_id: "gettingWetBothers", answer_value: "yes", activity_id: "bakeCake", score: 1, reason: "sisäaktiviteetti sopii paremmin" },
+  { question_id: "gettingWetBothers", answer_value: "yes", activity_id: "games", score: 1, reason: "sisäaktiviteetti sopii paremmin" },
+  { question_id: "gettingWetBothers", answer_value: "yes", activity_id: "movieNight", score: 1, reason: "sisäaktiviteetti sopii paremmin" },
+  { question_id: "gettingWetBothers", answer_value: "no", activity_id: "arcticSwim", score: 4, reason: "kastuminen ei haittaa" },
+  { question_id: "gettingWetBothers", answer_value: "no", activity_id: "halti", score: 1, reason: "ulkona olo voi sopia" },
+  { question_id: "gettingWetBothers", answer_value: "no", activity_id: "roadTrip", score: 1, reason: "vaihtelevat olosuhteet eivät haittaa" },
+
+  { question_id: "afraidHeights", answer_value: "yes", activity_id: "halti", score: -3, reason: "korkeat paikat eivät tunnu hyvältä" },
+  { question_id: "afraidHeights", answer_value: "no", activity_id: "halti", score: 1, reason: "korkeat maisemat eivät pelota" },
+  { question_id: "afraidHeights", answer_value: "no", activity_id: "roadTrip", score: 1, reason: "retkimeininki voi sopia" },
+
+  { question_id: "staysUpLate", answer_value: "yes", activity_id: "standup", score: 3, reason: "iltaohjelma sopii" },
+  { question_id: "staysUpLate", answer_value: "yes", activity_id: "pubQuiz", score: 3, reason: "iltaohjelma sopii" },
+  { question_id: "staysUpLate", answer_value: "yes", activity_id: "dance", score: 2, reason: "myöhäinen meno ei haittaa" },
+  { question_id: "staysUpLate", answer_value: "yes", activity_id: "theatre", score: 2, reason: "iltaohjelma sopii" },
+  { question_id: "staysUpLate", answer_value: "yes", activity_id: "studentEvent", score: 2, reason: "myöhäinen meno ei haittaa" },
+  { question_id: "staysUpLate", answer_value: "yes", activity_id: "movieNight", score: 1, reason: "myöhäisempi rento ilta sopii" },
+  { question_id: "staysUpLate", answer_value: "no", activity_id: "restaurantLunch", score: 2, reason: "päivätreffi sopii paremmin" },
+  { question_id: "staysUpLate", answer_value: "no", activity_id: "sports", score: 2, reason: "päivätreffi sopii paremmin" },
+  { question_id: "staysUpLate", answer_value: "no", activity_id: "cookDinner", score: 1, reason: "rauhallisempi aikaisempi tekeminen sopii" },
+  { question_id: "staysUpLate", answer_value: "no", activity_id: "bakeCake", score: 2, reason: "päivällä toimiva tekeminen sopii" },
+  { question_id: "staysUpLate", answer_value: "no", activity_id: "games", score: 2, reason: "ei vaadi myöhäistä iltaa" },
+
+  { question_id: "readyToTravel", answer_value: "yes", activity_id: "roadTrip", score: 4, reason: "matkustaminen onnistuu" },
+  { question_id: "readyToTravel", answer_value: "yes", activity_id: "halti", score: 3, reason: "retkikohteet ovat mahdollisia" },
+  { question_id: "readyToTravel", answer_value: "yes", activity_id: "arcticSwim", score: 3, reason: "kauempikin elämys onnistuu" },
+  { question_id: "readyToTravel", answer_value: "no", activity_id: "roadTrip", score: -4, reason: "pitkä matkustaminen ei houkuttele" },
+  { question_id: "readyToTravel", answer_value: "no", activity_id: "halti", score: -4, reason: "pitkä matkustaminen ei houkuttele" },
+  { question_id: "readyToTravel", answer_value: "no", activity_id: "arcticSwim", score: -4, reason: "pitkä matkustaminen ei houkuttele" },
+  { question_id: "readyToTravel", answer_value: "no", activity_id: "restaurantLunch", score: 1, reason: "läheltä löytyvä tekeminen sopii" },
+  { question_id: "readyToTravel", answer_value: "no", activity_id: "theatre", score: 1, reason: "läheltä löytyvä tekeminen sopii" },
+  { question_id: "readyToTravel", answer_value: "no", activity_id: "games", score: 1, reason: "läheltä löytyvä tekeminen sopii" },
+  { question_id: "readyToTravel", answer_value: "no", activity_id: "bakeCake", score: 1, reason: "kotona tai lähellä toimiva vaihtoehto sopii" },
+  { question_id: "readyToTravel", answer_value: "no", activity_id: "cookDinner", score: 1, reason: "kotona tai lähellä toimiva vaihtoehto sopii" },
+
+  { question_id: "likesFancyClothes", answer_value: "yes", activity_id: "restaurantLunch", score: 2, reason: "siisti pukeutuminen sopii" },
+  { question_id: "likesFancyClothes", answer_value: "yes", activity_id: "winePaint", score: 3, reason: "esteettinen fiilis sopii" },
+  { question_id: "likesFancyClothes", answer_value: "yes", activity_id: "theatre", score: 3, reason: "hienompi tunnelma sopii" },
+  { question_id: "likesFancyClothes", answer_value: "yes", activity_id: "dance", score: 2, reason: "tyylikkäämpi ilta voi toimia" },
+  { question_id: "likesFancyClothes", answer_value: "no", activity_id: "sports", score: 3, reason: "käytännöllinen tekeminen sopii" },
+  { question_id: "likesFancyClothes", answer_value: "no", activity_id: "cookDinner", score: 2, reason: "rento tekeminen sopii" },
+  { question_id: "likesFancyClothes", answer_value: "no", activity_id: "bakeCake", score: 2, reason: "rento tekeminen sopii" },
+  { question_id: "likesFancyClothes", answer_value: "no", activity_id: "halti", score: 2, reason: "käytännölliset vaatteet sopivat" },
+  { question_id: "likesFancyClothes", answer_value: "no", activity_id: "roadTrip", score: 1, reason: "rento lähteminen sopii" },
+  { question_id: "likesFancyClothes", answer_value: "no", activity_id: "games", score: 2, reason: "ei tarvitse pynttäytyä" },
+
+  { question_id: "drinksAlcohol", answer_value: "yes", activity_id: "winePaint", score: 2, reason: "alkoholillinen konsepti ei haittaa" },
+  { question_id: "drinksAlcohol", answer_value: "yes", activity_id: "pubQuiz", score: 2, reason: "pubimiljöö voi toimia" },
+  { question_id: "drinksAlcohol", answer_value: "yes", activity_id: "studentEvent", score: 1, reason: "rennompi iltameno voi toimia" },
+  { question_id: "drinksAlcohol", answer_value: "no", activity_id: "winePaint", score: -3, reason: "alkoholipainotteinen idea ei sovi" },
+  { question_id: "drinksAlcohol", answer_value: "no", activity_id: "pubQuiz", score: -2, reason: "pubimiljöö ei ehkä ole paras" },
+  { question_id: "drinksAlcohol", answer_value: "no", activity_id: "studentEvent", score: -1, reason: "ei ehkä tunnu omalta" },
+  { question_id: "drinksAlcohol", answer_value: "no", activity_id: "bakeCake", score: 1, reason: "selkeä tekeminen sopii" },
+  { question_id: "drinksAlcohol", answer_value: "no", activity_id: "cookDinner", score: 1, reason: "selkeä tekeminen sopii" },
+  { question_id: "drinksAlcohol", answer_value: "no", activity_id: "theatre", score: 1, reason: "ei perustu alkoholiin" },
+  { question_id: "drinksAlcohol", answer_value: "no", activity_id: "sports", score: 1, reason: "ei perustu alkoholiin" },
+  { question_id: "drinksAlcohol", answer_value: "no", activity_id: "movieNight", score: 1, reason: "rauhallinen vaihtoehto sopii" },
+
+  { question_id: "prefersDay", answer_value: "yes", activity_id: "restaurantLunch", score: 3, reason: "päivätreffi sopii" },
+  { question_id: "prefersDay", answer_value: "yes", activity_id: "sports", score: 3, reason: "päiväaktiviteetti sopii" },
+  { question_id: "prefersDay", answer_value: "yes", activity_id: "roadTrip", score: 2, reason: "päiväretki sopii" },
+  { question_id: "prefersDay", answer_value: "yes", activity_id: "halti", score: 2, reason: "päiväretki sopii" },
+  { question_id: "prefersDay", answer_value: "yes", activity_id: "bakeCake", score: 1, reason: "päivällä toimiva tekeminen sopii" },
+  { question_id: "prefersDay", answer_value: "yes", activity_id: "arcticSwim", score: 1, reason: "päiväreissu sopii paremmin" },
+  { question_id: "prefersDay", answer_value: "no", activity_id: "cookDinner", score: 2, reason: "ilta sopii paremmin" },
+  { question_id: "prefersDay", answer_value: "no", activity_id: "standup", score: 3, reason: "ilta sopii paremmin" },
+  { question_id: "prefersDay", answer_value: "no", activity_id: "theatre", score: 3, reason: "ilta sopii paremmin" },
+  { question_id: "prefersDay", answer_value: "no", activity_id: "pubQuiz", score: 3, reason: "ilta sopii paremmin" },
+  { question_id: "prefersDay", answer_value: "no", activity_id: "dance", score: 2, reason: "ilta sopii paremmin" },
+  { question_id: "prefersDay", answer_value: "no", activity_id: "movieNight", score: 2, reason: "ilta sopii paremmin" },
+
+  { question_id: "moneyMeansQuality", answer_value: "yes", activity_id: "theatre", score: 2, reason: "elämykseen panostaminen sopii" },
+  { question_id: "moneyMeansQuality", answer_value: "yes", activity_id: "roadTrip", score: 2, reason: "elämykseen panostaminen sopii" },
+  { question_id: "moneyMeansQuality", answer_value: "yes", activity_id: "arcticSwim", score: 2, reason: "elämykseen panostaminen sopii" },
+  { question_id: "moneyMeansQuality", answer_value: "yes", activity_id: "winePaint", score: 1, reason: "elämyksellinen tekeminen sopii" },
+  { question_id: "moneyMeansQuality", answer_value: "yes", activity_id: "restaurantLunch", score: 1, reason: "laadukkaampi ravintola sopii" },
+  { question_id: "moneyMeansQuality", answer_value: "no", activity_id: "cookDinner", score: 3, reason: "edullisempi tekeminen sopii" },
+  { question_id: "moneyMeansQuality", answer_value: "no", activity_id: "bakeCake", score: 3, reason: "edullisempi tekeminen sopii" },
+  { question_id: "moneyMeansQuality", answer_value: "no", activity_id: "studentEvent", score: 2, reason: "budjettiin sopiva meno" },
+  { question_id: "moneyMeansQuality", answer_value: "no", activity_id: "games", score: 2, reason: "kohtuullisen edullinen vaihtoehto" },
+  { question_id: "moneyMeansQuality", answer_value: "no", activity_id: "restaurantLunch", score: 1, reason: "lounas voi olla kevyt budjettivaihtoehto" },
+  { question_id: "moneyMeansQuality", answer_value: "no", activity_id: "theatre", score: -2, reason: "voi tuntua liian hintavalta" },
+  { question_id: "moneyMeansQuality", answer_value: "no", activity_id: "arcticSwim", score: -2, reason: "reissu voi olla kallis" },
+  { question_id: "moneyMeansQuality", answer_value: "no", activity_id: "halti", score: -1, reason: "varusteet tai matka voivat maksaa" },
+  { question_id: "moneyMeansQuality", answer_value: "no", activity_id: "roadTrip", score: -1, reason: "matkakulut voivat tuntua turhilta" },
+
+  { question_id: "afraidAnimals", answer_value: "yes", activity_id: "halti", score: -1, reason: "luontopainotteinen tekeminen voi jännittää" },
+  { question_id: "afraidAnimals", answer_value: "yes", activity_id: "roadTrip", score: -1, reason: "luontopainotteinen tekeminen voi jännittää" },
+  { question_id: "afraidAnimals", answer_value: "yes", activity_id: "sports", score: -1, reason: "ulkopainotteinen tekeminen voi jännittää" },
+  { question_id: "afraidAnimals", answer_value: "no", activity_id: "halti", score: 1, reason: "luonto ei pelota" },
+  { question_id: "afraidAnimals", answer_value: "no", activity_id: "roadTrip", score: 1, reason: "luontoon liittyvä tekeminen voi sopia" },
+  { question_id: "afraidAnimals", answer_value: "no", activity_id: "sports", score: 1, reason: "ulkona tekeminen voi sopia" },
+
+  { question_id: "canDoCartwheel", answer_value: "yes", activity_id: "sports", score: 3, reason: "liikunnallinen tekeminen sopii" },
+  { question_id: "canDoCartwheel", answer_value: "yes", activity_id: "dance", score: 2, reason: "kehollinen tekeminen sopii" },
+  { question_id: "canDoCartwheel", answer_value: "yes", activity_id: "studentEvent", score: 1, reason: "aktiivinen meno voi sopia" },
+  { question_id: "canDoCartwheel", answer_value: "no", activity_id: "theatre", score: 1, reason: "rauhallisempi elämys voi sopia" },
+  { question_id: "canDoCartwheel", answer_value: "no", activity_id: "restaurantLunch", score: 1, reason: "rauhallisempi vaihtoehto voi sopia" },
+  { question_id: "canDoCartwheel", answer_value: "no", activity_id: "winePaint", score: 1, reason: "rauhallisempi luova tekeminen voi sopia" },
+  { question_id: "canDoCartwheel", answer_value: "no", activity_id: "cookDinner", score: 1, reason: "rauhallisempi yhteinen tekeminen voi sopia" },
+  { question_id: "canDoCartwheel", answer_value: "no", activity_id: "movieNight", score: 1, reason: "rauhallisempi yhteinen tekeminen voi sopia" }
+];
+
+// ======================================================
+// ACTIVITIES
+// ======================================================
+const activities = {
+  sports: { fi: "Urheilua, kuten laskettelu, hiihto tai kuntosali", en: "Sports, such as skiing, gym, or other active fun" },
+  restaurantLunch: { fi: "Lounas / illallinen ravintolassa", en: "Lunch / dinner at a restaurant" },
+  cookDinner: { fi: "Lounas / illallinen itse kokaten", en: "Cooking lunch / dinner together" },
+  winePaint: { fi: "Wine and paint", en: "Wine and paint" },
+  standup: { fi: "Stand up show", en: "Stand-up show" },
+  theatre: { fi: "Teatteri / musikaali", en: "Theatre / musical" },
+  studentEvent: { fi: "Opiskelijatapahtuma", en: "Student event" },
+  bakeCake: { fi: "Leivotaan kakku", en: "Let’s bake a cake" },
+  roadTrip: { fi: "Road trip", en: "Road trip" },
+  dance: { fi: "Paritanssitunti / lavatanssit", en: "Partner dancing / dance hall" },
+  pubQuiz: { fi: "Pubivisa", en: "Pub quiz" },
+  arcticSwim: { fi: "Uintireissu Jäämerelle", en: "Swimming trip to the Arctic Ocean" },
+  halti: { fi: "Vaellus Haltille", en: "Hike to Halti" },
+  games: { fi: "Keilaus / minigolf / biljardi", en: "Bowling / mini golf / billiards" },
+  movieNight: { fi: "Leffailta kotona", en: "Movie night at home" }
+};
+
+const wheelActivityOrder = Object.keys(activities);
+
+// ======================================================
+// HELPERS
+// ======================================================
+function t(key) {
+  return i18n[state.lang][key] || key;
 }
 
-.container {
-  max-width: 700px;
-  width: 90%;
-  background: white;
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  text-align: center;
+function fill(template, replacements = {}) {
+  return template.replace(/\{(.*?)\}/g, (_, key) => replacements[key] ?? "");
 }
 
-h1 {
-  margin-bottom: 0.5rem;
+function $(id) {
+  return document.getElementById(id);
 }
 
-.intro {
-  color: #555;
-  margin-bottom: 2rem;
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+  $(id).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-.card {
-  margin-top: 1rem;
+function setMessage(id, text, type = "info") {
+  const el = $(id);
+  el.textContent = text;
+  el.classList.remove("hidden", "error", "success", "info");
+  el.classList.add(type);
 }
 
-.buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
+function hideMessage(id) {
+  $(id).classList.add("hidden");
 }
 
-button {
-  background: #ff7aa2;
-  color: white;
-  border: none;
-  padding: 0.9rem 1.2rem;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 1rem;
+function applyLanguageTexts() {
+  document.documentElement.lang = state.lang;
+
+  $("lang-title").textContent = t("langTitle");
+  $("lang-subtitle").textContent = t("langSubtitle");
+  $("toNameBtn").textContent = t("continue");
+
+  $("name-title").textContent = t("whoAreYou");
+  $("name-subtitle").textContent = t("writeName");
+  $("nameInput").placeholder = t("namePlaceholder");
+  $("toColorBtn").textContent = t("continue");
+
+  $("color-title").textContent = t("colorTitle");
+  $("color-subtitle").textContent = t("colorSubtitle");
+  $("toFontBtn").textContent = t("continue");
+
+  $("font-title").textContent = t("fontTitle");
+  $("font-subtitle").textContent = t("fontSubtitle");
+  $("toInterestBtn").textContent = t("continue");
+
+  $("interest-title").textContent = t("interestTitle");
+  $("declineBtn").textContent = t("declineBtn");
+  $("acceptBtn").textContent = t("acceptBtn");
+
+  $("decline-title").textContent = t("declineTitle");
+  $("decline-text").textContent = t("declineText");
+  $("declineEndBtn").textContent = t("realEnd");
+
+  $("intro-title").textContent = t("introTitle");
+  $("intro-text").textContent = t("introText");
+  $("toCvBtn").textContent = t("continue");
+
+  $("cv-title").textContent = state.lang === "fi" ? "Pikaesittely" : "Quick introduction";
+  $("cv-name-label").textContent = state.lang === "fi" ? "Nimi:" : "Name:";
+  $("cv-age-label").textContent = state.lang === "fi" ? "Ikä:" : "Age:";
+  $("cv-job-label").textContent = state.lang === "fi" ? "Ammatti:" : "Profession:";
+  $("cv-nature-label").textContent = state.lang === "fi" ? "Luonne:" : "Nature:";
+  $("cv-age-text").textContent = t("cvAgeText");
+  $("cv-job-text").textContent = t("cvJobText");
+  $("cv-nature-text").textContent = t("cvNatureText");
+  $("photo-placeholder-text").textContent = state.lang === "fi" ? "Kuva tähän myöhemmin" : "Image can be added here later";
+  $("game-title").textContent = t("gameTitle");
+  $("game-subtitle").textContent = t("gameSubtitle");
+  $("toActivityBtn").textContent = t("continue");
+
+  $("activity-title").textContent = t("activityTitle");
+  $("activity-intro").textContent = t("activityIntro");
+  $("showQuestionsBtn").textContent = state.lang === "fi" ? "1) Vastaan kysymyksiin" : "1) Answer the questions";
+  $("showWheelBtn").textContent = state.lang === "fi" ? "2) Spin the wheel" : "2) Spin the wheel";
+  $("questionnaire-title").textContent = t("questionnaireTitle");
+  $("calculateActivityBtn").textContent = state.lang === "fi" ? "Näytä paras vaihtoehto" : "Show best match";
+  $("wheel-title").textContent = t("wheelTitle");
+  $("wheel-subtitle").textContent = t("wheelSubtitle");
+  $("spinWheelBtn").textContent = state.lang === "fi" ? "Pyöräytä" : "Spin";
+  $("spinAgainBtn").textContent = state.lang === "fi" ? "Pyöräytä uudelleen" : "Spin again";
+  $("wheelContinueBtn").textContent = state.lang === "fi" ? "Jatka seuraavalle sivulle" : "Continue to next page";
+
+  $("activity-result-title").textContent = t("resultTitle");
+  $("toChosenActivityBtn").textContent = t("continue");
+
+  $("chosen-title").textContent = t("chosenTitle");
+  $("toContactMethodBtn").textContent = t("continue");
+
+  $("contact-method-title").textContent = t("contactMethodTitle");
+  $("contact-method-subtitle").textContent = t("contactMethodSubtitle");
+
+  $("contact-input-title").textContent = t("contactInputTitle");
+  $("toFinal1Btn").textContent = t("continue");
+
+  $("final1-title").textContent = t("final1Title");
+  $("toFinal2Btn").textContent = state.lang === "fi" ? "Lopeta" : "Finish";
+
+  $("final2-title").textContent = t("final2Title");
+  $("realEndBtn").textContent = t("realEnd");
+
+  updateDynamicTexts();
 }
 
-button:hover {
-  background: #ff5f8d;
+function updateDynamicTexts() {
+  $("color-title").textContent = fill(t("colorTitle"), { name: state.name || (state.lang === "fi" ? "ystävä" : "friend") });
+  $("color-subtitle").textContent = t("colorSubtitle");
+
+  $("interest-text").textContent = fill(t("interestText"), { name: state.name || "" });
+  $("contact-input-subtitle").textContent = fill(t("contactInputSubtitle"), { method: state.selectedContactMethod || "-" });
+
+  $("chosen-text").textContent = fill(t("chosenText"), {
+    name: state.name || "",
+    activity: state.selectedActivity || (state.lang === "fi" ? "jotain erinomaista" : "something excellent")
+  });
+
+  $("final1-text").textContent = fill(t("final1Text"), {
+    name: state.name || "",
+    activity: state.selectedActivity || "-"
+  });
+
+  $("final2-text").textContent = fill(t("final2Text"), {
+    activity: state.selectedActivity || "-"
+  });
+
+  const selectedFont = $("fontSelect").value;
+  if (selectedFont && fontFacts[state.lang][selectedFont]) {
+    $("fontFactText").textContent = fontFacts[state.lang][selectedFont];
+  }
 }
 
-.result {
-  margin-top: 2rem;
-  padding: 1rem;
-  background: #f4f7ff;
-  border-radius: 12px;
-  font-size: 1.1rem;
+function applyThemeColor(colorKey) {
+  const theme = colorThemes[colorKey] || ["#ffffff", "#ffffff"];
+  document.documentElement.style.setProperty("--bg-1", theme[0]);
+  document.documentElement.style.setProperty("--bg-2", theme[1]);
 }
 
-.hidden {
-  display: none;
+function applyFont(fontValue) {
+  document.documentElement.style.setProperty("--font-main", fontValue || "Arial, sans-serif");
 }
-``
+
+// ======================================================
+// ACTIVITY CALCULATION
+// ======================================================
+function getQuestionAnswers() {
+  const answers = {};
+  document.querySelectorAll(".question-select").forEach(select => {
+    answers[select.dataset.question] = select.value;
+  });
+  return answers;
+}
+
+function calculateActivities(answers) {
+  const scores = {};
+  const reasons = {};
+
+  Object.keys(activities).forEach(id => {
+    scores[id] = 0;
+    reasons[id] = [];
+  });
+
+  logicTable.forEach(rule => {
+    if (answers[rule.question_id] === rule.answer_value) {
+      scores[rule.activity_id] += rule.score;
+      reasons[rule.activity_id].push(rule.reason);
+    }
+  });
+
+  const ranked = Object.keys(activities).map(id => ({
+    id,
+    name: activities[id][state.lang],
+    score: scores[id],
+    reasons: [...new Set(reasons[id])].slice(0, 3)
+  }))
+  .sort((a, b) => b.score - a.score);
+
+  return ranked;
+}
+
+function renderActivityResults(ranked) {
+  const best = ranked[0];
+  state.selectedActivity = best.name;
+  updateDynamicTexts();
+
+  const topOthers = ranked.slice(1, 4);
+
+  $("activityResultContent").innerHTML = `
+    <div class="result-card">
+      <h2>${t("bestChoiceLead")}</h2>
+      <p><strong>${best.name}</strong></p>
+      <p>${best.reasons.length ? best.reasons.join(" • ") : ""}</p>
+      <p><small>${state.lang === "fi" ? "Pisteet" : "Score"}: ${best.score}</small></p>
+    </div>
+
+    <div class="result-list">
+      <h3>${t("topChoicesLead")}</h3>
+      ${topOthers.map(item => `
+        <div class="result-card">
+          <strong>${item.name}</strong>
+          <p>${item.reasons.length ? item.reasons.join(" • ") : ""}</p>
+          <p><small>${state.lang === "fi" ? "Pisteet" : "Score"}: ${item.score}</small></p>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+// ======================================================
+// WHEEL
+// ======================================================
+const wheelCanvas = $("wheelCanvas");
+const wheelCtx = wheelCanvas.getContext("2d");
+let currentRotation = 0;
+let spinning = false;
+
+function drawWheel(rotation = 0) {
+  const labels = wheelActivityOrder.map(id => activities[id][state.lang]);
+  const total = labels.length;
+  const cx = wheelCanvas.width / 2;
+  const cy = wheelCanvas.height / 2;
+  const radius = 240;
+  const slice = (Math.PI * 2) / total;
+
+  wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+  wheelCtx.save();
+  wheelCtx.translate(cx, cy);
+  wheelCtx.rotate(rotation);
+
+  labels.forEach((label, i) => {
+    const start = i * slice;
+    const end = start + slice;
+    wheelCtx.beginPath();
+    wheelCtx.moveTo(0, 0);
+    wheelCtx.arc(0, 0, radius, start, end);
+    wheelCtx.closePath();
+
+    const hue = Math.round((360 / total) * i);
+    wheelCtx.fillStyle = `hsl(${hue}, 80%, 78%)`;
+    wheelCtx.fill();
+    wheelCtx.strokeStyle = "#ffffff";
+    wheelCtx.lineWidth = 2;
+    wheelCtx.stroke();
+
+    wheelCtx.save();
+    wheelCtx.rotate(start + slice / 2);
+    wheelCtx.textAlign = "right";
+    wheelCtx.fillStyle = "#111";
+    wheelCtx.font = "15px Arial";
+    wrapCanvasText(wheelCtx, label, radius - 18, 0, 110, 16);
+    wheelCtx.restore();
+  });
+
+  wheelCtx.beginPath();
+  wheelCtx.arc(0, 0, 42, 0, Math.PI * 2);
+  wheelCtx.fillStyle = "#fff";
+  wheelCtx.fill();
+  wheelCtx.strokeStyle = "#111";
+  wheelCtx.lineWidth = 3;
+  wheelCtx.stroke();
+
+  wheelCtx.restore();
+}
+
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+  let lines = [];
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + " ";
+    const testWidth = ctx.measureText(testLine).width;
+    if (testWidth > maxWidth && n > 0) {
+      lines.push(line.trim());
+      line = words[n] + " ";
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line.trim());
+
+  const totalHeight = lines.length * lineHeight;
+  const startY = y - totalHeight / 2;
+
+  lines.forEach((ln, idx) => {
+    ctx.fillText(ln, x, startY + idx * lineHeight);
+  });
+}
+
+function spinWheel() {
+  if (spinning || state.wheelSpins >= 3) return;
+  spinning = true;
+
+  const total = wheelActivityOrder.length;
+  const slice = (Math.PI * 2) / total;
+
+  const targetIndex = Math.floor(Math.random() * total);
+  const extraSpins = 5 + Math.random() * 2;
+  const targetAngle = (Math.PI * 2 * extraSpins) + ((Math.PI * 2) - (targetIndex * slice) - slice / 2);
+  const start = currentRotation;
+  const end = start + targetAngle;
+  const duration = 3200;
+  const startTime = performance.now();
+
+  function animate(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    currentRotation = start + (end - start) * eased;
+    drawWheel(currentRotation);
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      spinning = false;
+      state.wheelSpins += 1;
+
+      const normalized = currentRotation % (Math.PI * 2);
+      const winningIndex = getWinningSliceIndex(normalized, total);
+      const winnerId = wheelActivityOrder[winningIndex];
+      const winnerName = activities[winnerId][state.lang];
+      state.selectedActivity = winnerName;
+      updateDynamicTexts();
+
+      setMessage("wheelResult", `${t("wheelResultPrefix")} ${winnerName}`, "success");
+      $("wheelContinueBtn").classList.remove("hidden");
+
+      if (state.wheelSpins < 3) {
+        $("spinAgainBtn").classList.remove("hidden");
+      } else {
+        $("spinAgainBtn").classList.add("hidden");
+        setMessage("wheelResult", `${t("wheelResultPrefix")} ${winnerName}. ${t("wheelSpinsOver")}`, "success");
+      }
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+function getWinningSliceIndex(normalizedRotation, total) {
+  const slice = (Math.PI * 2) / total;
+  const pointerAngle = (Math.PI * 2 - normalizedRotation + (Math.PI / 2)) % (Math.PI * 2);
+  let index = Math.floor(pointerAngle / slice);
+  index = (total - index) % total;
+  return index;
+}
+
+// ======================================================
+// EVENT BINDINGS
+// ======================================================
+$("toNameBtn").addEventListener("click", () => {
+  const selected = $("languageSelect").value;
+
+  if (["fi", "en"].includes(selected)) {
+    state.lang = selected;
+    hideMessage("languageMessage");
+  } else {
+    state.lang = "en";
+    setMessage("languageMessage", i18n.en.unsupportedLang, "info");
+  }
+
+  applyLanguageTexts();
+  showPage("page-name");
+});
+
+$("toColorBtn").addEventListener("click", () => {
+  const value = $("nameInput").value.trim();
+  if (!value) {
+    setMessage("nameError", t("nameRequired"), "error");
+    return;
+  }
+  hideMessage("nameError");
+  state.name = value;
+  updateDynamicTexts();
+  showPage("page-color");
+});
+
+$("colorSelect").addEventListener("change", (e) => {
+  state.favoriteColor = e.target.value;
+  applyThemeColor(state.favoriteColor);
+});
+
+$("toFontBtn").addEventListener("click", () => {
+  if (!$("colorSelect").value) {
+    state.favoriteColor = "blue";
+    $("colorSelect").value = "blue";
+    applyThemeColor("blue");
+  }
+  showPage("page-font");
+});
+
+$("fontSelect").addEventListener("change", (e) => {
+  const fontValue = e.target.value;
+  if (!fontValue) return;
+
+  state.font = fontValue;
+  applyFont(fontValue);
+
+  $("fontFactBox").classList.remove("hidden");
+  $("fontFactText").textContent = fontFacts[state.lang][fontValue];
+});
+
+$("toInterestBtn").addEventListener("click", () => {
+  if (!$("fontSelect").value) {
+    $("fontSelect").value = "Arial, sans-serif";
+    state.font = "Arial, sans-serif";
+    applyFont(state.font);
+    $("fontFactBox").classList.remove("hidden");
+    $("fontFactText").textContent = fontFacts[state.lang][state.font];
+  }
+  updateDynamicTexts();
+  showPage("page-interest");
+});
+
+$("declineBtn").addEventListener("click", () => {
+  showPage("page-decline");
+});
+
+$("declineEndBtn").addEventListener("click", () => {
+  showPage("page-final-2");
+  $("final2-text").textContent = state.lang === "fi"
+    ? "Tämä reitti päättyi tähän — mutta kiitos kun kokeilit sivua."
+    : "This route ends here — but thank you for trying the page.";
+});
+
+$("acceptBtn").addEventListener("click", () => {
+  showPage("page-intro");
+});
+
+$("toCvBtn").addEventListener("click", () => {
+  showPage("page-cv");
+});
+
+document.querySelectorAll(".truth-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (btn.disabled) return;
+
+    state.truthClicks += 1;
+    btn.disabled = true;
+    btn.classList.add("clicked-truth");
+
+    if (state.truthClicks < 4) {
+      setMessage("truthMessage", t("truthTryAgain"), "error");
+    } else {
+      setMessage("truthMessage", t("truthFinal"), "success");
+      $("toActivityBtn").classList.remove("hidden");
+    }
+  });
+});
+
+$("toActivityBtn").addEventListener("click", () => {
+  showPage("page-activity");
+});
+
+$("showQuestionsBtn").addEventListener("click", () => {
+  $("questionnaireBlock").classList.remove("hidden");
+  $("wheelBlock").classList.add("hidden");
+});
+
+$("showWheelBtn").addEventListener("click", () => {
+  $("wheelBlock").classList.remove("hidden");
+  $("questionnaireBlock").classList.add("hidden");
+  drawWheel(currentRotation);
+});
+
+$("calculateActivityBtn").addEventListener("click", () => {
+  const answers = getQuestionAnswers();
+  const incomplete = Object.values(answers).some(v => !v);
+
+  if (incomplete) {
+    setMessage("questionError", t("questionError"), "error");
+    return;
+  }
+
+  hideMessage("questionError");
+  const ranked = calculateActivities(answers);
+  renderActivityResults(ranked);
+  showPage("page-activity-result");
+});
+
+$("spinWheelBtn").addEventListener("click", spinWheel);
+
+$("spinAgainBtn").addEventListener("click", () => {
+  if (state.wheelSpins < 3) spinWheel();
+});
+
+$("wheelContinueBtn").addEventListener("click", () => {
+  if (!state.selectedActivity) return;
+  $("activityResultContent").innerHTML = `
+    <div class="result-card">
+      <h2>${t("wheelResultPrefix")}</h2>
+      <p><strong>${state.selectedActivity}</strong></p>
+    </div>
+  `;
+  showPage("page-activity-result");
+});
+
+$("toChosenActivityBtn").addEventListener("click", () => {
+  updateDynamicTexts();
+  showPage("page-chosen-activity");
+});
+
+$("toContactMethodBtn").addEventListener("click", () => {
+  showPage("page-contact-method");
+});
+
+document.querySelectorAll(".contact-method-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    state.selectedContactMethod = btn.dataset.method;
+    updateDynamicTexts();
+    $("contactInput").value = "";
+    showPage("page-contact-input");
+  });
+});
+
+$("smokeBtn").addEventListener("click", () => {
+  const btn = $("smokeBtn");
+  btn.classList.add("smoke-vanish");
+  setMessage("smokeMessage", t("smokeText"), "info");
+  setTimeout(() => {
+    btn.classList.add("hidden");
+  }, 900);
+});
+
+$("toFinal1Btn").addEventListener("click", () => {
+  state.contactValue = $("contactInput").value.trim();
+  showPage("page-final-1");
+});
+
+$("toFinal2Btn").addEventListener("click", () => {
+  showPage("page-final-2");
+});
+
+$("realEndBtn").addEventListener("click", () => {
+  document.body.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(135deg,var(--bg-1),var(--bg-2));font-family:var(--font-main);">
+      <div class="card narrow finish-screen">
+        <h1>${state.lang === "fi" ? "Kiitos!" : "Thank you!"}</h1>
+        <p>${state.lang === "fi"
+          ? "Sivu on nyt oikeasti lopussa. Toivottavasti tämä jätti hyvän vaikutelman."
+          : "The page has now actually ended. Hopefully it left a good impression."}</p>
+      </div>
+    </div>
+  `;
+});
+
+// ======================================================
+// INIT
+// ======================================================
+applyThemeColor("");
+applyFont(state.font);
+applyLanguageTexts();
+drawWheel();
