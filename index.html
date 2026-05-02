@@ -1,28 +1,378 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What do we do on a first date?</title>
+  <title>Interactive Date Journey</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>What do we do on a first date?</h1>
-    <p class="intro">Let's find out what kind of first date would suit us best ✨</p>
+  <div id="app">
+    <!-- PAGE 1: LANGUAGE -->
+    <section class="page active" id="page-language">
+      <div class="card narrow">
+        <h1 id="lang-title">Valitse kieli</h1>
+        <p id="lang-subtitle">Aloitetaan aivan rauhallisesti.</p>
 
-    <div class="card">
-      <h2>Choose a vibe</h2>
-      <div class="buttons">
-        <button onclick="showResult('Coffee and good conversation ☕')">Coffee</button>
-        <button onclick="showResult('A relaxed walk together 🚶')">Walk</button>
-        <button onclick="showResult('Something fun and spontaneous 🎉')">Something fun</button>
+        <label class="label" for="languageSelect">Kieli</label>
+        <select id="languageSelect" class="input">
+          <option value="fi">Suomi</option>
+          <option value="en">English</option>
+          <option value="sv">Svenska</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+        </select>
+
+        <div id="languageMessage" class="message hidden"></div>
+
+        <button class="btn primary" id="toNameBtn">Jatka</button>
       </div>
-    </div>
+    </section>
 
-    <div id="result" class="result hidden"></div>
+    <!-- PAGE 2: NAME -->
+    <section class="page" id="page-name">
+      <div class="card narrow">
+        <h1 id="name-title">Kuka sinä olet?</h1>
+        <p id="name-subtitle">Voit kirjoittaa nimesi tähän.</p>
+
+        <label class="label" for="nameInput">Nimi</label>
+        <input id="nameInput" class="input" type="text" placeholder="Kirjoita nimesi" />
+
+        <div id="nameError" class="message hidden"></div>
+
+        <button class="btn primary" id="toColorBtn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- PAGE 3: COLOR -->
+    <section class="page" id="page-color">
+      <div class="card narrow">
+        <h1 id="color-title">Muokataan vielä muutamaa asetusta</h1>
+        <p id="color-subtitle"></p>
+
+        <label class="label" for="colorSelect">Mikä on lempivärisi?</label>
+        <select id="colorSelect" class="input">
+          <option value="">Valitse väri</option>
+          <option value="blue">Sininen / Blue</option>
+          <option value="green">Vihreä / Green</option>
+          <option value="red">Punainen / Red</option>
+          <option value="purple">Violetti / Purple</option>
+          <option value="pink">Pinkki / Pink</option>
+          <option value="orange">Oranssi / Orange</option>
+          <option value="yellow">Keltainen / Yellow</option>
+          <option value="black">Musta / Black</option>
+          <option value="gray">Harmaa / Gray</option>
+        </select>
+
+        <button class="btn primary" id="toFontBtn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- PAGE 4: FONT -->
+    <section class="page" id="page-font">
+      <div class="layout-two">
+        <div class="card narrow">
+          <h1 id="font-title">Valitaan vielä fontti</h1>
+          <p id="font-subtitle">Harkitse tarkkaan, tämä valinta kertoo paljon sinusta ihmisenä.</p>
+
+          <label class="label" for="fontSelect">Lempifontti</label>
+          <select id="fontSelect" class="input">
+            <option value="">Valitse fontti</option>
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="'Times New Roman', serif">Times New Roman</option>
+            <option value="Calibri, sans-serif">Calibri</option>
+            <option value="Aptos, Arial, sans-serif">Aptos</option>
+          </select>
+
+          <button class="btn primary" id="toInterestBtn">Jatka</button>
+        </div>
+
+        <aside class="side-box hidden" id="fontFactBox">
+          <h3>Tiesitkö!</h3>
+          <p id="fontFactText"></p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- PAGE 5: INTEREST -->
+    <section class="page" id="page-interest">
+      <div class="card">
+        <h1 id="interest-title">Nyt päästään itse aiheeseen</h1>
+        <p id="interest-text"></p>
+
+        <div class="button-row">
+          <button class="btn ghost" id="declineBtn">Kiitos mutta ei kiitos</button>
+          <button class="btn primary" id="acceptBtn">No miksipäs ei…</button>
+        </div>
+
+        <div id="declineMessage" class="message hidden"></div>
+      </div>
+    </section>
+
+    <!-- PAGE DECLINE -->
+    <section class="page" id="page-decline">
+      <div class="card narrow">
+        <h1 id="decline-title">Ymmärretty</h1>
+        <p id="decline-text">
+          Kiitos rehellisestä vastauksesta. Tämä sivu kuittaa valinnan kohteliaasti ja toivottaa hyvää päivänjatkoa.
+        </p>
+        <button class="btn primary" id="declineEndBtn">Lopeta</button>
+      </div>
+    </section>
+
+    <!-- PAGE 6: INTRO -->
+    <section class="page" id="page-intro">
+      <div class="card">
+        <h1 id="intro-title">Mukava nähdä, että jatkoit</h1>
+        <p id="intro-text"></p>
+        <button class="btn primary" id="toCvBtn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- PAGE 7: CV + GAME -->
+    <section class="page" id="page-cv">
+      <div class="card">
+        <h1 id="cv-title">Pikaesittely</h1>
+
+        <div class="cv-grid">
+          <div class="cv-info">
+            <p><strong id="cv-name-label">Nimi:</strong> Teemu</p>
+            <p><strong id="cv-age-label">Ikä:</strong> <span id="cv-age-text"></span></p>
+            <p><strong id="cv-job-label">Ammatti:</strong> <span id="cv-job-text"></span></p>
+            <p><strong id="cv-nature-label">Luonne:</strong> <span id="cv-nature-text"></span></p>
+          </div>
+
+          <div class="cv-photo">
+            <div class="photo-placeholder">
+              <span id="photo-placeholder-text">Kuva tähän myöhemmin</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-block">
+          <h2 id="game-title">4 totuutta ja 1 valhe… tai no, melkein</h2>
+          <p id="game-subtitle">Valitse mikä väitteistä on valhe.</p>
+
+          <div class="truth-buttons" id="truthButtons">
+            <button class="btn option truth-btn" data-index="0">Olen asunut Kanadassa yli 2 vuotta.</button>
+            <button class="btn option truth-btn" data-index="1">Olen käynyt Euroopan suurimmalla kultakaivoksella.</button>
+            <button class="btn option truth-btn" data-index="2">Puhun ranskaa paremmin kuin ruotsia.</button>
+            <button class="btn option truth-btn" data-index="3">Olen ollut osa SM-pikaviestijoukkuetta.</button>
+          </div>
+
+          <div id="truthMessage" class="message hidden"></div>
+        </div>
+
+        <button class="btn primary hidden" id="toActivityBtn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- PAGE 8: ACTIVITY METHOD -->
+    <section class="page" id="page-activity">
+      <div class="card">
+        <h1 id="activity-title">Nyt selvitetään paras treffiaktiviteetti</h1>
+        <p id="activity-intro"></p>
+
+        <div class="button-row">
+          <button class="btn primary" id="showQuestionsBtn">1) Vastaan kysymyksiin</button>
+          <button class="btn ghost" id="showWheelBtn">2) Pyöräytän onnenpyörää</button>
+        </div>
+
+        <!-- QUESTIONNAIRE -->
+        <div id="questionnaireBlock" class="method-block hidden">
+          <h2 id="questionnaire-title">Kysymykset</h2>
+          <div class="question-list">
+            <div class="question-item">
+              <label>Haittaako jos kastut?</label>
+              <select data-question="gettingWetBothers" class="input question-select">
+                <option value="">Valitse</option>
+                <option value="yes">Kyllä</option>
+                <option value="no">Ei</option>
+              </select>
+            </div>
+
+            <div class="question-item">
+              <label>Pelkäätkö korkeita paikkoja?</label>
+              <select data-question="afraidHeights" class="input question-select">
+                <option value="">Valitse</option>
+                <option value="yes">Kyllä</option>
+                <option value="no">Ei</option>
+              </select>
+            </div>
+
+            <div class="question-item">
+              <label>Ruukkaatko valvoa myöhään?</label>
+              <select data-question="staysUpLate" class="input question-select">
+                <option value="">Valitse</option>
+                <option value="yes">Kyllä</option>
+                <option value="no">Ei</option>
+              </select>
+            </div>
+
+            <div class="question-item">
+              <label>Oletko valmis matkustamaan 150 km säteellä kodistasi?</label>
+              <select data-question="readyToTravel" class="input question-select">
+                <option value="">Valitse</option>
+                <option value="yes">Kyllä</option>
+                <option value="no">Ei</option>
+              </select>
+            </div>
+
+            <div class="question-item">
+              <label>Suositko tyylikkäitä vaatteita enemmän kuin rentoja käytännöllisiä vaatteita?</label>
+              <select data-question="likesFancyClothes" class="input question-select">
+                <option value="">Valitse</option>
+                <option value="yes">Kyllä</option>
+                <option value="no">Ei</option>
+              </select>
+            </div>
+
+            <div class="question-item">
+              <label>Alkoholi?</label>
+              <select data-question="drinksAlcohol" class="input question-select">
+                <option value="">Valitse</option>
+                <option value="yes">Kyllä</option>
+                <option value="no">Ei</option>
+              </select>
+            </div>
+
+            <div class="question-item">
+              <label>Onko päivä parempi kuin ilta?</label>
+              <select data-question="prefersDay" class="input question-select">
+                <option value="">Valitse</option>
+                <option value="yes">Kyllä</option>
+                <option value="no">Ei</option>
+              </select>
+            </div>
+
+            <div class="question-item">
+              <label>Onko rahankäyttö hyvän treffin tunnusmerkki?</label>
+              <select data-question="moneyMeansQuality" class="input question-select">
+                <option value="">Valitse</option>
+                <option value="yes">Kyllä</option>
+                <option value="no">Ei</option>
+              </select>
+            </div>
+
+            <div class="question-item">
+              <label>Pelkäätkö eläimiä?</label>
+              <select data-question="afraidAnimals" class="input question-select">
+                <option value="">Valitse</option>
+                <option value="yes">Kyllä</option>
+                <option value="no">Ei</option>
+              </select>
+            </div>
+
+            <div class="question-item">
+              <label>Osaatko tehdä kuperkeikan tai kärrynpyörän?</label>
+              <select data-question="canDoCartwheel" class="input question-select">
+                <option value="">Valitse</option>
+                <option value="yes">Kyllä</option>
+                <option value="no">Ei</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="questionError" class="message hidden"></div>
+          <button class="btn primary" id="calculateActivityBtn">Näytä paras vaihtoehto</button>
+        </div>
+
+        <!-- WHEEL -->
+        <div id="wheelBlock" class="method-block hidden">
+          <h2 id="wheel-title">Onnenpyörä</h2>
+          <p id="wheel-subtitle">Saat 3 pyöräytystä.</p>
+
+          <div class="wheel-wrap">
+            <div class="pointer"></div>
+            <canvas id="wheelCanvas" width="520" height="520"></canvas>
+          </div>
+
+          <div class="button-row">
+            <button class="btn primary" id="spinWheelBtn">Pyöräytä</button>
+            <button class="btn ghost hidden" id="spinAgainBtn">Pyöräytä uudelleen</button>
+            <button class="btn primary hidden" id="wheelContinueBtn">Jatka seuraavalle sivulle</button>
+          </div>
+
+          <div id="wheelResult" class="message hidden"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 9: ACTIVITY RESULT -->
+    <section class="page" id="page-activity-result">
+      <div class="card">
+        <h1 id="activity-result-title">Aktiviteettisuositus</h1>
+        <div id="activityResultContent"></div>
+        <button class="btn primary" id="toChosenActivityBtn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- PAGE 10: CHOSEN ACTIVITY -->
+    <section class="page" id="page-chosen-activity">
+      <div class="card">
+        <h1 id="chosen-title">Valinta tehty</h1>
+        <p id="chosen-text"></p>
+        <button class="btn primary" id="toContactMethodBtn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- PAGE 11: CONTACT METHOD -->
+    <section class="page" id="page-contact-method">
+      <div class="card">
+        <h1 id="contact-method-title">Treffien aikataulu ja tiedonkulku</h1>
+        <p id="contact-method-subtitle">Valitse yhteydenpitotapa.</p>
+
+        <div class="contact-grid" id="contactButtons">
+          <button class="btn option contact-method-btn" data-method="Instagram DM">Instagram DM</button>
+          <button class="btn option contact-method-btn" data-method="WhatsApp">WhatsApp</button>
+          <button class="btn option contact-method-btn" data-method="Puhelinnumero">Puhelinnumero</button>
+          <button class="btn option smoke-btn" id="smokeBtn">Savumerkit</button>
+          <button class="btn option contact-method-btn" data-method="Sähköposti">Sähköposti</button>
+          <button class="btn option contact-method-btn" data-method="Snapchat">Snapchat</button>
+        </div>
+
+        <div id="smokeMessage" class="message hidden"></div>
+      </div>
+    </section>
+
+    <!-- PAGE 12: CONTACT INPUT -->
+    <section class="page" id="page-contact-input">
+      <div class="card narrow">
+        <h1 id="contact-input-title">Anna yhteystieto</h1>
+        <p id="contact-input-subtitle"></p>
+
+        <label class="label" for="contactInput" id="contactInputLabel">Yhteystieto</label>
+        <input id="contactInput" class="input" type="text" placeholder="Kirjoita tähän" />
+
+        <div class="message info">
+          <strong>Huom:</strong> Tämä GitHub Pages -versio ei lähetä tietoa automaattisesti minnekään. Tieto jää selaimeen näkyviin.
+        </div>
+
+        <button class="btn primary" id="toFinal1Btn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- PAGE 13: FINAL -->
+    <section class="page" id="page-final-1">
+      <div class="card narrow">
+        <h1 id="final1-title">Tämä on viimeinen sivu</h1>
+        <p id="final1-text"></p>
+        <button class="btn primary" id="toFinal2Btn">Lopeta</button>
+      </div>
+    </section>
+
+    <!-- PAGE 14: REAL FINAL -->
+    <section class="page" id="page-final-2">
+      <div class="card narrow">
+        <h1 id="final2-title">Okei, oikeasti viimeinen sivu</h1>
+        <p id="final2-text"></p>
+        <button class="btn primary" id="realEndBtn">Oikeasti lopeta</button>
+      </div>
+    </section>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
+
