@@ -2,74 +2,448 @@
 <html lang="fi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GitHub Pages Test</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #dff1ff, #ffd1e8);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #111;
-    }
-
-    .step {
-      display: none;
-      width: 90%;
-      max-width: 600px;
-    }
-
-    .step.active {
-      display: block;
+  <meta name: 1;  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        transform: translateY(0);
+      }
     }
 
     .card {
-      background: white;
-      padding: 32px;
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 24px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.12);
+      box-shadow: var(--shadow);
+      padding: 32px;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      margin-top: 0;
+      line-height: 1.15;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin: 16px 0 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      background: white;
     }
 
     button {
       margin-top: 20px;
-      padding: 14px 18px;
       border: none;
       border-radius: 14px;
-      background: #1f6feb;
-      color: white;
+      padding: 14px 18px;
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
+      background: var(--accent);
+      color: white;
+      transition: background 180ms ease, transform 120ms ease;
+    }
+
+    button:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .secondary {
+      background: var(--secondary);
+      color: var(--text);
+    }
+
+    .secondary:hover {
+      background: rgba(0, 0, 0, 0.14);
+    }
+
+    .message {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .fact-box {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 0.95rem;
     }
   </style>
 </head>
 
 <body>
-  <main>
-    <section class="step active" id="step1">
+  <main id="app">
+    <!-- STEP 1 -->
+    <section class="step active" id="step-1">
       <div class="card">
-        <h1>VERSIO TESTI 001</h1>
-        <p>Jos näet tämän, GitHub Pages käyttää nyt oikeaa index.html-tiedostoa.</p>
-        <button id="nextBtn">Jatka step 2</button>
+        <h1>Valitse kieli</h1>
+        <p>Aloitetaan aivan rauhallisesti.</p>
+
+        <label for="languageSelect">Kieli</label>
+        <select id="languageSelect">
+          <option value="fi">Suomi</option>
+          <option value="en">English</option>
+          <option value="sv">Svenska</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+        </select>
+
+        <div id="languageMessage" class="message hidden"></div>
+
+        <button id="step1Btn">Jatka</button>
       </div>
     </section>
 
-    <section class="step" id="step2">
+    <!-- STEP 2 -->
+    <section class="step" id="step-2">
       <div class="card">
-        <h1>Step 2 toimii</h1>
-        <p>Jos pääsit tähän, JavaScript toimii.</p>
+        <h1>Kuka sinä olet?</h1>
+        <p>Voit kirjoittaa nimesi tähän.</p>
+
+        <label for="nameInput">Nimi</label>
+        <input id="nameInput" type="text" placeholder="Kirjoita nimesi" />
+
+        <div id="nameMessage" class="message hidden"></div>
+
+        <button id="step2Btn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="step" id="step-3">
+      <div class="card">
+        <h1 id="colorTitle">Muokataan vielä muutamaa asetusta</h1>
+        <p>Valitse lempivärisi. Tausta muuttuu valinnan mukaan.</p>
+
+        <label for="colorSelect">Mikä on lempivärisi?</label>
+        <select id="colorSelect">
+          <option value="">Valitse väri</option>
+          <option value="blue">Sininen / Blue</option>
+          <option value="green">Vihreä / Green</option>
+          <option value="red">Punainen / Red</option>
+          <option value="purple">Violetti / Purple</option>
+          <option value="pink">Pinkki / Pink</option>
+          <option value="orange">Oranssi / Orange</option>
+          <option value="yellow">Keltainen / Yellow</option>
+          <option value="gray">Harmaa / Gray</option>
+          <option value="black">Musta / Black</option>
+        </select>
+
+        <div id="colorMessage" class="message hidden"></div>
+
+        <button id="step3Btn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="step" id="step-4">
+      <div class="card">
+        <h1>Valitaan vielä fontti</h1>
+        <p>Harkitse tarkkaan, tämä valinta kertoo paljon sinusta ihmisenä.</p>
+
+        <label for="fontSelect">Lempifontti</label>
+        <select id="fontSelect">
+          <option value="">Valitse fontti</option>
+          <option value="Arial, sans-serif">Arial</option>
+          <option value="'Times New Roman', serif">Times New Roman</option>
+          <option value="Calibri, sans-serif">Calibri</option>
+          <option value="'Aptos', Arial, sans-serif">Aptos</option>
+        </select>
+
+        <div id="fontMessage" class="message hidden"></div>
+
+        <div id="fontFactBox" class="fact-box hidden">
+          <strong>Tiesitkö!</strong>
+          <p id="fontFactText"></p>
+        </div>
+
+        <button id="step4Btn">Jatka</button>
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="step" id="step-5">
+      <div class="card">
+        <h1>Nyt päästään itse aiheeseen</h1>
+        <p id="interestText"></p>
+
+        <div class="btn-row">
+          <button class="secondary" id="declineBtn">Kiitos mutta ei kiitos</button>
+          <button id="acceptBtn">No miksipäs ei…</button>
+        </div>
+
+        <div id="declineMessage" class="message hidden"></div>
+      </div>
+    </section>
+
+    <!-- STEP 6 -->
+    <section class="step" id="step-6">
+      <div class="card">
+        <h1>Mukava nähdä, että mielenkiintosi voitti</h1>
+        <p>
+          Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle,
+          sallinette minun esittäytyä paremmin.
+        </p>
+        <p class="small-note">
+          Seuraavaksi rakennetaan tähän CV-sivu ja totuus/valhe-peli.
+        </p>
       </div>
     </section>
   </main>
 
   <script>
-    document.getElementById("nextBtn").addEventListener("click", function () {
-      document.getElementById("step1").classList.remove("active");
-      document.getElementById("step2").classList.add("active");
+    const state = {
+      name: "",
+      language: "fi",
+      color: "",
+      font: ""
+    };
+
+    const colorThemes = {
+      blue: ["#dff1ff", "#b9d8ff"],
+      green: ["#e7f7e8", "#c6efce"],
+      red: ["#ffe6e6", "#ffc9c9"],
+      purple: ["#f1e7ff", "#dcc8ff"],
+      pink: ["#ffe8f4", "#ffd1e8"],
+      orange: ["#fff0e0", "#ffd6ad"],
+      yellow: ["#fffbe0", "#fff0a8"],
+      gray: ["#f4f4f4", "#dddddd"],
+      black: ["#f0f0f0", "#cfcfcf"]
+    };
+
+    const fontFacts = {
+      "Arial, sans-serif":
+        "Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.",
+      "'Times New Roman', serif":
+        "Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.",
+      "Calibri, sans-serif":
+        "Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.",
+      "'Aptos', Arial, sans-serif":
+        "Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa."
+    };
+
+    function showStep(stepId) {
+      document.querySelectorAll(".step").forEach((step) => {
+        step.classList.remove("active");
+      });
+
+      document.getElementById(stepId).classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showMessage(id, text) {
+      const box = document.getElementById(id);
+      box.textContent = text;
+      box.classList.remove("hidden");
+    }
+
+    function hideMessage(id) {
+      document.getElementById(id).classList.add("hidden");
+    }
+
+    function applyColor(color) {
+      const theme = colorThemes[color] || ["#ffffff", "#ffffff"];
+      document.documentElement.style.setProperty("--bg1", theme[0]);
+      document.documentElement.style.setProperty("--bg2", theme[1]);
+    }
+
+    function applyFont(font) {
+      document.documentElement.style.setProperty("--font-main", font || "Arial, sans-serif");
+    }
+
+    function updateInterestText() {
+      document.getElementById("interestText").textContent =
+        `Moi ${state.name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. ` +
+        `On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ` +
+        `ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.`;
+    }
+
+    document.getElementById("step1Btn").addEventListener("click", () => {
+      const language = document.getElementById("languageSelect").value;
+
+      if (language === "fi" || language === "en") {
+        state.language = language;
+        hideMessage("languageMessage");
+      } else {
+        state.language = "en";
+        showMessage(
+          "languageMessage",
+          "Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla."
+        );
+      }
+
+      showStep("step-2");
+    });
+
+    document.getElementById("step2Btn").addEventListener("click", () => {
+      const name = document.getElementById("nameInput").value.trim();
+
+      if (!name) {
+        showMessage("nameMessage", "Kirjoita nimi ennen jatkamista.");
+        return;
+      }
+
+      hideMessage("nameMessage");
+      state.name = name;
+
+      document.getElementById("colorTitle").textContent =
+        `Terve ${state.name}, muokataan vielä muutamaa asetusta`;
+
+      updateInterestText();
+
+      showStep("step-3");
+    });
+
+    document.getElementById("colorSelect").addEventListener("change", () => {
+      const color = document.getElementById("colorSelect").value;
+      state.color = color;
+      applyColor(color);
+    });
+
+    document.getElementById("step3Btn").addEventListener("click", () => {
+      const color = document.getElementById("colorSelect").value;
+
+      if (!color) {
+        showMessage("colorMessage", "Valitse väri ennen jatkamista.");
+        return;
+      }
+
+      hideMessage("colorMessage");
+      state.color = color;
+      applyColor(color);
+
+      showStep("step-4");
+    });
+
+    document.getElementById("fontSelect").addEventListener("change", () => {
+      const font = document.getElementById("fontSelect").value;
+      state.font = font;
+      applyFont(font);
+
+      if (font) {
+        document.getElementById("fontFactText").textContent = fontFacts[font];
+        document.getElementById("fontFactBox").classList.remove("hidden");
+      }
+    });
+
+    document.getElementById("step4Btn").addEventListener("click", () => {
+      const font = document.getElementById("fontSelect").value;
+
+      if (!font) {
+        showMessage("fontMessage", "Valitse fontti ennen jatkamista.");
+        return;
+      }
+
+      hideMessage("fontMessage");
+      state.font = font;
+      applyFont(font);
+
+      showStep("step-5");
+    });
+
+    document.getElementById("declineBtn").addEventListener("click", () => {
+      showMessage(
+        "declineMessage",
+        "Ymmärretty. Tämä reitti voidaan myöhemmin ohjata kohteliaaseen lopetukseen."
+      );
+    });
+
+    document.getElementById("acceptBtn").addEventListener("click", () => {
+      showStep("step-6");
     });
   </script>
 </body>
 </html>
+  <title>What do we do on a first date?</title>
+
+  <style>
+    :root {
+      --bg1: #ffffff;
+      --bg2: #ffffff;
+      --text: #111111;
+      --muted: #666666;
+      --card: rgba(255, 255, 255, 0.92);
+      --border: rgba(0, 0, 0, 0.12);
+      --shadow: 0 14px 40px rgba(0, 0, 0, 0.08);
+      --accent: #1f6feb;
+      --accent-hover: #1258bc;
+      --secondary: rgba(0, 0, 0, 0.08);
+      --font-main: Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: var(--font-main);
+      color: var(--text);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      transition: background 350ms ease, font-family 200ms ease;
+    }
+
+    #app {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+
+    .step {
+      display: none;
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .step.active {
+      display: block;
+      animation: fadeIn 220ms ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
