@@ -31,6 +31,32 @@
     .toast.show{ display:block; opacity:1; }
     .choice-grid{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
     .choice-btn { background:#eee; color:#111; border:none; padding:12px 14px; border-radius:10px; cursor:pointer; font-weight:600; }
+    /* Korjaus: valintanappien teksti mustaksi */
+.choice-btn,
+.fact-btn,
+.yesno button,
+.contact-btn,
+.btn-ques-prev,
+.btn-ques-next {
+  color: #111 !important;
+}
+
+/* Jos valintanappi on valittuna, teksti saa olla valkoinen */
+.yesno button.selected,
+.fact-btn.clicked {
+  color: #fff !important;
+}
+
+/* Savumerkit ja yhteydenpitonapit myös selkeästi mustaksi */
+.contact-grid button {
+  color: #111 !important;
+}
+
+/* Takaisin-nappi saa käyttää korostusväriä */
+button.secondary,
+.secondary {
+  color: var(--accent) !important;
+}
     .polite-box { padding:12px; background:#fff4e6; border-radius:8px; border:1px solid #ffe6c2; margin-top:12px; }
 
     .cv-row { display:flex; gap:18px; align-items:flex-start; margin-top:12px; flex-wrap:wrap; }
