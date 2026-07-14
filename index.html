@@ -34,11 +34,7 @@
     .polite-box { padding:12px; background:#fff4e6; border-radius:8px; border:1px solid #ffe6c2; margin-top:12px; }
 
     .cv-row { display:flex; gap:18px; align-items:flex-start; margin-top:12px; flex-wrap:wrap; }
-    .cv-photo {
-      width:160px; height:160px; border-radius:12px; overflow:hidden; flex:0 0 160px;
-      border:1px solid rgba(0,0,0,0.06); background:#f6f6f6; display:flex; align-items:center; justify-content:center;
-    }
-    .cv-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+    .cv-photo { width:160px; height:160px; background:linear-gradient(180deg,#f3f3f3,#fff); border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:700; color:#666; border:1px solid rgba(0,0,0,0.06); }
     .cv-info { flex:1; min-width:260px; }
     .facts-title { margin-top:18px; font-size:18px; font-weight:700; }
     .facts-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:10px; }
@@ -72,9 +68,13 @@
     .activity-btn.selected { background:var(--accent); color:white; }
 
     /* Ensure all option-like buttons have dark text by default so they are readable on light backgrounds */
-    .choice-btn, .contact-btn, .fact-btn, .activity-btn, .yesno button { color: #111 !important; }
+    .choice-btn, .contact-btn, .fact-btn, .activity-btn, .yesno button {
+      color: #111 !important;
+    }
     /* Keep selected/clicked states showing white text for contrast */
-    .choice-btn.selected, .activity-btn.selected, .yesno button.selected, .fact-btn.clicked, .contact-btn.selected { color: #fff !important; }
+    .choice-btn.selected, .activity-btn.selected, .yesno button.selected, .fact-btn.clicked, .contact-btn.selected {
+      color: #fff !important;
+    }
 
     .small{ font-size:13px; color:#555; }
     @media (max-width:900px){ .wheel { width:260px; height:260px; } }
@@ -186,14 +186,11 @@
         </div>
       </section>
 
-      <!-- Step 7: CV page + game (with image) -->
+      <!-- Step 7: CV page + game -->
       <section class="step" data-step="7" id="step-7">
         <h2>CV</h2>
         <div class="cv-row">
-          <div class="cv-photo" aria-hidden="true">
-            <!-- Replace images/teemu.jpg with your actual image file in repo at that path -->
-            <img src="images/teemu.jpg" alt="Teemu" id="cv-photo-img" onerror="this.style.display='none'; this.parentElement.textContent='TEEMU'">
-          </div>
+          <div class="cv-photo" aria-hidden="true">TEEMU</div>
           <div class="cv-info">
             <div><strong>Nimi:</strong> Teemu</div>
             <div><strong>Ikä:</strong> Cheekin Jippikayjei oli hitti, kun olin peruskoulussa</div>
@@ -216,7 +213,7 @@
         </div>
       </section>
 
-      <!-- Step 8: Activity choice -->
+      <!-- Step 8: Activity choice (questions or wheel only) -->
       <section class="step" data-step="8" id="step-8">
         <h2>Aktiviteetin valinta</h2>
         <p>Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit tai 2) pyöräyttää onnenpyörää.</p>
@@ -253,7 +250,7 @@
         </div>
       </section>
 
-      <!-- Step 10: Result -->
+      <!-- Step 10: Result with requested message -->
       <section class="step" data-step="10" id="step-10">
         <h2 id="final-activity-title">Valittu aktiviteetti</h2>
         <div id="result-activity" class="result-activity"></div>
@@ -324,21 +321,33 @@
 
   <script>
   (function(){
-    // Minimal translations / data + logic (identical to previous working version)
     const T = { fi: { continue:"Jatka", back:"Takaisin", toastLangChange:"Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.", nameReq:"Kirjoita nimesi ennen jatkamista.", chooseYesNo:"Valitse kyllä tai ei ennen jatkamista." }, en:{ continue:"Continue", back:"Back", toastLangChange:"Haha let's stick to English for this.", nameReq:"Please enter your name before continuing.", chooseYesNo:"Choose yes or no before continuing." } };
+
     const FUNFACTS = { "Arial":"Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.", "Times New Roman":"Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.", "Calibri":"Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.", "Aptos":"Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa." };
+
     const COLOR_MAP = { pink:['#ffd1e8','#ffe6f5'], red:['#ffd6d6','#ffb3b3'], orange:['#fff0d1','#ffdbae'], yellow:['#fff9d6','#fff0a8'], green:['#e6fde6','#d2f7d2'], teal:['#dff7f5','#c9f0ec'], blue:['#e6f0ff','#d7e8ff'], purple:['#f3e6ff','#e9ddff'], 'grad-sunset':['#ff9a9e','#fecfef'], 'grad-teal':['#a8edea','#fed6e3'] };
+
     const ACTIVITIES = { sports:{id:'sports',label:'Urheilua (laskettelu, hiihto, kuntosali)'}, restaurantLunch:{id:'restaurantLunch',label:'Lounas / illallinen ravintolassa'}, cookDinner:{id:'cookDinner',label:'Lounas / illallinen itse kokaten'}, winePaint:{id:'winePaint',label:'Wine & paint'}, standup:{id:'standup',label:'Stand up show'}, theatre:{id:'theatre',label:'Teatteri / musikaali'}, studentEvent:{id:'studentEvent',label:'Opiskelijatapahtuma'}, bakeCake:{id:'bakeCake',label:'Leivotaan kakku'}, roadTrip:{id:'roadTrip',label:'Road trip'}, dance:{id:'dance',label:'Paritanssitunti / lavatanssit'}, pubQuiz:{id:'pubQuiz',label:'Pubivisa'}, arcticSwim:{id:'arcticSwim',label:'Uintireissu Jäämerelle'}, halti:{id:'halti',label:'Vaellus Haltille'}, games:{id:'games',label:'Keilaus / minigolf / biljardi'}, movieNight:{id:'movieNight',label:'Leffailta kotona'} };
-    const SCORE_TABLE = [ /* same as before - omitted here for brevity in comments (kept in code) */ 
+
+    const SCORE_TABLE = [
       { q:'gettingWetBothers', ans:'yes', a:'arcticSwim', s:-4 },{ q:'gettingWetBothers', ans:'yes', a:'halti', s:-1 },{ q:'gettingWetBothers', ans:'yes', a:'restaurantLunch', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'cookDinner', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'winePaint', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'standup', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'theatre', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'bakeCake', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'games', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'movieNight', s:1 },{ q:'gettingWetBothers', ans:'no', a:'arcticSwim', s:4 },{ q:'gettingWetBothers', ans:'no', a:'halti', s:1 },{ q:'gettingWetBothers', ans:'no', a:'roadTrip', s:1 },
+
       { q:'afraidHeights', ans:'yes', a:'halti', s:-3 },{ q:'afraidHeights', ans:'no', a:'halti', s:1 },{ q:'afraidHeights', ans:'no', a:'roadTrip', s:1 },
+
       { q:'staysUpLate', ans:'yes', a:'standup', s:3 },{ q:'staysUpLate', ans:'yes', a:'pubQuiz', s:3 },{ q:'staysUpLate', ans:'yes', a:'dance', s:2 },{ q:'staysUpLate', ans:'yes', a:'theatre', s:2 },{ q:'staysUpLate', ans:'yes', a:'studentEvent', s:2 },{ q:'staysUpLate', ans:'yes', a:'movieNight', s:1 },{ q:'staysUpLate', ans:'no', a:'restaurantLunch', s:2 },{ q:'staysUpLate', ans:'no', a:'sports', s:2 },{ q:'staysUpLate', ans:'no', a:'cookDinner', s:1 },{ q:'staysUpLate', ans:'no', a:'bakeCake', s:2 },{ q:'staysUpLate', ans:'no', a:'games', s:2 },
+
       { q:'readyToTravel', ans:'yes', a:'roadTrip', s:4 },{ q:'readyToTravel', ans:'yes', a:'halti', s:3 },{ q:'readyToTravel', ans:'yes', a:'arcticSwim', s:3 },{ q:'readyToTravel', ans:'no', a:'roadTrip', s:-4 },{ q:'readyToTravel', ans:'no', a:'halti', s:-4 },{ q:'readyToTravel', ans:'no', a:'arcticSwim', s:-4 },{ q:'readyToTravel', ans:'no', a:'restaurantLunch', s:1 },{ q:'readyToTravel', ans:'no', a:'theatre', s:1 },{ q:'readyToTravel', ans:'no', a:'games', s:1 },{ q:'readyToTravel', ans:'no', a:'bakeCake', s:1 },{ q:'readyToTravel', ans:'no', a:'cookDinner', s:1 },
+
       { q:'likesFancyClothes', ans:'yes', a:'restaurantLunch', s:2 },{ q:'likesFancyClothes', ans:'yes', a:'winePaint', s:3 },{ q:'likesFancyClothes', ans:'yes', a:'theatre', s:3 },{ q:'likesFancyClothes', ans:'yes', a:'dance', s:2 },{ q:'likesFancyClothes', ans:'no', a:'sports', s:3 },{ q:'likesFancyClothes', ans:'no', a:'cookDinner', s:2 },{ q:'likesFancyClothes', ans:'no', a:'bakeCake', s:2 },{ q:'likesFancyClothes', ans:'no', a:'halti', s:2 },{ q:'likesFancyClothes', ans:'no', a:'roadTrip', s:1 },{ q:'likesFancyClothes', ans:'no', a:'games', s:2 },
+
       { q:'drinksAlcohol', ans:'yes', a:'winePaint', s:2 },{ q:'drinksAlcohol', ans:'yes', a:'pubQuiz', s:2 },{ q:'drinksAlcohol', ans:'yes', a:'studentEvent', s:1 },{ q:'drinksAlcohol', ans:'no', a:'winePaint', s:-3 },{ q:'drinksAlcohol', ans:'no', a:'pubQuiz', s:-2 },{ q:'drinksAlcohol', ans:'no', a:'studentEvent', s:-1 },{ q:'drinksAlcohol', ans:'no', a:'bakeCake', s:1 },{ q:'drinksAlcohol', ans:'no', a:'cookDinner', s:1 },{ q:'drinksAlcohol', ans:'no', a:'theatre', s:1 },{ q:'drinksAlcohol', ans:'no', a:'sports', s:1 },{ q:'drinksAlcohol', ans:'no', a:'movieNight', s:1 },
+
       { q:'prefersDay', ans:'yes', a:'restaurantLunch', s:3 },{ q:'prefersDay', ans:'yes', a:'sports', s:3 },{ q:'prefersDay', ans:'yes', a:'roadTrip', s:2 },{ q:'prefersDay', ans:'yes', a:'halti', s:2 },{ q:'prefersDay', ans:'yes', a:'bakeCake', s:1 },{ q:'prefersDay', ans:'yes', a:'arcticSwim', s:1 },{ q:'prefersDay', ans:'no', a:'cookDinner', s:2 },{ q:'prefersDay', ans:'no', a:'standup', s:3 },{ q:'prefersDay', ans:'no', a:'theatre', s:3 },{ q:'prefersDay', ans:'no', a:'pubQuiz', s:3 },{ q:'prefersDay', ans:'no', a:'dance', s:2 },{ q:'prefersDay', ans:'no', a:'movieNight', s:2 },
+
       { q:'moneyMeansQuality', ans:'yes', a:'theatre', s:2 },{ q:'moneyMeansQuality', ans:'yes', a:'roadTrip', s:2 },{ q:'moneyMeansQuality', ans:'yes', a:'arcticSwim', s:2 },{ q:'moneyMeansQuality', ans:'yes', a:'winePaint', s:1 },{ q:'moneyMeansQuality', ans:'yes', a:'restaurantLunch', s:1 },{ q:'moneyMeansQuality', ans:'no', a:'cookDinner', s:3 },{ q:'moneyMeansQuality', ans:'no', a:'bakeCake', s:3 },{ q:'moneyMeansQuality', ans:'no', a:'studentEvent', s:2 },{ q:'moneyMeansQuality', ans:'no', a:'games', s:2 },{ q:'moneyMeansQuality', ans:'no', a:'restaurantLunch', s:1 },{ q:'moneyMeansQuality', ans:'no', a:'theatre', s:-2 },{ q:'moneyMeansQuality', ans:'no', a:'arcticSwim', s:-2 },{ q:'moneyMeansQuality', ans:'no', a:'halti', s:-1 },{ q:'moneyMeansQuality', ans:'no', a:'roadTrip', s:-1 },
+
       { q:'afraidAnimals', ans:'yes', a:'halti', s:-1 },{ q:'afraidAnimals', ans:'yes', a:'roadTrip', s:-1 },{ q:'afraidAnimals', ans:'yes', a:'sports', s:-1 },{ q:'afraidAnimals', ans:'no', a:'halti', s:1 },{ q:'afraidAnimals', ans:'no', a:'roadTrip', s:1 },{ q:'afraidAnimals', ans:'no', a:'sports', s:1 },
+
       { q:'canDoCartwheel', ans:'yes', a:'sports', s:3 },{ q:'canDoCartwheel', ans:'yes', a:'dance', s:2 },{ q:'canDoCartwheel', ans:'yes', a:'studentEvent', s:1 },{ q:'canDoCartwheel', ans:'no', a:'theatre', s:1 },{ q:'canDoCartwheel', ans:'no', a:'restaurantLunch', s:1 },{ q:'canDoCartwheel', ans:'no', a:'winePaint', s:1 },{ q:'canDoCartwheel', ans:'no', a:'cookDinner', s:1 },{ q:'canDoCartwheel', ans:'no', a:'movieNight', s:1 }
     ];
 
@@ -362,7 +371,19 @@
       { id:'f4', text:'Olen ollut osa SM-pikaviestijoukkuetta.' }
     ];
 
-    let state = { lang:'fi', name:'', color:'blue', font:'Arial', interested:null, cvGameDone:false, answers:{}, chosenActivity:null, wheelSpins:3, contactMethod:null, contactValue:null };
+    let state = {
+      lang: 'fi',
+      name: '',
+      color: 'blue',
+      font: 'Arial',
+      interested: null,
+      cvGameDone: false,
+      answers: {},
+      chosenActivity: null,
+      wheelSpins: 3,
+      contactMethod: null,
+      contactValue: null
+    };
 
     const LS_KEY = 'datingAppState_v_final';
     function loadState(){ try{ const r = localStorage.getItem(LS_KEY); if(r) Object.assign(state, JSON.parse(r)); }catch(e){} }
@@ -381,7 +402,7 @@
     }
 
     function applyTheme(){ const pair = COLOR_MAP[state.color] || COLOR_MAP.blue; document.documentElement.style.setProperty('--bg-start', pair[0]); document.documentElement.style.setProperty('--bg-end', pair[1] || pair[0]); document.documentElement.style.setProperty('--accent', state.color === 'yellow' ? '#ffb703' : '#ff6b6b'); }
-    function applyFont(){ let fam='Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; if(state.font==='Times New Roman') fam='"Times New Roman", Times, serif'; if(state.font==='Calibri') fam='Calibri, Candara, Segoe, "Segoe UI", sans-serif'; if(state.font==='Aptos') fam='Aptos, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; document.body.style.fontFamily=fam; }
+    function applyFont(){ let fam = 'Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; if(state.font === 'Times New Roman') fam = '"Times New Roman", Times, serif'; if(state.font === 'Calibri') fam = 'Calibri, Candara, Segoe, "Segoe UI", sans-serif'; if(state.font === 'Aptos') fam = 'Aptos, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; document.body.style.fontFamily = fam; }
     function applyAll(){ applyTheme(); applyFont(); const name = state.name || ''; document.getElementById('subtitle').textContent = state.lang === 'fi' ? 'Kevyt ja flirttaileva askel-askeleelta -kysely.' : 'A light, slightly flirty step-by-step site.'; if(name){ const cvIntro = document.getElementById('cv-intro-text'); if(cvIntro) cvIntro.textContent = (state.lang === 'fi' ? `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.` : `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. Choose how you'd like to proceed.`); } }
 
     function buildQuestionSteps(){ const container = document.getElementById('questions-container'); container.innerHTML = ''; QUESTIONS.forEach((q, idx)=>{ const stepNum = 100 + idx + 1; const sec = document.createElement('section'); sec.setAttribute('data-step-dynamic', stepNum); sec.dataset.stepDynamic = stepNum; sec.className = 'step'; sec.innerHTML = `<div class="question-box"><h2>Kysymys ${idx+1} / ${QUESTIONS.length}</h2><p>${q.text}</p><div class="yesno" data-qid="${q.id}"><button type="button" class="yesno-yes">Kyllä</button><button type="button" class="yesno-no">Ei</button></div><div class="hint small" style="margin-top:10px;">Vastaa ennen jatkamista.</div><div class="controls" style="margin-top:12px;"><button class="secondary btn-ques-prev">Takaisin</button><button class="btn-ques-next">${T[state.lang].continue}</button></div></div>`; container.appendChild(sec); }); }
@@ -396,15 +417,19 @@
 
     loadState();
     document.addEventListener('DOMContentLoaded', ()=> {
-      // get elements, wire UI and reuse existing logic from prior version...
-      // (Full script is same as previous working file — omitted here to keep message concise.)
-      // If you need the full script again, tell me and I'll paste the remainder.
-      buildQuestionSteps();
-      applyAll();
-      renderWheel();
-      resetWheel();
-    });
-  })();
-  </script>
-</body>
-</html>
+      const selectLang = document.getElementById('select-language'), btnLangNext = document.getElementById('btn-lang-next');
+      const inputName = document.getElementById('input-name'), btnNameNext = document.getElementById('btn-name-next'), btnNamePrev = document.getElementById('btn-name-prev');
+      const selectColor = document.getElementById('select-color'), btnColorNext = document.getElementById('btn-color-next'), btnColorPrev = document.getElementById('btn-color-prev');
+      const selectFont = document.getElementById('select-font'), btnFontNext = document.getElementById('btn-font-next'), btnFontPrev = document.getElementById('btn-font-prev'), funfact = document.getElementById('funfact');
+      const btnNo = document.getElementById('btn-no'), btnYes = document.getElementById('btn-yes'), noResponse = document.getElementById('no-response'), btnInterestNext = document.getElementById('btn-interest-next'), btnInterestPrev = document.getElementById('btn-interest-prev');
+      const btnCvPrev = document.getElementById('btn-cv-prev'), btnCvNext = document.getElementById('btn-cv-next');
+      const factsGrid = document.getElementById('facts-grid'), factMsg = document.getElementById('fact-msg'), gameSuccess = document.getElementById('game-success'), btn7Back = document.getElementById('btn-7-back'), btn7Continue = document.getElementById('btn-7-continue');
+      const btnRouteQuestions = document.getElementById('btn-route-questions'), btnRouteWheel = document.getElementById('btn-route-wheel'), btn8Back = document.getElementById('btn-8-back');
+      const wheelEl = document.getElementById('wheel'), spinBtn = document.getElementById('spin-btn'), wheelRes = document.getElementById('wheel-selected'), wheelReSpin = document.getElementById('wheel-respin'), wheelContinue = document.getElementById('wheel-continue'), spinsLeftEl = document.getElementById('spins-left');
+      const resultActivityEl = document.getElementById('result-activity'), resultActivitySub = document.getElementById('result-activity-sub'), btn10Back = document.getElementById('btn-10-back'), btn10Next = document.getElementById('btn-10-next');
+
+      const contactGrid = document.getElementById('contact-grid'), contactSelected = document.getElementById('contact-selected'), contactInput = document.getElementById('contact-input'), contactLabel = document.getElementById('contact-label'), contactValue = document.getElementById('contact-value'), btn11Back = document.getElementById('btn-11-back'), btn11Next = document.getElementById('btn-11-next');
+      const confirmMethodVal = document.getElementById('confirm-method-val'), finalContact = document.getElementById('final-contact'), btn12Back = document.getElementById('btn-12-back'), btn12Next = document.getElementById('btn-12-next');
+      const btn13Next = document.getElementById('btn-13-next'), psActivity = document.getElementById('ps-activity'), btn14End = document.getElementById('btn-14-end');
+
+      selectLang.value = state.lang; inputName.value = state.name; selectColor.value = state.color; selectFont.value = state.font; applyAll
