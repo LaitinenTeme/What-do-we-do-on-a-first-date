@@ -4,8 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>What do we do on a first date?</title>
+
   <style>
-    :root{
+    :root {
       --bg-start: #ffffff;
       --bg-end: #ffffff;
       --fg: #111;
@@ -13,110 +14,370 @@
       --content-width: 820px;
       --card-bg: rgba(255,255,255,0.92);
     }
-    html,body{ height:100%; margin:0; font-family: Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; color:var(--fg); background: linear-gradient(180deg, var(--bg-start), var(--bg-end)); transition: background 600ms ease, color 300ms ease; }
-    .wrap{ min-height:100%; display:flex; align-items:center; justify-content:center; padding:48px 20px; box-sizing:border-box; }
-    .card{ width:100%; max-width:var(--content-width); background: var(--card-bg); box-shadow: 0 6px 30px rgba(12,12,12,0.12); border-radius:14px; padding:28px; box-sizing:border-box; backdrop-filter: blur(4px); }
-    h1{ margin:0 0 12px 0; font-size:26px; }
-    p.lead{ margin:6px 0 18px 0; color:#333; }
-    .step{ display:none; }
-    .step.active{ display:block; }
-    .controls{ margin-top:18px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    button, .big-btn { background:var(--accent); color:white; border:none; padding:10px 16px; border-radius:10px; cursor:pointer; font-weight:600; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
-    button.secondary, .secondary { background:transparent; color:var(--accent); border:2px solid var(--accent); }
-    input[type="text"], select { padding:10px 12px; border-radius:8px; border:1px solid #ccc; min-width:220px; font-size:16px; }
-    label{ display:block; margin-bottom:6px; font-weight:600; }
-    .hint{ color:#666; font-size:14px; margin-top:8px; }
-    .funfact{ margin-top:12px; padding:12px; background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.01)); border-radius:8px; border:1px dashed rgba(0,0,0,0.06); }
-    .toast{ display:none; padding:10px 12px; background:#111; color:#fff; border-radius:8px; position:fixed; right:20px; bottom:20px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); z-index:999; opacity:0; transition:opacity 300ms ease; }
-    .toast.show{ display:block; opacity:1; }
-    .choice-grid{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-    .choice-btn { background:#eee; color:#111; border:none; padding:12px 14px; border-radius:10px; cursor:pointer; font-weight:600; }
-    /* Korjaus: valintanappien teksti mustaksi */
-.choice-btn,
-.fact-btn,
-.yesno button,
-.contact-btn,
-.btn-ques-prev,
-.btn-ques-next {
-  color: #111 !important;
-}
 
-/* Jos valintanappi on valittuna, teksti saa olla valkoinen */
-.yesno button.selected,
-.fact-btn.clicked {
-  color: #fff !important;
-}
-
-/* Savumerkit ja yhteydenpitonapit myös selkeästi mustaksi */
-.contact-grid button {
-  color: #111 !important;
-}
-
-/* Takaisin-nappi saa käyttää korostusväriä */
-button.secondary,
-.secondary {
-  color: var(--accent) !important;
-}
-    .polite-box { padding:12px; background:#fff4e6; border-radius:8px; border:1px solid #ffe6c2; margin-top:12px; }
-
-    .cv-row { display:flex; gap:18px; align-items:flex-start; margin-top:12px; flex-wrap:wrap; }
-    .cv-photo { width:160px; height:160px; background:linear-gradient(180deg,#f3f3f3,#fff); border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:700; color:#666; border:1px solid rgba(0,0,0,0.06); }
-    .cv-info { flex:1; min-width:260px; }
-    .facts-title { margin-top:18px; font-size:18px; font-weight:700; }
-    .facts-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:10px; }
-    .fact-btn { background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); padding:12px; border-radius:10px; cursor:pointer; font-weight:700; color:#111; text-align:center; }
-    .fact-btn.clicked { background:#ff6b6b; color:#fff; border-color:rgba(0,0,0,0.06); cursor:default; opacity:0.98; }
-    .fact-msg { font-size:14px; color:#c62828; margin-top:6px; min-height:18px; }
-    .game-success { margin-top:12px; padding:12px; background:#e6fff1; border:1px solid #b6f0d3; border-radius:10px; color:#066; font-weight:700; }
-
-    .question-box { padding:18px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(0,0,0,0.04); margin-top:12px; }
-    .yesno { display:flex; gap:12px; margin-top:12px; }
-    .yesno button { min-width:120px; padding:12px; border-radius:10px; background:#eee; color:#111; border:1px solid rgba(0,0,0,0.06); }
-    .yesno button.selected { background:var(--accent); color:white; }
-
-    .wheel-wrap { display:flex; gap:18px; align-items:center; margin-top:14px; flex-wrap:wrap; }
-    .wheel { width:320px; height:320px; border-radius:50%; position:relative; overflow:visible; box-shadow: 0 8px 28px rgba(0,0,0,0.15); transform:rotate(0deg); transition: transform 4s cubic-bezier(.17,.67,.03,.98); }
-    .wheel .pointer { position:absolute; left:50%; top:-18px; transform:translateX(-50%); width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid #111; z-index:30; }
-    .wheel .label { position:absolute; left:50%; top:50%; transform-origin:0 0; font-size:12px; font-weight:700; color:#222; text-shadow:0 1px 0 rgba(255,255,255,0.6); }
-    .spin-controls { display:flex; gap:8px; flex-direction:column; }
-
-    .contact-grid { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
-    .contact-btn { padding:10px 12px; border-radius:10px; background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); cursor:pointer; font-weight:700; color:#111; }
-    .contact-btn.selected { background:var(--accent); color:#fff; border-color:rgba(0,0,0,0.06); }
-
-    .smoke { animation: smoke 900ms forwards; }
-    @keyframes smoke { 0%{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); } 100%{ opacity:0; transform:translateY(-30px) scale(1.6); filter:blur(6px); } }
-
-    .result-activity { margin-top:12px; padding:14px; background:#fff7e6; border-radius:10px; border:1px solid #ffe6c2; font-weight:700; }
-
-    .activity-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:12px; }
-    .activity-btn { padding:12px; border-radius:10px; background:#f7f7f7; border:1px solid rgba(0,0,0,0.06); cursor:pointer; font-weight:700; text-align:left; color:#111; }
-    .activity-btn.selected { background:var(--accent); color:white; }
-
-    /* Ensure all option-like buttons have dark text by default so they are readable on light backgrounds */
-    .choice-btn, .contact-btn, .fact-btn, .activity-btn, .yesno button {
-      color: #111 !important;
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      color: var(--fg);
+      background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
+      transition: background 600ms ease, color 300ms ease;
     }
-    /* Keep selected/clicked states showing white text for contrast */
-    .choice-btn.selected, .activity-btn.selected, .yesno button.selected, .fact-btn.clicked, .contact-btn.selected {
+
+    .wrap {
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+      box-sizing: border-box;
+    }
+
+    .card {
+      width: 100%;
+      max-width: var(--content-width);
+      background: var(--card-bg);
+      box-shadow: 0 6px 30px rgba(12,12,12,0.12);
+      border-radius: 14px;
+      padding: 28px;
+      box-sizing: border-box;
+      backdrop-filter: blur(4px);
+    }
+
+    h1 {
+      margin: 0 0 12px 0;
+      font-size: 26px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    p.lead {
+      margin: 6px 0 18px 0;
+      color: #333;
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    .controls {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button,
+    .big-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    button.secondary,
+    .secondary {
+      background: transparent;
+      color: var(--accent) !important;
+      border: 2px solid var(--accent);
+    }
+
+    input[type="text"],
+    select {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      min-width: 220px;
+      font-size: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .hint {
+      color: #666;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .small {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .funfact {
+      margin-top: 12px;
+      padding: 12px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.01));
+      border-radius: 8px;
+      border: 1px dashed rgba(0,0,0,0.06);
+    }
+
+    .toast {
+      display: none;
+      padding: 10px 12px;
+      background: #111;
+      color: #fff;
+      border-radius: 8px;
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+
+    .toast.show {
+      display: block;
+      opacity: 1;
+    }
+
+    .choice-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .choice-btn,
+    .fact-btn,
+    .activity-btn,
+    .contact-btn,
+    .yesno button {
+      background: #f0f0f0;
+      color: #111 !important;
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 12px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .choice-btn.selected,
+    .fact-btn.clicked,
+    .activity-btn.selected,
+    .contact-btn.selected,
+    .yesno button.selected {
+      background: var(--accent);
       color: #fff !important;
     }
 
-    .small{ font-size:13px; color:#555; }
-    @media (max-width:900px){ .wheel { width:260px; height:260px; } }
-    @media (max-width:700px){ .cv-row{ flex-direction:column; } .cv-photo{ width:120px; height:120px; } .wheel { width:220px; height:220px; } }
+    .polite-box {
+      padding: 12px;
+      background: #fff4e6;
+      border-radius: 8px;
+      border: 1px solid #ffe6c2;
+      margin-top: 12px;
+    }
+
+    .cv-row {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cv-photo {
+      width: 160px;
+      height: 160px;
+      background: linear-gradient(180deg,#f3f3f3,#fff);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #666;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .cv-info {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .facts-title {
+      margin-top: 18px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .fact-msg {
+      font-size: 14px;
+      color: #c62828;
+      margin-top: 6px;
+      min-height: 18px;
+    }
+
+    .game-success {
+      margin-top: 12px;
+      padding: 12px;
+      background: #e6fff1;
+      border: 1px solid #b6f0d3;
+      border-radius: 10px;
+      color: #066;
+      font-weight: 700;
+    }
+
+    .question-box {
+      padding: 18px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(0,0,0,0.04);
+      margin-top: 12px;
+    }
+
+    .yesno {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .yesno button {
+      min-width: 120px;
+    }
+
+    .wheel-wrap {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .wheel {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      position: relative;
+      overflow: visible;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+      transform: rotate(0deg);
+      transition: transform 4s cubic-bezier(.17,.67,.03,.98);
+    }
+
+    .wheel .label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: 0 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: #222;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+    }
+
+    .pointer {
+      position: absolute;
+      left: 50%;
+      top: -18px;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 18px solid #111;
+    }
+
+    .spin-controls {
+      display: flex;
+      gap: 8px;
+      flex-direction: column;
+    }
+
+    .contact-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .smoke {
+      animation: smoke 900ms forwards;
+    }
+
+    @keyframes smoke {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-30px) scale(1.6);
+        filter: blur(6px);
+      }
+    }
+
+    .result-activity {
+      margin-top: 12px;
+      padding: 14px;
+      background: #fff7e6;
+      border-radius: 10px;
+      border: 1px solid #ffe6c2;
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      .wheel {
+        width: 260px;
+        height: 260px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .cv-row {
+        flex-direction: column;
+      }
+
+      .cv-photo {
+        width: 120px;
+        height: 120px;
+      }
+
+      .wheel {
+        width: 220px;
+        height: 220px;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="card" role="main" id="card">
       <h1 id="title">Mitä tehdä ensitreffeillä?</h1>
       <p class="lead" id="subtitle">Kevyt ja flirttaileva askel-askeleelta -kysely.</p>
 
-      <!-- Step 1: Language -->
       <section class="step active" data-step="1" id="step-1">
-        <label id="label-language">Valitse kieli / Choose language</label>
-        <select id="select-language" aria-label="Kieli">
+        <label>Valitse kieli / Choose language</label>
+        <select id="select-language">
           <option value="fi">Suomi</option>
           <option value="en">English</option>
           <option value="sv">Svenska</option>
@@ -130,21 +391,20 @@ button.secondary,
         </div>
       </section>
 
-      <!-- Step 2: Name -->
       <section class="step" data-step="2" id="step-2">
-        <label id="label-name">Kuka sinä olet?</label>
+        <label>Kuka sinä olet?</label>
         <input type="text" id="input-name" placeholder="Kirjoita nimesi..." />
-        <div class="hint" id="hint-name">Nimesi tallennetaan vain paikallisesti selaimeesi.</div>
+        <div class="hint">Nimesi tallennetaan vain paikallisesti selaimeesi.</div>
+
         <div class="controls">
           <button id="btn-name-prev" class="secondary">Takaisin</button>
           <button id="btn-name-next">Jatka</button>
         </div>
       </section>
 
-      <!-- Step 3: Color -->
       <section class="step" data-step="3" id="step-3">
-        <label id="label-color">Mikä on lempivärisi?</label>
-        <select id="select-color" aria-label="Lempiväri">
+        <label>Mikä on lempivärisi?</label>
+        <select id="select-color">
           <option value="pink">Pink</option>
           <option value="red">Red</option>
           <option value="orange">Orange</option>
@@ -157,7 +417,7 @@ button.secondary,
           <option value="grad-teal">Teal Wave (gradient)</option>
         </select>
 
-        <div class="hint" id="hint-color">Valitun värin pitäisi näkyä taustassa.</div>
+        <div class="hint">Valitun värin pitäisi näkyä taustassa.</div>
 
         <div class="controls">
           <button id="btn-color-prev" class="secondary">Takaisin</button>
@@ -165,10 +425,9 @@ button.secondary,
         </div>
       </section>
 
-      <!-- Step 4: Font -->
       <section class="step" data-step="4" id="step-4">
-        <label id="label-font">Mikä on lempi fonttisi, harkitse tarkkaan?</label>
-        <select id="select-font" aria-label="Fontti">
+        <label>Mikä on lempi fonttisi, harkitse tarkkaan?</label>
+        <select id="select-font">
           <option value="Arial">Arial</option>
           <option value="Times New Roman">Times New Roman</option>
           <option value="Calibri">Calibri</option>
@@ -183,9 +442,8 @@ button.secondary,
         </div>
       </section>
 
-      <!-- Step 5: Interest -->
       <section class="step" data-step="5" id="step-5">
-        <h2 id="interest-title">Haluatko jatkaa?</h2>
+        <h2>Haluatko jatkaa?</h2>
         <p id="interest-text">Valitse kumpi: kohtelias lopetus tai rohkea jatko.</p>
 
         <div class="choice-grid">
@@ -201,10 +459,12 @@ button.secondary,
         </div>
       </section>
 
-      <!-- Step 6: Intro CV -->
       <section class="step" data-step="6" id="step-6">
-        <h2 id="cv-intro-title">Intro CV</h2>
-        <p id="cv-intro-text">Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa. Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä paremmin. Mennään seuraavalle sivulle, niin näytän CV:ni ja pelataan "3 totuutta ja 1 valhe -peli"!</p>
+        <h2>Intro CV</h2>
+        <p id="cv-intro-text">
+          Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa. Loistavaa!
+          Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä paremmin.
+        </p>
 
         <div class="controls">
           <button id="btn-cv-prev" class="secondary">Takaisin</button>
@@ -212,23 +472,26 @@ button.secondary,
         </div>
       </section>
 
-      <!-- Step 7: CV page + game -->
       <section class="step" data-step="7" id="step-7">
         <h2>CV</h2>
+
         <div class="cv-row">
-          <div class="cv-photo" aria-hidden="true">TEEMU</div>
+          <div class="cv-photo">TEEMU</div>
           <div class="cv-info">
             <div><strong>Nimi:</strong> Teemu</div>
             <div><strong>Ikä:</strong> Cheekin Jippikayjei oli hitti, kun olin peruskoulussa</div>
             <div><strong>Ammatti:</strong> korkeasti koulutettu erikoismies</div>
             <div><strong>Luonne:</strong> looginen mutta aina pilke silmäkulmassa</div>
-            <div style="margin-top:8px;" class="small">Seuraavaksi pelataan "3 totuutta ja 1 valhe" — tai no, melkein. Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.</div>
+            <div style="margin-top:8px;" class="small">
+              Seuraavaksi pelataan "3 totuutta ja 1 valhe" — tai no, melkein.
+            </div>
           </div>
         </div>
 
         <div class="facts-title">3 totuutta ja 1 valhe… tai no, melkein</div>
-        <div class="facts-grid" id="facts-grid" aria-live="polite"></div>
+        <div class="facts-grid" id="facts-grid"></div>
         <div class="fact-msg" id="fact-msg"></div>
+
         <div id="game-success" class="game-success" style="display:none;">
           Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.
         </div>
@@ -239,58 +502,63 @@ button.secondary,
         </div>
       </section>
 
-      <!-- Step 8: Activity choice (questions or wheel only) -->
       <section class="step" data-step="8" id="step-8">
         <h2>Aktiviteetin valinta</h2>
-        <p>Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit tai 2) pyöräyttää onnenpyörää.</p>
+        <p>Valitse haluatko vastata kysymyksiin vai pyöräyttää onnenpyörää.</p>
+
         <div class="choice-grid">
           <button id="btn-route-questions" class="choice-btn">Vastaan kysymyksiin</button>
           <button id="btn-route-wheel" class="choice-btn">Pyöräytän onnenpyörää</button>
         </div>
+
         <div class="controls" style="margin-top:14px;">
           <button id="btn-8-back" class="secondary">Takaisin</button>
         </div>
       </section>
 
-      <!-- Questions container (dynamic steps 101..110) -->
       <div id="questions-container"></div>
 
-      <!-- Wheel step -->
-      <section class="step" data-step="99" id="step-wheel" aria-hidden="true">
+      <section class="step" data-step="99" id="step-wheel">
         <h2>Onnenpyörä</h2>
         <p>Pyöräytä ja katso mihin kohtalosi sinut johdattaa. Saat 3 pyöräytystä.</p>
+
         <div class="wheel-wrap">
           <div style="position:relative;">
             <div class="wheel" id="wheel"></div>
-            <div class="pointer" style="position:absolute; left:50%; top:-18px; transform:translateX(-50%); width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid #111;"></div>
+            <div class="pointer"></div>
           </div>
+
           <div class="spin-controls">
             <div id="wheel-selected" class="small">Ei valintaa vielä</div>
-            <div style="display:flex; gap:8px; margin-top:8px;">
+
+            <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
               <button id="spin-btn">Pyöräytä</button>
               <button id="wheel-respin" style="display:none;" class="secondary">Pyöräytä uudelleen</button>
               <button id="wheel-continue" style="display:none;">Jatka seuraavalle sivulle</button>
             </div>
-            <div class="small" style="margin-top:6px;">Jäljellä olevat pyöräytykset: <span id="spins-left">3</span></div>
+
+            <div class="small" style="margin-top:6px;">
+              Jäljellä olevat pyöräytykset: <span id="spins-left">3</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Step 10: Result with requested message -->
       <section class="step" data-step="10" id="step-10">
-        <h2 id="final-activity-title">Valittu aktiviteetti</h2>
+        <h2>Valittu aktiviteetti</h2>
         <div id="result-activity" class="result-activity"></div>
         <div id="result-activity-sub" class="small" style="margin-top:8px;"></div>
+
         <div class="controls" style="margin-top:14px;">
           <button id="btn-10-back" class="secondary">Takaisin</button>
           <button id="btn-10-next">Jatka</button>
         </div>
       </section>
 
-      <!-- Contact method -->
       <section class="step" data-step="11" id="step-11">
         <h2>Treffien aikataulu ja tiedonkulku</h2>
         <p>Valitse miten haluatte olla yhteydessä:</p>
+
         <div class="contact-grid" id="contact-grid">
           <button class="contact-btn" data-method="instagram">Instagram DM</button>
           <button class="contact-btn" data-method="whatsapp">WhatsApp</button>
@@ -299,163 +567,448 @@ button.secondary,
           <button class="contact-btn" data-method="email">Sähköposti</button>
           <button class="contact-btn" data-method="snapchat">Snapchat</button>
         </div>
+
         <div id="contact-selected" class="hint" style="margin-top:12px;"></div>
+
         <div id="contact-input" style="margin-top:12px; display:none;">
           <label id="contact-label">Anna yhteystieto</label>
           <input id="contact-value" type="text" placeholder="esim. @username tai numero tai email" />
         </div>
+
         <div class="controls" style="margin-top:14px;">
           <button id="btn-11-back" class="secondary">Takaisin</button>
           <button id="btn-11-next" style="display:none;">Jatka</button>
         </div>
       </section>
 
-      <!-- Contact detail submission -->
-      <section class="step" data-step="12" id="step-12">
-        <h2>Anna yhteystieto</h2>
-        <p id="confirm-method">Valitsit: <strong id="confirm-method-val"></strong></p>
-        <label id="label-contact-detail">Kirjoita yhteystieto</label>
-        <input id="final-contact" type="text" placeholder="Anna esim. numero, @username tai sähköposti" />
-        <div class="controls" style="margin-top:14px;">
-          <button id="btn-12-back" class="secondary">Takaisin</button>
-          <button id="btn-12-next">Lähetä (vain simulaatio)</button>
-        </div>
-      </section>
-
-      <!-- End page -->
       <section class="step" data-step="13" id="step-13">
         <h2>Viimeinen sivu</h2>
-        <p>Tämä on viimeinen sivu, kiva kun pääsit tänne asti! Voit odottaa yhteydenottoa minulta muutaman arkipäivän kuluessa.</p>
+        <p>
+          Tämä on viimeinen sivu, kiva kun pääsit tänne asti!
+          Voit odottaa yhteydenottoa minulta muutaman arkipäivän kuluessa.
+        </p>
+
         <div class="controls" style="margin-top:14px;">
           <button id="btn-13-next">Lopeta</button>
         </div>
       </section>
 
-      <!-- Really last page -->
       <section class="step" data-step="14" id="step-14">
         <h2>Oikeasti viimeinen sivu</h2>
-        <p id="ps-text">P.s. tiedän tiedän, sanoin että äskeinen sivu oli viimeinen, mutta ei ollut. Halusin vain sanoa että odotan innolla tällejämme <span id="ps-activity"></span> merkeissä, joten valmistaudu, siitä tulee kivaa!!</p>
+        <p>
+          P.s. tiedän tiedän, sanoin että äskeinen sivu oli viimeinen, mutta ei ollut.
+          Halusin vain sanoa että odotan innolla treffejämme
+          <span id="ps-activity"></span> merkeissä, joten valmistaudu, siitä tulee kivaa!!
+        </p>
+
         <div class="controls" style="margin-top:14px;">
           <button id="btn-14-end">Oikeasti lopeta</button>
         </div>
       </section>
-
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
   <script>
-  (function(){
-    const T = { fi: { continue:"Jatka", back:"Takaisin", toastLangChange:"Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.", nameReq:"Kirjoita nimesi ennen jatkamista.", chooseYesNo:"Valitse kyllä tai ei ennen jatkamista." }, en:{ continue:"Continue", back:"Back", toastLangChange:"Haha let's stick to English for this.", nameReq:"Please enter your name before continuing.", chooseYesNo:"Choose yes or no before continuing." } };
+    const FUNFACTS = {
+      "Arial": "Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.",
+      "Times New Roman": "Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.",
+      "Calibri": "Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.",
+      "Aptos": "Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa."
+    };
 
-    const FUNFACTS = { "Arial":"Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.", "Times New Roman":"Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.", "Calibri":"Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.", "Aptos":"Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa." };
+    const COLOR_MAP = {
+      pink: ["#ffd1e8", "#ffe6f5"],
+      red: ["#ffd6d6", "#ffb3b3"],
+      orange: ["#fff0d1", "#ffdbae"],
+      yellow: ["#fff9d6", "#fff0a8"],
+      green: ["#e6fde6", "#d2f7d2"],
+      teal: ["#dff7f5", "#c9f0ec"],
+      blue: ["#e6f0ff", "#d7e8ff"],
+      purple: ["#f3e6ff", "#e9ddff"],
+      "grad-sunset": ["#ff9a9e", "#fecfef"],
+      "grad-teal": ["#a8edea", "#fed6e3"]
+    };
 
-    const COLOR_MAP = { pink:['#ffd1e8','#ffe6f5'], red:['#ffd6d6','#ffb3b3'], orange:['#fff0d1','#ffdbae'], yellow:['#fff9d6','#fff0a8'], green:['#e6fde6','#d2f7d2'], teal:['#dff7f5','#c9f0ec'], blue:['#e6f0ff','#d7e8ff'], purple:['#f3e6ff','#e9ddff'], 'grad-sunset':['#ff9a9e','#fecfef'], 'grad-teal':['#a8edea','#fed6e3'] };
-
-    const ACTIVITIES = { sports:{id:'sports',label:'Urheilua (laskettelu, hiihto, kuntosali)'}, restaurantLunch:{id:'restaurantLunch',label:'Lounas / illallinen ravintolassa'}, cookDinner:{id:'cookDinner',label:'Lounas / illallinen itse kokaten'}, winePaint:{id:'winePaint',label:'Wine & paint'}, standup:{id:'standup',label:'Stand up show'}, theatre:{id:'theatre',label:'Teatteri / musikaali'}, studentEvent:{id:'studentEvent',label:'Opiskelijatapahtuma'}, bakeCake:{id:'bakeCake',label:'Leivotaan kakku'}, roadTrip:{id:'roadTrip',label:'Road trip'}, dance:{id:'dance',label:'Paritanssitunti / lavatanssit'}, pubQuiz:{id:'pubQuiz',label:'Pubivisa'}, arcticSwim:{id:'arcticSwim',label:'Uintireissu Jäämerelle'}, halti:{id:'halti',label:'Vaellus Haltille'}, games:{id:'games',label:'Keilaus / minigolf / biljardi'}, movieNight:{id:'movieNight',label:'Leffailta kotona'} };
-
-    const SCORE_TABLE = [
-      { q:'gettingWetBothers', ans:'yes', a:'arcticSwim', s:-4 },{ q:'gettingWetBothers', ans:'yes', a:'halti', s:-1 },{ q:'gettingWetBothers', ans:'yes', a:'restaurantLunch', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'cookDinner', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'winePaint', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'standup', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'theatre', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'bakeCake', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'games', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'movieNight', s:1 },{ q:'gettingWetBothers', ans:'no', a:'arcticSwim', s:4 },{ q:'gettingWetBothers', ans:'no', a:'halti', s:1 },{ q:'gettingWetBothers', ans:'no', a:'roadTrip', s:1 },
-
-      { q:'afraidHeights', ans:'yes', a:'halti', s:-3 },{ q:'afraidHeights', ans:'no', a:'halti', s:1 },{ q:'afraidHeights', ans:'no', a:'roadTrip', s:1 },
-
-      { q:'staysUpLate', ans:'yes', a:'standup', s:3 },{ q:'staysUpLate', ans:'yes', a:'pubQuiz', s:3 },{ q:'staysUpLate', ans:'yes', a:'dance', s:2 },{ q:'staysUpLate', ans:'yes', a:'theatre', s:2 },{ q:'staysUpLate', ans:'yes', a:'studentEvent', s:2 },{ q:'staysUpLate', ans:'yes', a:'movieNight', s:1 },{ q:'staysUpLate', ans:'no', a:'restaurantLunch', s:2 },{ q:'staysUpLate', ans:'no', a:'sports', s:2 },{ q:'staysUpLate', ans:'no', a:'cookDinner', s:1 },{ q:'staysUpLate', ans:'no', a:'bakeCake', s:2 },{ q:'staysUpLate', ans:'no', a:'games', s:2 },
-
-      { q:'readyToTravel', ans:'yes', a:'roadTrip', s:4 },{ q:'readyToTravel', ans:'yes', a:'halti', s:3 },{ q:'readyToTravel', ans:'yes', a:'arcticSwim', s:3 },{ q:'readyToTravel', ans:'no', a:'roadTrip', s:-4 },{ q:'readyToTravel', ans:'no', a:'halti', s:-4 },{ q:'readyToTravel', ans:'no', a:'arcticSwim', s:-4 },{ q:'readyToTravel', ans:'no', a:'restaurantLunch', s:1 },{ q:'readyToTravel', ans:'no', a:'theatre', s:1 },{ q:'readyToTravel', ans:'no', a:'games', s:1 },{ q:'readyToTravel', ans:'no', a:'bakeCake', s:1 },{ q:'readyToTravel', ans:'no', a:'cookDinner', s:1 },
-
-      { q:'likesFancyClothes', ans:'yes', a:'restaurantLunch', s:2 },{ q:'likesFancyClothes', ans:'yes', a:'winePaint', s:3 },{ q:'likesFancyClothes', ans:'yes', a:'theatre', s:3 },{ q:'likesFancyClothes', ans:'yes', a:'dance', s:2 },{ q:'likesFancyClothes', ans:'no', a:'sports', s:3 },{ q:'likesFancyClothes', ans:'no', a:'cookDinner', s:2 },{ q:'likesFancyClothes', ans:'no', a:'bakeCake', s:2 },{ q:'likesFancyClothes', ans:'no', a:'halti', s:2 },{ q:'likesFancyClothes', ans:'no', a:'roadTrip', s:1 },{ q:'likesFancyClothes', ans:'no', a:'games', s:2 },
-
-      { q:'drinksAlcohol', ans:'yes', a:'winePaint', s:2 },{ q:'drinksAlcohol', ans:'yes', a:'pubQuiz', s:2 },{ q:'drinksAlcohol', ans:'yes', a:'studentEvent', s:1 },{ q:'drinksAlcohol', ans:'no', a:'winePaint', s:-3 },{ q:'drinksAlcohol', ans:'no', a:'pubQuiz', s:-2 },{ q:'drinksAlcohol', ans:'no', a:'studentEvent', s:-1 },{ q:'drinksAlcohol', ans:'no', a:'bakeCake', s:1 },{ q:'drinksAlcohol', ans:'no', a:'cookDinner', s:1 },{ q:'drinksAlcohol', ans:'no', a:'theatre', s:1 },{ q:'drinksAlcohol', ans:'no', a:'sports', s:1 },{ q:'drinksAlcohol', ans:'no', a:'movieNight', s:1 },
-
-      { q:'prefersDay', ans:'yes', a:'restaurantLunch', s:3 },{ q:'prefersDay', ans:'yes', a:'sports', s:3 },{ q:'prefersDay', ans:'yes', a:'roadTrip', s:2 },{ q:'prefersDay', ans:'yes', a:'halti', s:2 },{ q:'prefersDay', ans:'yes', a:'bakeCake', s:1 },{ q:'prefersDay', ans:'yes', a:'arcticSwim', s:1 },{ q:'prefersDay', ans:'no', a:'cookDinner', s:2 },{ q:'prefersDay', ans:'no', a:'standup', s:3 },{ q:'prefersDay', ans:'no', a:'theatre', s:3 },{ q:'prefersDay', ans:'no', a:'pubQuiz', s:3 },{ q:'prefersDay', ans:'no', a:'dance', s:2 },{ q:'prefersDay', ans:'no', a:'movieNight', s:2 },
-
-      { q:'moneyMeansQuality', ans:'yes', a:'theatre', s:2 },{ q:'moneyMeansQuality', ans:'yes', a:'roadTrip', s:2 },{ q:'moneyMeansQuality', ans:'yes', a:'arcticSwim', s:2 },{ q:'moneyMeansQuality', ans:'yes', a:'winePaint', s:1 },{ q:'moneyMeansQuality', ans:'yes', a:'restaurantLunch', s:1 },{ q:'moneyMeansQuality', ans:'no', a:'cookDinner', s:3 },{ q:'moneyMeansQuality', ans:'no', a:'bakeCake', s:3 },{ q:'moneyMeansQuality', ans:'no', a:'studentEvent', s:2 },{ q:'moneyMeansQuality', ans:'no', a:'games', s:2 },{ q:'moneyMeansQuality', ans:'no', a:'restaurantLunch', s:1 },{ q:'moneyMeansQuality', ans:'no', a:'theatre', s:-2 },{ q:'moneyMeansQuality', ans:'no', a:'arcticSwim', s:-2 },{ q:'moneyMeansQuality', ans:'no', a:'halti', s:-1 },{ q:'moneyMeansQuality', ans:'no', a:'roadTrip', s:-1 },
-
-      { q:'afraidAnimals', ans:'yes', a:'halti', s:-1 },{ q:'afraidAnimals', ans:'yes', a:'roadTrip', s:-1 },{ q:'afraidAnimals', ans:'yes', a:'sports', s:-1 },{ q:'afraidAnimals', ans:'no', a:'halti', s:1 },{ q:'afraidAnimals', ans:'no', a:'roadTrip', s:1 },{ q:'afraidAnimals', ans:'no', a:'sports', s:1 },
-
-      { q:'canDoCartwheel', ans:'yes', a:'sports', s:3 },{ q:'canDoCartwheel', ans:'yes', a:'dance', s:2 },{ q:'canDoCartwheel', ans:'yes', a:'studentEvent', s:1 },{ q:'canDoCartwheel', ans:'no', a:'theatre', s:1 },{ q:'canDoCartwheel', ans:'no', a:'restaurantLunch', s:1 },{ q:'canDoCartwheel', ans:'no', a:'winePaint', s:1 },{ q:'canDoCartwheel', ans:'no', a:'cookDinner', s:1 },{ q:'canDoCartwheel', ans:'no', a:'movieNight', s:1 }
+    const ACTIVITIES = [
+      "Urheilua (laskettelu, hiihto, kuntosali)",
+      "Lounas / illallinen ravintolassa",
+      "Lounas / illallinen itse kokaten",
+      "Wine & paint",
+      "Stand up show",
+      "Teatteri / musikaali",
+      "Opiskelijatapahtuma",
+      "Leivotaan kakku",
+      "Road trip",
+      "Paritanssitunti / lavatanssit",
+      "Pubivisa",
+      "Uintireissu Jäämerelle",
+      "Vaellus Haltille",
+      "Keilaus / minigolf / biljardi",
+      "Leffailta kotona"
     ];
 
     const QUESTIONS = [
-      { id:'gettingWetBothers', text:'Haittaako jos kastut?' },
-      { id:'afraidHeights', text:'Pelkäätkö korkeita paikkoja?' },
-      { id:'staysUpLate', text:'Ruukaatko valvoa myöhään?' },
-      { id:'readyToTravel', text:'Oletko valmis matkustamaan 150 km säteellä kodistasi?' },
-      { id:'likesFancyClothes', text:'Suositko tyylikkäitä ja hienoja vaatteita enemmän kuin rentoja käytännöllisiä vaatteita?' },
-      { id:'drinksAlcohol', text:'Alkoholi?' },
-      { id:'prefersDay', text:'Onko päivä parempi kuin ilta?' },
-      { id:'moneyMeansQuality', text:'Onko rahankäyttö hyvän treffin tunnusmerkki?' },
-      { id:'afraidAnimals', text:'Pelkäätkö eläimiä?' },
-      { id:'canDoCartwheel', text:'Osaatko tehdä kuperkeikan tai kärrynpyörän?' }
+      "Haittaako jos kastut?",
+      "Pelkäätkö korkeita paikkoja?",
+      "Ruukkaatko valvoa myöhään?",
+      "Oletko valmis matkustamaan 150 km säteellä kodistasi?",
+      "Suositko tyylikkäitä ja hienoja vaatteita enemmän kuin rentoja käytännöllisiä vaatteita?",
+      "Alkoholi?",
+      "Onko päivä parempi kuin ilta?",
+      "Onko rahankäyttö hyvän treffin tunnusmerkki?",
+      "Pelkäätkö eläimiä?",
+      "Osaatko tehdä kuperkeikan tai kärrynpyörän?"
     ];
 
     const FACTS = [
-      { id:'f1', text:'Olen asunut Kanadassa yli 2 vuotta.' },
-      { id:'f2', text:'Olen käynyt Euroopan suurimmalla kultakaivoksella.' },
-      { id:'f3', text:'Puhun ranskaa paremmin kuin ruotsia.' },
-      { id:'f4', text:'Olen ollut osa SM-pikaviestijoukkuetta.' }
+      "Olen asunut Kanadassa yli 2 vuotta.",
+      "Olen käynyt Euroopan suurimmalla kultakaivoksella.",
+      "Puhun ranskaa paremmin kuin ruotsia.",
+      "Olen ollut osa SM-pikaviestijoukkuetta."
     ];
 
     let state = {
-      lang: 'fi',
-      name: '',
-      color: 'blue',
-      font: 'Arial',
+      lang: "fi",
+      name: "",
+      color: "blue",
+      font: "Arial",
       interested: null,
-      cvGameDone: false,
-      answers: {},
       chosenActivity: null,
-      wheelSpins: 3,
-      contactMethod: null,
-      contactValue: null
+      wheelSpins: 3
     };
 
-    const LS_KEY = 'datingAppState_v_final';
-    function loadState(){ try{ const r = localStorage.getItem(LS_KEY); if(r) Object.assign(state, JSON.parse(r)); }catch(e){} }
-    function saveState(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
+    const toast = document.getElementById("toast");
 
-    function steps(){ return Array.from(document.querySelectorAll('.step')); }
-    const toast = document.getElementById('toast');
-    function showToast(text, ms=3000){ toast.textContent = text; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), ms); }
-
-    function showStep(n){
-      steps().forEach(s => s.classList.toggle('active', +s.dataset.step === +n));
-      const dynamic = document.querySelectorAll('[data-step-dynamic]');
-      dynamic.forEach(s=> s.classList.toggle('active', +s.dataset.stepDynamic === +n));
-      const active = document.querySelector('.step.active, [data-step-dynamic].active');
-      if(active) active.querySelector('select, input, button')?.focus();
+    function showToast(text, ms = 3000) {
+      toast.textContent = text;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), ms);
     }
 
-    function applyTheme(){ const pair = COLOR_MAP[state.color] || COLOR_MAP.blue; document.documentElement.style.setProperty('--bg-start', pair[0]); document.documentElement.style.setProperty('--bg-end', pair[1] || pair[0]); document.documentElement.style.setProperty('--accent', state.color === 'yellow' ? '#ffb703' : '#ff6b6b'); }
-    function applyFont(){ let fam = 'Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; if(state.font === 'Times New Roman') fam = '"Times New Roman", Times, serif'; if(state.font === 'Calibri') fam = 'Calibri, Candara, Segoe, "Segoe UI", sans-serif'; if(state.font === 'Aptos') fam = 'Aptos, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; document.body.style.fontFamily = fam; }
-    function applyAll(){ applyTheme(); applyFont(); const name = state.name || ''; document.getElementById('subtitle').textContent = state.lang === 'fi' ? 'Kevyt ja flirttaileva askel-askeleelta -kysely.' : 'A light, slightly flirty step-by-step site.'; if(name){ const cvIntro = document.getElementById('cv-intro-text'); if(cvIntro) cvIntro.textContent = (state.lang === 'fi' ? `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.` : `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. Choose how you'd like to proceed.`); } }
+    function showStep(n) {
+      document.querySelectorAll(".step").forEach(step => {
+        const ownStep = Number(step.dataset.step);
+        step.classList.toggle("active", ownStep === Number(n));
+      });
+    }
 
-    function buildQuestionSteps(){ const container = document.getElementById('questions-container'); container.innerHTML = ''; QUESTIONS.forEach((q, idx)=>{ const stepNum = 100 + idx + 1; const sec = document.createElement('section'); sec.setAttribute('data-step-dynamic', stepNum); sec.dataset.stepDynamic = stepNum; sec.className = 'step'; sec.innerHTML = `<div class="question-box"><h2>Kysymys ${idx+1} / ${QUESTIONS.length}</h2><p>${q.text}</p><div class="yesno" data-qid="${q.id}"><button type="button" class="yesno-yes">Kyllä</button><button type="button" class="yesno-no">Ei</button></div><div class="hint small" style="margin-top:10px;">Vastaa ennen jatkamista.</div><div class="controls" style="margin-top:12px;"><button class="secondary btn-ques-prev">Takaisin</button><button class="btn-ques-next">${T[state.lang].continue}</button></div></div>`; container.appendChild(sec); }); }
+    function applyTheme() {
+      const pair = COLOR_MAP[state.color] || COLOR_MAP.blue;
+      document.documentElement.style.setProperty("--bg-start", pair[0]);
+      document.documentElement.style.setProperty("--bg-end", pair[1]);
+      document.documentElement.style.setProperty("--accent", state.color === "yellow" ? "#ffb703" : "#ff6b6b");
+    }
 
-    function computeActivityScores(){ const totals = {}; Object.keys(ACTIVITIES).forEach(k => totals[k] = 0); for(const e of SCORE_TABLE){ const ans = state.answers[e.q]; if(!ans) continue; if(ans === e.ans) totals[e.a] += e.s; } return totals; }
-    function decideBestActivity(){ const totals = computeActivityScores(); let best = null; let bestScore = -Infinity; for(const k in totals){ if(totals[k] > bestScore){ bestScore = totals[k]; best = [k]; } else if(totals[k] === bestScore){ best.push(k); } } if(Array.isArray(best)) best = best[Math.floor(Math.random()*best.length)]; return { id: best, score: totals[best] }; }
+    function applyFont() {
+      let fam = 'Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
 
-    function renderWheel(){ const wheel = document.getElementById('wheel'); const keys = Object.keys(ACTIVITIES); const colors = ['#ffd6d6','#ffdbae','#fff9d6','#e6fde6','#dff7f5','#e6f0ff','#f3e6ff','#ffd1e8','#fef0e6','#e9f7f0','#ffe6f2','#fff3d9','#dfe7ff','#f0f0f0']; const segCount = keys.length; const step = 100/segCount; let grad = []; for(let i=0;i<segCount;i++) grad.push(`${colors[i%colors.length]} ${i*step}% ${(i+1)*step}%`); wheel.style.background = `conic-gradient(${grad.join(',')})`; wheel.querySelectorAll('.label').forEach(n=>n.remove()); for(let i=0;i<segCount;i++){ const el = document.createElement('div'); el.className = 'label'; const angle = (i*(360/segCount)) + (360/(segCount*2)); const radius = (wheel.clientWidth/2)-40; el.style.transform = `translate(-50%,-50%) rotate(${angle}deg) translate(${radius}px) rotate(${-angle}deg)`; el.innerText = ACTIVITIES[keys[i]].label.split(' ')[0]; wheel.appendChild(el); } wheel.dataset.items = JSON.stringify(Object.keys(ACTIVITIES)); }
+      if (state.font === "Times New Roman") {
+        fam = '"Times New Roman", Times, serif';
+      }
 
-    function spinWheel(){ const wheel = document.getElementById('wheel'); const keys = JSON.parse(wheel.dataset.items); const seg = keys.length; const pickIndex = Math.floor(Math.random()*seg); const degreesPerSeg = 360/seg; const randomOffset = (Math.random()*(degreesPerSeg-10)) - (degreesPerSeg/2); const target = 360*4 + (360 - (pickIndex*degreesPerSeg + degreesPerSeg/2)) + randomOffset; wheel.style.transition = 'transform 4s cubic-bezier(.17,.67,.03,.98)'; wheel.style.transform = `rotate(${target}deg)`; return { pickIndex, target }; }
-    function resetWheel(){ const wheel = document.getElementById('wheel'); wheel.style.transition = 'none'; wheel.style.transform = 'rotate(0deg)'; void wheel.offsetWidth; }
+      if (state.font === "Calibri") {
+        fam = 'Calibri, Candara, Segoe, "Segoe UI", sans-serif';
+      }
 
-    loadState();
-    document.addEventListener('DOMContentLoaded', ()=> {
-      const selectLang = document.getElementById('select-language'), btnLangNext = document.getElementById('btn-lang-next');
-      const inputName = document.getElementById('input-name'), btnNameNext = document.getElementById('btn-name-next'), btnNamePrev = document.getElementById('btn-name-prev');
-      const selectColor = document.getElementById('select-color'), btnColorNext = document.getElementById('btn-color-next'), btnColorPrev = document.getElementById('btn-color-prev');
-      const selectFont = document.getElementById('select-font'), btnFontNext = document.getElementById('btn-font-next'), btnFontPrev = document.getElementById('btn-font-prev'), funfact = document.getElementById('funfact');
-      const btnNo = document.getElementById('btn-no'), btnYes = document.getElementById('btn-yes'), noResponse = document.getElementById('no-response'), btnInterestNext = document.getElementById('btn-interest-next'), btnInterestPrev = document.getElementById('btn-interest-prev');
-      const btnCvPrev = document.getElementById('btn-cv-prev'), btnCvNext = document.getElementById('btn-cv-next');
-      const factsGrid = document.getElementById('facts-grid'), factMsg = document.getElementById('fact-msg'), gameSuccess = document.getElementById('game-success'), btn7Back = document.getElementById('btn-7-back'), btn7Continue = document.getElementById('btn-7-continue');
-      const btnRouteQuestions = document.getElementById('btn-route-questions'), btnRouteWheel = document.getElementById('btn-route-wheel'), btn8Back = document.getElementById('btn-8-back');
-      const wheelEl = document.getElementById('wheel'), spinBtn = document.getElementById('spin-btn'), wheelRes = document.getElementById('wheel-selected'), wheelReSpin = document.getElementById('wheel-respin'), wheelContinue = document.getElementById('wheel-continue'), spinsLeftEl = document.getElementById('spins-left');
-      const resultActivityEl = document.getElementById('result-activity'), resultActivitySub = document.getElementById('result-activity-sub'), btn10Back = document.getElementById('btn-10-back'), btn10Next = document.getElementById('btn-10-next');
+      if (state.font === "Aptos") {
+        fam = 'Aptos, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+      }
 
-      const contactGrid = document.getElementById('contact-grid'), contactSelected = document.getElementById('contact-selected'), contactInput = document.getElementById('contact-input'), contactLabel = document.getElementById('contact-label'), contactValue = document.getElementById('contact-value'), btn11Back = document.getElementById('btn-11-back'), btn11Next = document.getElementById('btn-11-next');
-      const confirmMethodVal = document.getElementById('confirm-method-val'), finalContact = document.getElementById('final-contact'), btn12Back = document.getElementById('btn-12-back'), btn12Next = document.getElementById('btn-12-next');
-      const btn13Next = document.getElementById('btn-13-next'), psActivity = document.getElementById('ps-activity'), btn14End = document.getElementById('btn-14-end');
+      document.body.style.fontFamily = fam;
+    }
 
-      selectLang.value = state.lang; inputName.value = state.name; selectColor.value = state.color; selectFont.value = state.font; applyAll
+    function randomActivity() {
+      return ACTIVITIES[Math.floor(Math.random() * ACTIVITIES.length)];
+    }
+
+    function setActivity(activity) {
+      state.chosenActivity = activity;
+      document.getElementById("result-activity").textContent = activity;
+      document.getElementById("result-activity-sub").textContent =
+        `Noniin ${state.name || ""}, valitsit siis ${activity}, loistava päätös, en olisi itse osannut valita paremmin. Olet selvästi päätöksentekijä!`;
+      document.getElementById("ps-activity").textContent = activity;
+    }
+
+    function buildFacts() {
+      const grid = document.getElementById("facts-grid");
+      grid.innerHTML = "";
+
+      let clicked = 0;
+
+      FACTS.forEach(text => {
+        const btn = document.createElement("button");
+        btn.className = "fact-btn";
+        btn.textContent = text;
+
+        btn.addEventListener("click", () => {
+          if (btn.classList.contains("clicked")) return;
+
+          btn.classList.add("clicked");
+          btn.disabled = true;
+          clicked++;
+
+          if (clicked < FACTS.length) {
+            document.getElementById("fact-msg").textContent = "Tämä vaihtoehto on totta, yritä uudelleen.";
+          } else {
+            document.getElementById("fact-msg").textContent = "";
+            document.getElementById("game-success").style.display = "block";
+            document.getElementById("btn-7-continue").style.display = "inline-block";
+          }
+        });
+
+        grid.appendChild(btn);
+      });
+    }
+
+    function buildQuestions() {
+      const container = document.getElementById("questions-container");
+      container.innerHTML = "";
+
+      QUESTIONS.forEach((question, index) => {
+        const stepNumber = 101 + index;
+        const section = document.createElement("section");
+        section.className = "step";
+        section.dataset.step = stepNumber;
+
+        section.innerHTML = `
+          <div class="question-box">
+            <h2>Kysymys ${index + 1} / ${QUESTIONS.length}</h2>
+            <p>${question}</p>
+
+            <div class="yesno">
+              <button type="button" class="yes-btn">Kyllä</button>
+              <button type="button" class="no-btn">Ei</button>
+            </div>
+
+            <div class="hint small">Vastaa ennen jatkamista.</div>
+
+            <div class="controls" style="margin-top:12px;">
+              <button class="secondary prev-btn">Takaisin</button>
+              <button class="next-btn">Jatka</button>
+            </div>
+          </div>
+        `;
+
+        let answered = false;
+
+        const yesBtn = section.querySelector(".yes-btn");
+        const noBtn = section.querySelector(".no-btn");
+        const prevBtn = section.querySelector(".prev-btn");
+        const nextBtn = section.querySelector(".next-btn");
+
+        yesBtn.addEventListener("click", () => {
+          answered = true;
+          yesBtn.classList.add("selected");
+          noBtn.classList.remove("selected");
+        });
+
+        noBtn.addEventListener("click", () => {
+          answered = true;
+          noBtn.classList.add("selected");
+          yesBtn.classList.remove("selected");
+        });
+
+        prevBtn.addEventListener("click", () => {
+          if (index === 0) {
+            showStep(8);
+          } else {
+            showStep(100 + index);
+          }
+        });
+
+        nextBtn.addEventListener("click", () => {
+          if (!answered) {
+            showToast("Valitse kyllä tai ei ennen jatkamista.");
+            return;
+          }
+
+          if (index < QUESTIONS.length - 1) {
+            showStep(stepNumber + 1);
+          } else {
+            setActivity(randomActivity());
+            showStep(10);
+          }
+        });
+
+        container.appendChild(section);
+      });
+    }
+
+    function renderWheel() {
+      const wheel = document.getElementById("wheel");
+      const colors = [
+        "#ffd6d6", "#ffdbae", "#fff9d6", "#e6fde6", "#dff7f5",
+        "#e6f0ff", "#f3e6ff", "#ffd1e8", "#fef0e6", "#e9f7f0",
+        "#ffe6f2", "#fff3d9", "#dfe7ff", "#f0f0f0", "#ffe6e6"
+      ];
+
+      const step = 100 / ACTIVITIES.length;
+      const gradient = ACTIVITIES.map((_, i) => {
+        return `${colors[i % colors.length]} ${i * step}% ${(i + 1) * step}%`;
+      });
+
+      wheel.style.background = `conic-gradient(${gradient.join(",")})`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      buildFacts();
+      buildQuestions();
+      renderWheel();
+      applyTheme();
+      applyFont();
+
+      const selectLang = document.getElementById("select-language");
+      const inputName = document.getElementById("input-name");
+      const selectColor = document.getElementById("select-color");
+      const selectFont = document.getElementById("select-font");
+      const funfact = document.getElementById("funfact");
+
+      document.getElementById("btn-lang-next").addEventListener("click", () => {
+        const chosen = selectLang.value;
+
+        if (["sv", "de", "es", "fr"].includes(chosen)) {
+          state.lang = "en";
+          showToast("Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.");
+        } else {
+          state.lang = chosen;
+        }
+
+        showStep(2);
+      });
+
+      document.getElementById("btn-name-next").addEventListener("click", () => {
+        const name = inputName.value.trim();
+
+        if (!name) {
+          showToast("Kirjoita nimesi ennen jatkamista.");
+          return;
+        }
+
+        state.name = name;
+        showStep(3);
+      });
+
+      document.getElementById("btn-name-prev").addEventListener("click", () => showStep(1));
+
+      selectColor.addEventListener("change", () => {
+        state.color = selectColor.value;
+        applyTheme();
+      });
+
+      document.getElementById("btn-color-next").addEventListener("click", () => {
+        state.color = selectColor.value;
+        applyTheme();
+        showStep(4);
+      });
+
+      document.getElementById("btn-color-prev").addEventListener("click", () => showStep(2));
+
+      selectFont.addEventListener("change", () => {
+        state.font = selectFont.value;
+        applyFont();
+        funfact.style.display = "block";
+        funfact.textContent = FUNFACTS[state.font] || "";
+      });
+
+      document.getElementById("btn-font-next").addEventListener("click", () => showStep(5));
+      document.getElementById("btn-font-prev").addEventListener("click", () => showStep(3));
+
+      document.getElementById("btn-no").addEventListener("click", () => {
+        document.getElementById("no-response").style.display = "block";
+        document.getElementById("no-response").textContent = "Tekninen virhe ilmenee — valitse toinen vaihtoehto.";
+        document.getElementById("btn-interest-next").style.display = "none";
+      });
+
+      document.getElementById("btn-yes").addEventListener("click", () => {
+        document.getElementById("no-response").style.display = "none";
+        document.getElementById("btn-interest-next").style.display = "inline-block";
+      });
+
+      document.getElementById("btn-interest-prev").addEventListener("click", () => showStep(4));
+      document.getElementById("btn-interest-next").addEventListener("click", () => showStep(6));
+
+      document.getElementById("btn-cv-prev").addEventListener("click", () => showStep(5));
+      document.getElementById("btn-cv-next").addEventListener("click", () => showStep(7));
+
+      document.getElementById("btn-7-back").addEventListener("click", () => showStep(6));
+      document.getElementById("btn-7-continue").addEventListener("click", () => showStep(8));
+
+      document.getElementById("btn-route-questions").addEventListener("click", () => showStep(101));
+      document.getElementById("btn-route-wheel").addEventListener("click", () => {
+        state.wheelSpins = 3;
+        document.getElementById("spins-left").textContent = state.wheelSpins;
+        document.getElementById("wheel-selected").textContent = "Ei valintaa vielä";
+        document.getElementById("wheel-respin").style.display = "none";
+        document.getElementById("wheel-continue").style.display = "none";
+        showStep(99);
+      });
+
+      document.getElementById("btn-8-back").addEventListener("click", () => showStep(7));
+
+      function spinWheel() {
+        if (state.wheelSpins <= 0) return;
+
+        const activity = randomActivity();
+        state.wheelSpins--;
+
+        document.getElementById("spins-left").textContent = state.wheelSpins;
+        document.getElementById("wheel-selected").textContent = activity;
+        setActivity(activity);
+
+        document.getElementById("wheel-continue").style.display = "inline-block";
+
+        if (state.wheelSpins > 0) {
+          document.getElementById("wheel-respin").style.display = "inline-block";
+        } else {
+          document.getElementById("wheel-respin").style.display = "none";
+        }
+
+        const wheel = document.getElementById("wheel");
+        const current = Number(wheel.dataset.rotation || 0);
+        const next = current + 720 + Math.floor(Math.random() * 720);
+        wheel.dataset.rotation = next;
+        wheel.style.transform = `rotate(${next}deg)`;
+      }
+
+      document.getElementById("spin-btn").addEventListener("click", spinWheel);
+      document.getElementById("wheel-respin").addEventListener("click", spinWheel);
+      document.getElementById("wheel-continue").addEventListener("click", () => showStep(10));
+
+      document.getElementById("btn-10-back").addEventListener("click", () => showStep(8));
+      document.getElementById("btn-10-next").addEventListener("click", () => showStep(11));
+
+      document.querySelectorAll(".contact-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const method = btn.dataset.method;
+
+          if (method === "smoke") {
+            btn.classList.add("smoke");
+            setTimeout(() => {
+              btn.style.display = "none";
+            }, 900);
+            return;
+          }
+
+          document.querySelectorAll(".contact-btn").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+
+          document.getElementById("contact-selected").textContent = "Valitsit: " + btn.textContent;
+          document.getElementById("contact-input").style.display = "block";
+          document.getElementById("btn-11-next").style.display = "inline-block";
+        });
+      });
+
+      document.getElementById("btn-11-back").addEventListener("click", () => showStep(10));
+      document.getElementById("btn-11-next").addEventListener("click", () => showStep(13));
+
+      document.getElementById("btn-13-next").addEventListener("click", () => showStep(14));
+
+      document.getElementById("btn-14-end").addEventListener("click", () => {
+        showToast("Kiitos — nyt loppui oikeasti.");
+      });
+    });
+  </script>
+</body>
+</html>
