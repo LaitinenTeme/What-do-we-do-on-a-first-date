@@ -10,7 +10,7 @@
       --bg-end: #ffffff;
       --fg: #111;
       --accent: #ff6b6b;
-      --content-width: 720px;
+      --content-width: 780px;
     }
     html,body{
       height:100%;
@@ -38,7 +38,7 @@
       box-sizing:border-box;
       backdrop-filter: blur(4px);
     }
-    h1{ margin:0 0 12px 0; font-size:22px; }
+    h1{ margin:0 0 12px 0; font-size:26px; }
     p.lead{ margin:6px 0 18px 0; color:#333; }
     .step{ display:none; }
     .step.active{ display:block; }
@@ -94,10 +94,28 @@
       background:#eee; color:#111; border:none; padding:12px 14px; border-radius:10px; cursor:pointer; font-weight:600;
     }
     .polite-box { padding:12px; background:#fff4e6; border-radius:8px; border:1px solid #ffe6c2; margin-top:12px; }
+
+    /* CV & game styles */
+    .cv-row { display:flex; gap:18px; align-items:flex-start; margin-top:12px; flex-wrap:wrap; }
+    .cv-photo {
+      width:160px; height:160px; background:linear-gradient(180deg,#f3f3f3,#fff); border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:700; color:#666;
+      border:1px solid rgba(0,0,0,0.06);
+    }
+    .cv-info { flex:1; min-width:260px; }
+    .facts-title { margin-top:18px; font-size:18px; font-weight:700; }
+    .facts-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:10px; }
+    .fact-btn {
+      background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); padding:12px; border-radius:10px; cursor:pointer; font-weight:700; color:#111;
+      text-align:center;
+    }
+    .fact-btn.clicked { background:#ff6b6b; color:#fff; border-color:rgba(0,0,0,0.06); cursor:default; opacity:0.98; transform:translateY(0); }
+    .fact-msg { font-size:14px; color:#c62828; margin-top:6px; min-height:18px; }
+    .game-success { margin-top:12px; padding:12px; background:#e6fff1; border:1px solid #b6f0d3; border-radius:10px; color:#066; font-weight:700; }
+
     .small{ font-size:13px; color:#555; }
-    @media (max-width:600px){
-      .card{ padding:18px; border-radius:12px; }
-      h1{ font-size:18px; }
+    @media (max-width:700px){
+      .cv-row{ flex-direction:column; }
+      .cv-photo{ width:120px; height:120px; }
     }
   </style>
 </head>
@@ -202,17 +220,46 @@
 
         <div class="controls">
           <button id="btn-cv-prev" class="secondary">Takaisin</button>
-          <button id="btn-cv-next">Jatka CV:hen (seuraavassa iteraatiossa)</button>
+          <button id="btn-cv-next">Jatka CV:hen</button>
         </div>
       </section>
 
-      <!-- Placeholder step: Next (not part of the requested set) -->
-      <section class="step" data-step="7" id="step-7" aria-hidden="true">
-        <h2>CV & Peli: tulossa</h2>
-        <p>CV-sivu ja "4 totuutta ja 1 valhe" -peli lisätään seuraavassa iteraatiossa. Kiitos kun kokeilit!</p>
-        <div class="controls">
+      <!-- Step 7: CV page + truth/lie game (IMPLEMENTED) -->
+      <section class="step" data-step="7" id="step-7">
+        <h2>CV</h2>
+        <div class="cv-row">
+          <div class="cv-photo" aria-hidden="true">TEEMU</div>
+          <div class="cv-info">
+            <div><strong>Nimi:</strong> Teemu</div>
+            <div><strong>Ikä:</strong> Cheekin Jippikayjei oli hitti, kun olin peruskoulussa</div>
+            <div><strong>Ammatti:</strong> korkeasti koulutettu erikoismies</div>
+            <div><strong>Luonne:</strong> looginen mutta aina pilke silmäkulmassa</div>
+            <div style="margin-top:8px;" class="small">Seuraavaksi pelataan "4 totuutta ja 1 valhe… tai no, melkein". Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.</div>
+          </div>
+        </div>
+
+        <div class="facts-title">4 totuutta ja 1 valhe… tai no, melkein</div>
+        <div class="facts-grid" id="facts-grid" aria-live="polite">
+          <!-- Buttons injected by JS -->
+        </div>
+        <div class="fact-msg" id="fact-msg"></div>
+        <div id="game-success" class="game-success" style="display:none;">
+          Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.
+        </div>
+
+        <div class="controls" style="margin-top:14px;">
           <button id="btn-7-back" class="secondary">Takaisin</button>
-          <button id="btn-7-done">Valmis</button>
+          <button id="btn-7-continue" style="display:none;">Jatka</button>
+        </div>
+      </section>
+
+      <!-- Step 8: Aktiviteetin aloitus (placeholder) -->
+      <section class="step" data-step="8" id="step-8" aria-hidden="true">
+        <h2>Aktiviteetin valinta: tulossa</h2>
+        <p>Tässä valitaan miten jatketaan — kysymysreitti tai onnenpyörä. Tämä lisätään seuraavassa iteraatiossa.</p>
+        <div class="controls">
+          <button id="btn-8-back" class="secondary">Takaisin</button>
+          <button id="btn-8-done">Valmis</button>
         </div>
       </section>
 
@@ -245,7 +292,7 @@
           politeClose: "Se on täysin ok — kiitos, että kävit!",
           cvIntroTitle: "Intro CV",
           cvIntroText: "Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa. Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä paremmin. Mennään seuraavalle sivulle, niin näytän CV:ni ja pelataan 2 totuutta ja 1 valhe peliä!",
-          cvNext: "Jatka CV:hen (seuraavassa iteraatiossa)",
+          cvNext: "Jatka CV:hen",
           errorChooseYesNo: "Valitse kyllä tai ei ennen jatkamista."
         },
         en: {
@@ -268,7 +315,7 @@
           politeClose: "That's totally fine — thanks for stopping by!",
           cvIntroTitle: "Intro CV",
           cvIntroText: "Nice that you decided to continue. Before the big questions, let me introduce myself. Next we'll see my CV and a little truth-or-lie game!",
-          cvNext: "Continue to CV (next iteration)",
+          cvNext: "Continue to CV",
           errorChooseYesNo: "Choose yes or no before continuing."
         }
       };
@@ -295,13 +342,22 @@
         'grad-teal': ['#a8edea','#fed6e3']
       };
 
+      // Facts for the game (all true)
+      const FACTS = [
+        { id: 'f1', text: 'Olen asunut Kanadassa yli 2 vuotta.' },
+        { id: 'f2', text: 'Olen käynyt Euroopan suurimmalla kultakaivoksella.' },
+        { id: 'f3', text: 'Puhun ranskaa paremmin kuin ruotsia.' },
+        { id: 'f4', text: 'Olen ollut osa SM-pikaviestijoukkuetta.' }
+      ];
+
       // State handling
       let state = {
         lang: 'fi',
         name: '',
         color: 'blue',
         font: 'Arial',
-        interested: null
+        interested: null,
+        cvGameDone: false
       };
 
       const save = () => localStorage.setItem('datingAppState', JSON.stringify(state));
@@ -324,7 +380,6 @@
 
       function showStep(n){
         steps.forEach(s => s.classList.toggle('active', +s.dataset.step === n));
-        // set focus for accessibility
         const active = document.querySelector('.step.active');
         if(active) active.querySelector('select, input, button')?.focus();
       }
@@ -333,12 +388,10 @@
         const pair = COLOR_MAP[state.color] || COLOR_MAP.blue;
         document.documentElement.style.setProperty('--bg-start', pair[0]);
         document.documentElement.style.setProperty('--bg-end', pair[1] || pair[0]);
-        // accent color based on color (simple)
         document.documentElement.style.setProperty('--accent', state.color === 'yellow' ? '#ffb703' : '#ff6b6b');
       }
 
       function applyFont(){
-        // Map to CSS font-family
         let fam = 'Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif';
         if(state.font === 'Times New Roman') fam = '"Times New Roman", Times, serif';
         if(state.font === 'Calibri') fam = 'Calibri, Candara, Segoe, "Segoe UI", sans-serif';
@@ -349,10 +402,8 @@
       function applyAll(){
         applyTheme();
         applyFont();
-        // update name-based text
         const name = state.name || '';
         document.getElementById('subtitle').textContent = T[state.lang].subtitle;
-        // Update some labels per language
         document.getElementById('title').textContent = T[state.lang].title;
         document.getElementById('label-language').textContent = T[state.lang].langLabel;
         document.getElementById('btn-lang-next').textContent = T[state.lang].langNext;
@@ -378,7 +429,6 @@
         document.getElementById('cv-intro-text').textContent = T[state.lang].cvIntroText;
         document.getElementById('btn-cv-next').textContent = T[state.lang].cvNext;
 
-        // If we have a name, personalize some text
         if(name){
           const cv = document.getElementById('cv-intro-text');
           cv.textContent = (state.lang === 'fi' ?
@@ -387,9 +437,9 @@
         }
       }
 
-      // Load state and initialize UI values
+      // Initialize
       load();
-      // set UI selects to state after DOM is ready
+
       document.addEventListener('DOMContentLoaded',()=>{
         // Elements
         const selectLang = document.getElementById('select-language');
@@ -417,6 +467,17 @@
         const btnCvPrev = document.getElementById('btn-cv-prev');
         const btnCvNext = document.getElementById('btn-cv-next');
 
+        // CV/game elements
+        const factsGrid = document.getElementById('facts-grid');
+        const factMsg = document.getElementById('fact-msg');
+        const gameSuccess = document.getElementById('game-success');
+        const btn7Back = document.getElementById('btn-7-back');
+        const btn7Continue = document.getElementById('btn-7-continue');
+
+        // Step 8 controls
+        const btn8Back = document.getElementById('btn-8-back');
+        const btn8Done = document.getElementById('btn-8-done');
+
         // Set initial UI to state
         selectLang.value = state.lang;
         inputName.value = state.name;
@@ -428,7 +489,6 @@
         // Language step
         btnLangNext.addEventListener('click', ()=>{
           let chosen = selectLang.value;
-          // If chosen is one of sv/de/es/fr -> auto switch to English and show joke message
           if(['sv','de','es','fr'].includes(chosen)){
             state.lang = 'en';
             showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 4000);
@@ -476,7 +536,6 @@
           funfact.textContent = FUNFACTS[state.font] || '';
           save();
         });
-        // show funfact immediately if font existed in state
         if(state.font){
           funfact.style.display = 'block';
           funfact.textContent = FUNFACTS[state.font] || '';
@@ -516,22 +575,88 @@
         // CV intro step
         btnCvPrev.addEventListener('click', ()=> showStep(5));
         btnCvNext.addEventListener('click', ()=>{
-          // Next step is placeholder; the user asked to stop at step 6 for now
           showStep(7);
         });
 
-        // Step 7 controls
-        document.getElementById('btn-7-back').addEventListener('click', ()=> showStep(6));
-        document.getElementById('btn-7-done').addEventListener('click', ()=>{
-          showToast(state.lang === 'fi' ? 'Kiitos — nähdään seuraavassa iteraatiossa!' : 'Thanks — see you in the next iteration!', 2800);
+        // Step 7: render facts (only once)
+        function renderFacts(){
+          factsGrid.innerHTML = '';
+          FACTS.forEach(f=>{
+            const btn = document.createElement('button');
+            btn.className = 'fact-btn';
+            btn.id = f.id;
+            btn.textContent = f.text;
+            btn.setAttribute('type','button');
+            btn.addEventListener('click', ()=> onFactClick(f.id));
+            factsGrid.appendChild(btn);
+          });
+        }
+
+        let clickedFacts = new Set();
+        function onFactClick(id){
+          if(clickedFacts.has(id)) return; // already clicked
+          const btn = document.getElementById(id);
+          btn.classList.add('clicked');
+          btn.disabled = true;
+          clickedFacts.add(id);
+          // show message that it's true
+          factMsg.textContent = 'Tämä vaihtoehto on totta, yritä uudelleen.';
+          // Save progress locally
+          if(clickedFacts.size === FACTS.length){
+            // all clicked
+            factMsg.textContent = '';
+            gameSuccess.style.display = 'block';
+            btn7Continue.style.display = 'inline-block';
+            state.cvGameDone = true;
+            save();
+          }
+        }
+
+        // If game already done in saved state, mark UI accordingly
+        function restoreGameState(){
+          renderFacts();
+          if(state.cvGameDone){
+            // mark all as clicked
+            FACTS.forEach(f=>{
+              const b = document.getElementById(f.id);
+              if(b){
+                b.classList.add('clicked');
+                b.disabled = true;
+              }
+            });
+            gameSuccess.style.display = 'block';
+            btn7Continue.style.display = 'inline-block';
+            clickedFacts = new Set(FACTS.map(f=>f.id));
+          } else {
+            clickedFacts = new Set();
+            gameSuccess.style.display = 'none';
+            btn7Continue.style.display = 'none';
+            factMsg.textContent = '';
+          }
+        }
+
+        // Back / Continue on step 7
+        btn7Back.addEventListener('click', ()=> showStep(6));
+        btn7Continue.addEventListener('click', ()=> {
+          // proceed to next placeholder step (8)
+          showStep(8);
         });
 
-        // Small UX: update personalization where applicable when name input changes
+        // Step 8 controls
+        btn8Back.addEventListener('click', ()=> showStep(7));
+        btn8Done.addEventListener('click', ()=> showToast(state.lang === 'fi' ? 'Kiitos — jatketaan seuraavassa iteraatiossa!' : 'Thanks — next iteration!', 2400));
+
+        // Small UX: update personalization when name changes
         inputName.addEventListener('input', (e)=>{
           state.name = e.target.value;
           save();
           applyAll();
         });
+
+        // Initialize the game UI when landing on step 7
+        // Hook into showStep by observing DOMClass toggles isn't necessary here; just prepare restore
+        renderFacts();
+        restoreGameState();
 
         // Ensure theme & font applied initially
         applyAll();
