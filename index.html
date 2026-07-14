@@ -12,17 +12,17 @@
       --fg: #111;
       --accent: #ff6b6b;
       --content-width: 820px;
-      --card-bg: rgba(255,255,255,0.92);
+      --card-bg: rgba(255,255,255,0.94);
     }
 
     html,
     body {
       height: 100%;
       margin: 0;
-      font-family: Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-family: Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       color: var(--fg);
       background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
-      transition: background 600ms ease, color 300ms ease;
+      transition: background 600ms ease;
     }
 
     .wrap {
@@ -39,24 +39,29 @@
       max-width: var(--content-width);
       background: var(--card-bg);
       box-shadow: 0 6px 30px rgba(12,12,12,0.12);
-      border-radius: 14px;
-      padding: 28px;
+      border-radius: 18px;
+      padding: 32px;
       box-sizing: border-box;
-      backdrop-filter: blur(4px);
     }
 
     h1 {
       margin: 0 0 12px 0;
-      font-size: 26px;
+      font-size: 34px;
     }
 
     h2 {
       margin-top: 0;
+      font-size: 28px;
+    }
+
+    p {
+      line-height: 1.6;
     }
 
     p.lead {
-      margin: 6px 0 18px 0;
+      margin: 6px 0 28px 0;
       color: #333;
+      font-size: 20px;
     }
 
     .step {
@@ -67,24 +72,46 @@
       display: block;
     }
 
-    .controls {
-      margin-top: 18px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 18px;
     }
 
-    button,
-    .big-btn {
+    input[type="text"],
+    select {
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      min-width: 280px;
+      font-size: 18px;
+      background: #fff;
+      color: #111;
+    }
+
+    .controls {
+      margin-top: 22px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
       background: var(--accent);
       color: #fff;
       border: none;
-      padding: 10px 16px;
-      border-radius: 10px;
+      padding: 12px 20px;
+      border-radius: 14px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 16px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    button:hover {
+      filter: brightness(0.96);
     }
 
     button.secondary,
@@ -94,38 +121,10 @@
       border: 2px solid var(--accent);
     }
 
-    input[type="text"],
-    select {
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      min-width: 220px;
-      font-size: 16px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
     .hint {
       color: #666;
       font-size: 14px;
       margin-top: 8px;
-    }
-
-    .small {
-      font-size: 13px;
-      color: #555;
-    }
-
-    .funfact {
-      margin-top: 12px;
-      padding: 12px;
-      background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.01));
-      border-radius: 8px;
-      border: 1px dashed rgba(0,0,0,0.06);
     }
 
     .toast {
@@ -148,23 +147,24 @@
       opacity: 1;
     }
 
-    .choice-grid {
+    .choice-grid,
+    .facts-grid,
+    .contact-grid {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
-      margin-top: 10px;
+      margin-top: 14px;
     }
 
     .choice-btn,
     .fact-btn,
-    .activity-btn,
     .contact-btn,
     .yesno button {
       background: #f0f0f0;
       color: #111 !important;
       border: 1px solid rgba(0,0,0,0.08);
-      padding: 12px 14px;
-      border-radius: 10px;
+      padding: 12px 16px;
+      border-radius: 12px;
       cursor: pointer;
       font-weight: 700;
       text-align: center;
@@ -172,82 +172,77 @@
 
     .choice-btn.selected,
     .fact-btn.clicked,
-    .activity-btn.selected,
     .contact-btn.selected,
     .yesno button.selected {
       background: var(--accent);
       color: #fff !important;
     }
 
+    .funfact {
+      margin-top: 14px;
+      padding: 14px;
+      background: rgba(255,255,255,0.75);
+      border-radius: 12px;
+      border: 1px dashed rgba(0,0,0,0.12);
+    }
+
     .polite-box {
-      padding: 12px;
+      padding: 14px;
       background: #fff4e6;
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid #ffe6c2;
-      margin-top: 12px;
+      margin-top: 14px;
     }
 
     .cv-row {
       display: flex;
-      gap: 18px;
+      gap: 20px;
       align-items: flex-start;
-      margin-top: 12px;
       flex-wrap: wrap;
+      margin-top: 14px;
     }
 
     .cv-photo {
       width: 160px;
       height: 160px;
       background: linear-gradient(180deg,#f3f3f3,#fff);
-      border-radius: 12px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
       color: #666;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.08);
     }
 
     .cv-info {
       flex: 1;
       min-width: 260px;
-    }
-
-    .facts-title {
-      margin-top: 18px;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .facts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-      gap: 10px;
-      margin-top: 10px;
+      line-height: 1.7;
     }
 
     .fact-msg {
       font-size: 14px;
       color: #c62828;
-      margin-top: 6px;
+      margin-top: 10px;
       min-height: 18px;
     }
 
     .game-success {
-      margin-top: 12px;
-      padding: 12px;
+      margin-top: 14px;
+      padding: 14px;
       background: #e6fff1;
       border: 1px solid #b6f0d3;
-      border-radius: 10px;
+      border-radius: 12px;
       color: #066;
       font-weight: 700;
     }
 
     .question-box {
       padding: 18px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.6);
-      border: 1px solid rgba(0,0,0,0.04);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(0,0,0,0.06);
       margin-top: 12px;
     }
 
@@ -262,59 +257,33 @@
       min-width: 120px;
     }
 
-    .wheel-wrap {
-      display: flex;
-      gap: 18px;
-      align-items: center;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    .wheel {
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      position: relative;
-      overflow: visible;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.15);
-      transform: rotate(0deg);
-      transition: transform 4s cubic-bezier(.17,.67,.03,.98);
-    }
-
-    .wheel .label {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform-origin: 0 0;
-      font-size: 12px;
-      font-weight: 700;
-      color: #222;
-      text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-    }
-
-    .pointer {
-      position: absolute;
-      left: 50%;
-      top: -18px;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 12px solid transparent;
-      border-right: 12px solid transparent;
-      border-bottom: 18px solid #111;
-    }
-
-    .spin-controls {
-      display: flex;
-      gap: 8px;
-      flex-direction: column;
-    }
-
-    .contact-grid {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+    .result-activity {
       margin-top: 12px;
+      padding: 16px;
+      background: #fff7e6;
+      border-radius: 12px;
+      border: 1px solid #ffe6c2;
+      font-weight: 700;
+    }
+
+    .small {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .wheel-box {
+      margin-top: 16px;
+      padding: 28px;
+      border-radius: 50%;
+      width: 220px;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: conic-gradient(#ffd6d6, #ffdbae, #fff9d6, #e6fde6, #dff7f5, #e6f0ff, #f3e6ff, #ffd1e8, #ffd6d6);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+      font-weight: 800;
+      transition: transform 900ms ease;
     }
 
     .smoke {
@@ -335,35 +304,19 @@
       }
     }
 
-    .result-activity {
-      margin-top: 12px;
-      padding: 14px;
-      background: #fff7e6;
-      border-radius: 10px;
-      border: 1px solid #ffe6c2;
-      font-weight: 700;
-    }
-
-    @media (max-width: 900px) {
-      .wheel {
-        width: 260px;
-        height: 260px;
-      }
-    }
-
     @media (max-width: 700px) {
-      .cv-row {
-        flex-direction: column;
+      h1 {
+        font-size: 28px;
+      }
+
+      input[type="text"],
+      select {
+        min-width: 100%;
       }
 
       .cv-photo {
         width: 120px;
         height: 120px;
-      }
-
-      .wheel {
-        width: 220px;
-        height: 220px;
       }
     }
   </style>
@@ -371,11 +324,11 @@
 
 <body>
   <div class="wrap">
-    <div class="card" role="main" id="card">
-      <h1 id="title">Mitä tehdä ensitreffeillä?</h1>
-      <p class="lead" id="subtitle">Kevyt ja flirttaileva askel-askeleelta -kysely.</p>
+    <div class="card" role="main">
+      <h1>Mitä tehdä ensitreffeillä?</h1>
+      <p class="lead">Kevyt ja flirttaileva askel-askeleelta -kysely.</p>
 
-      <section class="step active" data-step="1" id="step-1">
+      <section class="step active" data-step="1">
         <label>Valitse kieli / Choose language</label>
         <select id="select-language">
           <option value="fi">Suomi</option>
@@ -391,10 +344,10 @@
         </div>
       </section>
 
-      <section class="step" data-step="2" id="step-2">
+      <section class="step" data-step="2">
         <label>Kuka sinä olet?</label>
         <input type="text" id="input-name" placeholder="Kirjoita nimesi..." />
-        <div class="hint">Nimesi tallennetaan vain paikallisesti selaimeesi.</div>
+        <div class="hint">Nimesi tallennetaan vain tähän selaimeen.</div>
 
         <div class="controls">
           <button id="btn-name-prev" class="secondary">Takaisin</button>
@@ -402,7 +355,7 @@
         </div>
       </section>
 
-      <section class="step" data-step="3" id="step-3">
+      <section class="step" data-step="3">
         <label>Mikä on lempivärisi?</label>
         <select id="select-color">
           <option value="pink">Pink</option>
@@ -413,11 +366,7 @@
           <option value="teal">Teal</option>
           <option value="blue">Blue</option>
           <option value="purple">Purple</option>
-          <option value="grad-sunset">Sunset (gradient)</option>
-          <option value="grad-teal">Teal Wave (gradient)</option>
         </select>
-
-        <div class="hint">Valitun värin pitäisi näkyä taustassa.</div>
 
         <div class="controls">
           <button id="btn-color-prev" class="secondary">Takaisin</button>
@@ -425,8 +374,8 @@
         </div>
       </section>
 
-      <section class="step" data-step="4" id="step-4">
-        <label>Mikä on lempi fonttisi, harkitse tarkkaan?</label>
+      <section class="step" data-step="4">
+        <label>Mikä on lempifonttisi?</label>
         <select id="select-font">
           <option value="Arial">Arial</option>
           <option value="Times New Roman">Times New Roman</option>
@@ -442,7 +391,7 @@
         </div>
       </section>
 
-      <section class="step" data-step="5" id="step-5">
+      <section class="step" data-step="5">
         <h2>Haluatko jatkaa?</h2>
         <p id="interest-text">Valitse kumpi: kohtelias lopetus tai rohkea jatko.</p>
 
@@ -453,17 +402,17 @@
 
         <div id="no-response" class="polite-box" style="display:none;"></div>
 
-        <div class="controls" style="margin-top:14px;">
+        <div class="controls">
           <button id="btn-interest-prev" class="secondary">Takaisin</button>
           <button id="btn-interest-next" style="display:none;">Jatka</button>
         </div>
       </section>
 
-      <section class="step" data-step="6" id="step-6">
+      <section class="step" data-step="6">
         <h2>Intro CV</h2>
         <p id="cv-intro-text">
-          Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa. Loistavaa!
-          Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä paremmin.
+          Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa.
+          Seuraavaksi pieni esittely ja kevyt peli.
         </p>
 
         <div class="controls">
@@ -472,7 +421,7 @@
         </div>
       </section>
 
-      <section class="step" data-step="7" id="step-7">
+      <section class="step" data-step="7">
         <h2>CV</h2>
 
         <div class="cv-row">
@@ -482,13 +431,10 @@
             <div><strong>Ikä:</strong> Cheekin Jippikayjei oli hitti, kun olin peruskoulussa</div>
             <div><strong>Ammatti:</strong> korkeasti koulutettu erikoismies</div>
             <div><strong>Luonne:</strong> looginen mutta aina pilke silmäkulmassa</div>
-            <div style="margin-top:8px;" class="small">
-              Seuraavaksi pelataan "3 totuutta ja 1 valhe" — tai no, melkein.
-            </div>
           </div>
         </div>
 
-        <div class="facts-title">3 totuutta ja 1 valhe… tai no, melkein</div>
+        <h3>3 totuutta ja 1 valhe… tai no, melkein</h3>
         <div class="facts-grid" id="facts-grid"></div>
         <div class="fact-msg" id="fact-msg"></div>
 
@@ -496,13 +442,13 @@
           Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.
         </div>
 
-        <div class="controls" style="margin-top:14px;">
+        <div class="controls">
           <button id="btn-7-back" class="secondary">Takaisin</button>
           <button id="btn-7-continue" style="display:none;">Jatka</button>
         </div>
       </section>
 
-      <section class="step" data-step="8" id="step-8">
+      <section class="step" data-step="8">
         <h2>Aktiviteetin valinta</h2>
         <p>Valitse haluatko vastata kysymyksiin vai pyöräyttää onnenpyörää.</p>
 
@@ -511,89 +457,79 @@
           <button id="btn-route-wheel" class="choice-btn">Pyöräytän onnenpyörää</button>
         </div>
 
-        <div class="controls" style="margin-top:14px;">
+        <div class="controls">
           <button id="btn-8-back" class="secondary">Takaisin</button>
         </div>
       </section>
 
       <div id="questions-container"></div>
 
-      <section class="step" data-step="99" id="step-wheel">
+      <section class="step" data-step="99">
         <h2>Onnenpyörä</h2>
         <p>Pyöräytä ja katso mihin kohtalosi sinut johdattaa. Saat 3 pyöräytystä.</p>
 
-        <div class="wheel-wrap">
-          <div style="position:relative;">
-            <div class="wheel" id="wheel"></div>
-            <div class="pointer"></div>
-          </div>
+        <div id="wheel" class="wheel-box">ONNI</div>
 
-          <div class="spin-controls">
-            <div id="wheel-selected" class="small">Ei valintaa vielä</div>
+        <p id="wheel-selected" class="small">Ei valintaa vielä</p>
+        <p class="small">Jäljellä olevat pyöräytykset: <span id="spins-left">3</span></p>
 
-            <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
-              <button id="spin-btn">Pyöräytä</button>
-              <button id="wheel-respin" style="display:none;" class="secondary">Pyöräytä uudelleen</button>
-              <button id="wheel-continue" style="display:none;">Jatka seuraavalle sivulle</button>
-            </div>
-
-            <div class="small" style="margin-top:6px;">
-              Jäljellä olevat pyöräytykset: <span id="spins-left">3</span>
-            </div>
-          </div>
+        <div class="controls">
+          <button id="spin-btn">Pyöräytä</button>
+          <button id="wheel-respin" style="display:none;" class="secondary">Pyöräytä uudelleen</button>
+          <button id="wheel-continue" style="display:none;">Jatka seuraavalle sivulle</button>
         </div>
       </section>
 
-      <section class="step" data-step="10" id="step-10">
+      <section class="step" data-step="10">
         <h2>Valittu aktiviteetti</h2>
         <div id="result-activity" class="result-activity"></div>
         <div id="result-activity-sub" class="small" style="margin-top:8px;"></div>
 
-        <div class="controls" style="margin-top:14px;">
+        <div class="controls">
           <button id="btn-10-back" class="secondary">Takaisin</button>
           <button id="btn-10-next">Jatka</button>
         </div>
       </section>
 
-      <section class="step" data-step="11" id="step-11">
+      <section class="step" data-step="11">
         <h2>Treffien aikataulu ja tiedonkulku</h2>
         <p>Valitse miten haluatte olla yhteydessä:</p>
 
-        <div class="contact-grid" id="contact-grid">
-          <button class="contact-btn" data-method="instagram">Instagram DM</button>
-          <button class="contact-btn" data-method="whatsapp">WhatsApp</button>
-          <button class="contact-btn" data-method="phone">Puhelinnumero</button>
-          <button class="contact-btn" data-method="smoke">Savumerkit</button>
-          <button class="contact-btn" data-method="email">Sähköposti</button>
-          <button class="contact-btn" data-method="snapchat">Snapchat</button>
+        <div class="contact-grid">
+          <button class="contact-btn" data-method="Instagram DM">Instagram DM</button>
+          <button class="contact-btn" data-method="WhatsApp">WhatsApp</button>
+          <button class="contact-btn" data-method="Puhelinnumero">Puhelinnumero</button>
+          <button class="contact-btn" data-method="Savumerkit">Savumerkit</button>
+          <button class="contact-btn" data-method="Sähköposti">Sähköposti</button>
+          <button class="contact-btn" data-method="Snapchat">Snapchat</button>
         </div>
 
-        <div id="contact-selected" class="hint" style="margin-top:12px;"></div>
+        <p id="contact-selected" class="hint"></p>
 
-        <div id="contact-input" style="margin-top:12px; display:none;">
-          <label id="contact-label">Anna yhteystieto</label>
-          <input id="contact-value" type="text" placeholder="esim. @username tai numero tai email" />
+        <div id="contact-input" style="display:none;">
+          <label>Anna yhteystieto</label>
+          <input id="contact-value" type="text" placeholder="esim. @username, numero tai email" />
         </div>
 
-        <div class="controls" style="margin-top:14px;">
+        <div class="controls">
           <button id="btn-11-back" class="secondary">Takaisin</button>
           <button id="btn-11-next" style="display:none;">Jatka</button>
         </div>
       </section>
 
-      <section class="step" data-step="13" id="step-13">
+      <section class="step" data-step="13">
         <h2>Viimeinen sivu</h2>
         <p>
           Tämä on viimeinen sivu, kiva kun pääsit tänne asti!
           Voit odottaa yhteydenottoa minulta muutaman arkipäivän kuluessa.
         </p>
 
-        <div class="controls" style="margin-top:14px;">
+        <div class="controls">
           <button id="btn-13-next">Lopeta</button>
         </div>
       </section>
 
-      <section class="step" data-step="14" id="step-14">
+      <section class="step" data-step="14">
         <h2>Oikeasti viimeinen sivu</h2>
         <p>
           P.s. tiedän tiedän, sanoin että äskeinen sivu oli viimeinen, mutta ei ollut.
@@ -601,7 +537,7 @@
           <span id="ps-activity"></span> merkeissä, joten valmistaudu, siitä tulee kivaa!!
         </p>
 
-        <div class="controls" style="margin-top:14px;">
+        <div class="controls">
           <button id="btn-14-end">Oikeasti lopeta</button>
         </div>
       </section>
@@ -611,275 +547,244 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const FUNFACTS = {
-      "Arial": "Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.",
-      "Times New Roman": "Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.",
-      "Calibri": "Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.",
-      "Aptos": "Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa."
-    };
+    document.addEventListener("DOMContentLoaded", function () {
+      const FUNFACTS = {
+        "Arial": "Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.",
+        "Times New Roman": "Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.",
+        "Calibri": "Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.",
+        "Aptos": "Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa."
+      };
 
-    const COLOR_MAP = {
-      pink: ["#ffd1e8", "#ffe6f5"],
-      red: ["#ffd6d6", "#ffb3b3"],
-      orange: ["#fff0d1", "#ffdbae"],
-      yellow: ["#fff9d6", "#fff0a8"],
-      green: ["#e6fde6", "#d2f7d2"],
-      teal: ["#dff7f5", "#c9f0ec"],
-      blue: ["#e6f0ff", "#d7e8ff"],
-      purple: ["#f3e6ff", "#e9ddff"],
-      "grad-sunset": ["#ff9a9e", "#fecfef"],
-      "grad-teal": ["#a8edea", "#fed6e3"]
-    };
+      const COLOR_MAP = {
+        pink: ["#ffd1e8", "#ffe6f5"],
+        red: ["#ffd6d6", "#ffb3b3"],
+        orange: ["#fff0d1", "#ffdbae"],
+        yellow: ["#fff9d6", "#fff0a8"],
+        green: ["#e6fde6", "#d2f7d2"],
+        teal: ["#dff7f5", "#c9f0ec"],
+        blue: ["#e6f0ff", "#d7e8ff"],
+        purple: ["#f3e6ff", "#e9ddff"]
+      };
 
-    const ACTIVITIES = [
-      "Urheilua (laskettelu, hiihto, kuntosali)",
-      "Lounas / illallinen ravintolassa",
-      "Lounas / illallinen itse kokaten",
-      "Wine & paint",
-      "Stand up show",
-      "Teatteri / musikaali",
-      "Opiskelijatapahtuma",
-      "Leivotaan kakku",
-      "Road trip",
-      "Paritanssitunti / lavatanssit",
-      "Pubivisa",
-      "Uintireissu Jäämerelle",
-      "Vaellus Haltille",
-      "Keilaus / minigolf / biljardi",
-      "Leffailta kotona"
-    ];
-
-    const QUESTIONS = [
-      "Haittaako jos kastut?",
-      "Pelkäätkö korkeita paikkoja?",
-      "Ruukkaatko valvoa myöhään?",
-      "Oletko valmis matkustamaan 150 km säteellä kodistasi?",
-      "Suositko tyylikkäitä ja hienoja vaatteita enemmän kuin rentoja käytännöllisiä vaatteita?",
-      "Alkoholi?",
-      "Onko päivä parempi kuin ilta?",
-      "Onko rahankäyttö hyvän treffin tunnusmerkki?",
-      "Pelkäätkö eläimiä?",
-      "Osaatko tehdä kuperkeikan tai kärrynpyörän?"
-    ];
-
-    const FACTS = [
-      "Olen asunut Kanadassa yli 2 vuotta.",
-      "Olen käynyt Euroopan suurimmalla kultakaivoksella.",
-      "Puhun ranskaa paremmin kuin ruotsia.",
-      "Olen ollut osa SM-pikaviestijoukkuetta."
-    ];
-
-    let state = {
-      lang: "fi",
-      name: "",
-      color: "blue",
-      font: "Arial",
-      interested: null,
-      chosenActivity: null,
-      wheelSpins: 3
-    };
-
-    const toast = document.getElementById("toast");
-
-    function showToast(text, ms = 3000) {
-      toast.textContent = text;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), ms);
-    }
-
-    function showStep(n) {
-      document.querySelectorAll(".step").forEach(step => {
-        const ownStep = Number(step.dataset.step);
-        step.classList.toggle("active", ownStep === Number(n));
-      });
-    }
-
-    function applyTheme() {
-      const pair = COLOR_MAP[state.color] || COLOR_MAP.blue;
-      document.documentElement.style.setProperty("--bg-start", pair[0]);
-      document.documentElement.style.setProperty("--bg-end", pair[1]);
-      document.documentElement.style.setProperty("--accent", state.color === "yellow" ? "#ffb703" : "#ff6b6b");
-    }
-
-    function applyFont() {
-      let fam = 'Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
-
-      if (state.font === "Times New Roman") {
-        fam = '"Times New Roman", Times, serif';
-      }
-
-      if (state.font === "Calibri") {
-        fam = 'Calibri, Candara, Segoe, "Segoe UI", sans-serif';
-      }
-
-      if (state.font === "Aptos") {
-        fam = 'Aptos, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
-      }
-
-      document.body.style.fontFamily = fam;
-    }
-
-    function randomActivity() {
-      return ACTIVITIES[Math.floor(Math.random() * ACTIVITIES.length)];
-    }
-
-    function setActivity(activity) {
-      state.chosenActivity = activity;
-      document.getElementById("result-activity").textContent = activity;
-      document.getElementById("result-activity-sub").textContent =
-        `Noniin ${state.name || ""}, valitsit siis ${activity}, loistava päätös, en olisi itse osannut valita paremmin. Olet selvästi päätöksentekijä!`;
-      document.getElementById("ps-activity").textContent = activity;
-    }
-
-    function buildFacts() {
-      const grid = document.getElementById("facts-grid");
-      grid.innerHTML = "";
-
-      let clicked = 0;
-
-      FACTS.forEach(text => {
-        const btn = document.createElement("button");
-        btn.className = "fact-btn";
-        btn.textContent = text;
-
-        btn.addEventListener("click", () => {
-          if (btn.classList.contains("clicked")) return;
-
-          btn.classList.add("clicked");
-          btn.disabled = true;
-          clicked++;
-
-          if (clicked < FACTS.length) {
-            document.getElementById("fact-msg").textContent = "Tämä vaihtoehto on totta, yritä uudelleen.";
-          } else {
-            document.getElementById("fact-msg").textContent = "";
-            document.getElementById("game-success").style.display = "block";
-            document.getElementById("btn-7-continue").style.display = "inline-block";
-          }
-        });
-
-        grid.appendChild(btn);
-      });
-    }
-
-    function buildQuestions() {
-      const container = document.getElementById("questions-container");
-      container.innerHTML = "";
-
-      QUESTIONS.forEach((question, index) => {
-        const stepNumber = 101 + index;
-        const section = document.createElement("section");
-        section.className = "step";
-        section.dataset.step = stepNumber;
-
-        section.innerHTML = `
-          <div class="question-box">
-            <h2>Kysymys ${index + 1} / ${QUESTIONS.length}</h2>
-            <p>${question}</p>
-
-            <div class="yesno">
-              <button type="button" class="yes-btn">Kyllä</button>
-              <button type="button" class="no-btn">Ei</button>
-            </div>
-
-            <div class="hint small">Vastaa ennen jatkamista.</div>
-
-            <div class="controls" style="margin-top:12px;">
-              <button class="secondary prev-btn">Takaisin</button>
-              <button class="next-btn">Jatka</button>
-            </div>
-          </div>
-        `;
-
-        let answered = false;
-
-        const yesBtn = section.querySelector(".yes-btn");
-        const noBtn = section.querySelector(".no-btn");
-        const prevBtn = section.querySelector(".prev-btn");
-        const nextBtn = section.querySelector(".next-btn");
-
-        yesBtn.addEventListener("click", () => {
-          answered = true;
-          yesBtn.classList.add("selected");
-          noBtn.classList.remove("selected");
-        });
-
-        noBtn.addEventListener("click", () => {
-          answered = true;
-          noBtn.classList.add("selected");
-          yesBtn.classList.remove("selected");
-        });
-
-        prevBtn.addEventListener("click", () => {
-          if (index === 0) {
-            showStep(8);
-          } else {
-            showStep(100 + index);
-          }
-        });
-
-        nextBtn.addEventListener("click", () => {
-          if (!answered) {
-            showToast("Valitse kyllä tai ei ennen jatkamista.");
-            return;
-          }
-
-          if (index < QUESTIONS.length - 1) {
-            showStep(stepNumber + 1);
-          } else {
-            setActivity(randomActivity());
-            showStep(10);
-          }
-        });
-
-        container.appendChild(section);
-      });
-    }
-
-    function renderWheel() {
-      const wheel = document.getElementById("wheel");
-      const colors = [
-        "#ffd6d6", "#ffdbae", "#fff9d6", "#e6fde6", "#dff7f5",
-        "#e6f0ff", "#f3e6ff", "#ffd1e8", "#fef0e6", "#e9f7f0",
-        "#ffe6f2", "#fff3d9", "#dfe7ff", "#f0f0f0", "#ffe6e6"
+      const ACTIVITIES = [
+        "Urheilua",
+        "Lounas / illallinen ravintolassa",
+        "Lounas / illallinen itse kokaten",
+        "Wine & paint",
+        "Stand up show",
+        "Teatteri / musikaali",
+        "Opiskelijatapahtuma",
+        "Leivotaan kakku",
+        "Road trip",
+        "Paritanssitunti / lavatanssit",
+        "Pubivisa",
+        "Uintireissu Jäämerelle",
+        "Vaellus Haltille",
+        "Keilaus / minigolf / biljardi",
+        "Leffailta kotona"
       ];
 
-      const step = 100 / ACTIVITIES.length;
-      const gradient = ACTIVITIES.map((_, i) => {
-        return `${colors[i % colors.length]} ${i * step}% ${(i + 1) * step}%`;
-      });
+      const QUESTIONS = [
+        "Haittaako jos kastut?",
+        "Pelkäätkö korkeita paikkoja?",
+        "Ruukkaatko valvoa myöhään?",
+        "Oletko valmis matkustamaan 150 km säteellä kodistasi?",
+        "Suositko tyylikkäitä vaatteita enemmän kuin rentoja käytännöllisiä vaatteita?",
+        "Alkoholi?",
+        "Onko päivä parempi kuin ilta?",
+        "Onko rahankäyttö hyvän treffin tunnusmerkki?",
+        "Pelkäätkö eläimiä?",
+        "Osaatko tehdä kuperkeikan tai kärrynpyörän?"
+      ];
 
-      wheel.style.background = `conic-gradient(${gradient.join(",")})`;
-    }
+      const FACTS = [
+        "Olen asunut Kanadassa yli 2 vuotta.",
+        "Olen käynyt Euroopan suurimmalla kultakaivoksella.",
+        "Puhun ranskaa paremmin kuin ruotsia.",
+        "Olen ollut osa SM-pikaviestijoukkuetta."
+      ];
 
-    document.addEventListener("DOMContentLoaded", () => {
+      let state = {
+        name: "",
+        color: "pink",
+        font: "Arial",
+        chosenActivity: "",
+        wheelSpins: 3
+      };
+
+      const toast = document.getElementById("toast");
+
+      function showToast(text) {
+        toast.textContent = text;
+        toast.classList.add("show");
+        setTimeout(function () {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+
+      function showStep(n) {
+        document.querySelectorAll(".step").forEach(function (step) {
+          step.classList.toggle("active", Number(step.dataset.step) === Number(n));
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function applyTheme() {
+        const pair = COLOR_MAP[state.color] || COLOR_MAP.pink;
+        document.documentElement.style.setProperty("--bg-start", pair[0]);
+        document.documentElement.style.setProperty("--bg-end", pair[1]);
+      }
+
+      function applyFont() {
+        let font = "Arial, system-ui, sans-serif";
+
+        if (state.font === "Times New Roman") {
+          font = '"Times New Roman", Times, serif';
+        }
+
+        if (state.font === "Calibri") {
+          font = 'Calibri, Candara, Segoe, "Segoe UI", sans-serif';
+        }
+
+        if (state.font === "Aptos") {
+          font = 'Aptos, system-ui, sans-serif';
+        }
+
+        document.body.style.fontFamily = font;
+      }
+
+      function randomActivity() {
+        return ACTIVITIES[Math.floor(Math.random() * ACTIVITIES.length)];
+      }
+
+      function setActivity(activity) {
+        state.chosenActivity = activity;
+        document.getElementById("result-activity").textContent = activity;
+        document.getElementById("result-activity-sub").textContent =
+          `Noniin ${state.name || ""}, valitsit siis ${activity}, loistava päätös, en olisi itse osannut valita paremmin. Olet selvästi päätöksentekijä!`;
+        document.getElementById("ps-activity").textContent = activity;
+      }
+
+      function buildFacts() {
+        const grid = document.getElementById("facts-grid");
+        let clicked = 0;
+
+        FACTS.forEach(function (fact) {
+          const btn = document.createElement("button");
+          btn.className = "fact-btn";
+          btn.textContent = fact;
+
+          btn.addEventListener("click", function () {
+            if (btn.classList.contains("clicked")) return;
+
+            btn.classList.add("clicked");
+            btn.disabled = true;
+            clicked++;
+
+            if (clicked < FACTS.length) {
+              document.getElementById("fact-msg").textContent = "Tämä vaihtoehto on totta, yritä uudelleen.";
+            } else {
+              document.getElementById("fact-msg").textContent = "";
+              document.getElementById("game-success").style.display = "block";
+              document.getElementById("btn-7-continue").style.display = "inline-block";
+            }
+          });
+
+          grid.appendChild(btn);
+        });
+      }
+
+      function buildQuestions() {
+        const container = document.getElementById("questions-container");
+
+        QUESTIONS.forEach(function (question, index) {
+          const stepNumber = 101 + index;
+
+          const section = document.createElement("section");
+          section.className = "step";
+          section.dataset.step = stepNumber;
+
+          section.innerHTML = `
+            <div class="question-box">
+              <h2>Kysymys ${index + 1} / ${QUESTIONS.length}</h2>
+              <p>${question}</p>
+
+              <div class="yesno">
+                <button type="button" class="yes-btn">Kyllä</button>
+                <button type="button" class="no-btn">Ei</button>
+              </div>
+
+              <div class="hint small">Vastaa ennen jatkamista.</div>
+
+              <div class="controls">
+                <button class="secondary prev-btn">Takaisin</button>
+                <button class="next-btn">Jatka</button>
+              </div>
+            </div>
+          `;
+
+          let answered = false;
+
+          const yesBtn = section.querySelector(".yes-btn");
+          const noBtn = section.querySelector(".no-btn");
+          const prevBtn = section.querySelector(".prev-btn");
+          const nextBtn = section.querySelector(".next-btn");
+
+          yesBtn.addEventListener("click", function () {
+            answered = true;
+            yesBtn.classList.add("selected");
+            noBtn.classList.remove("selected");
+          });
+
+          noBtn.addEventListener("click", function () {
+            answered = true;
+            noBtn.classList.add("selected");
+            yesBtn.classList.remove("selected");
+          });
+
+          prevBtn.addEventListener("click", function () {
+            if (index === 0) {
+              showStep(8);
+            } else {
+              showStep(100 + index);
+            }
+          });
+
+          nextBtn.addEventListener("click", function () {
+            if (!answered) {
+              showToast("Valitse kyllä tai ei ennen jatkamista.");
+              return;
+            }
+
+            if (index < QUESTIONS.length - 1) {
+              showStep(stepNumber + 1);
+            } else {
+              setActivity(randomActivity());
+              showStep(10);
+            }
+          });
+
+          container.appendChild(section);
+        });
+      }
+
       buildFacts();
       buildQuestions();
-      renderWheel();
       applyTheme();
       applyFont();
 
-      const selectLang = document.getElementById("select-language");
-      const inputName = document.getElementById("input-name");
-      const selectColor = document.getElementById("select-color");
-      const selectFont = document.getElementById("select-font");
-      const funfact = document.getElementById("funfact");
+      document.getElementById("btn-lang-next").addEventListener("click", function () {
+        const lang = document.getElementById("select-language").value;
 
-      document.getElementById("btn-lang-next").addEventListener("click", () => {
-        const chosen = selectLang.value;
-
-        if (["sv", "de", "es", "fr"].includes(chosen)) {
-          state.lang = "en";
+        if (["sv", "de", "es", "fr"].includes(lang)) {
           showToast("Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.");
-        } else {
-          state.lang = chosen;
         }
 
         showStep(2);
       });
 
-      document.getElementById("btn-name-next").addEventListener("click", () => {
-        const name = inputName.value.trim();
+      document.getElementById("btn-name-next").addEventListener("click", function () {
+        const name = document.getElementById("input-name").value.trim();
 
         if (!name) {
           showToast("Kirjoita nimesi ennen jatkamista.");
@@ -890,53 +795,80 @@
         showStep(3);
       });
 
-      document.getElementById("btn-name-prev").addEventListener("click", () => showStep(1));
+      document.getElementById("btn-name-prev").addEventListener("click", function () {
+        showStep(1);
+      });
 
-      selectColor.addEventListener("change", () => {
-        state.color = selectColor.value;
+      document.getElementById("select-color").addEventListener("change", function () {
+        state.color = this.value;
         applyTheme();
       });
 
-      document.getElementById("btn-color-next").addEventListener("click", () => {
-        state.color = selectColor.value;
+      document.getElementById("btn-color-next").addEventListener("click", function () {
+        state.color = document.getElementById("select-color").value;
         applyTheme();
         showStep(4);
       });
 
-      document.getElementById("btn-color-prev").addEventListener("click", () => showStep(2));
-
-      selectFont.addEventListener("change", () => {
-        state.font = selectFont.value;
-        applyFont();
-        funfact.style.display = "block";
-        funfact.textContent = FUNFACTS[state.font] || "";
+      document.getElementById("btn-color-prev").addEventListener("click", function () {
+        showStep(2);
       });
 
-      document.getElementById("btn-font-next").addEventListener("click", () => showStep(5));
-      document.getElementById("btn-font-prev").addEventListener("click", () => showStep(3));
+      document.getElementById("select-font").addEventListener("change", function () {
+        state.font = this.value;
+        applyFont();
+        document.getElementById("funfact").style.display = "block";
+        document.getElementById("funfact").textContent = FUNFACTS[state.font] || "";
+      });
 
-      document.getElementById("btn-no").addEventListener("click", () => {
+      document.getElementById("btn-font-next").addEventListener("click", function () {
+        showStep(5);
+      });
+
+      document.getElementById("btn-font-prev").addEventListener("click", function () {
+        showStep(3);
+      });
+
+      document.getElementById("btn-no").addEventListener("click", function () {
         document.getElementById("no-response").style.display = "block";
         document.getElementById("no-response").textContent = "Tekninen virhe ilmenee — valitse toinen vaihtoehto.";
         document.getElementById("btn-interest-next").style.display = "none";
       });
 
-      document.getElementById("btn-yes").addEventListener("click", () => {
+      document.getElementById("btn-yes").addEventListener("click", function () {
         document.getElementById("no-response").style.display = "none";
         document.getElementById("btn-interest-next").style.display = "inline-block";
       });
 
-      document.getElementById("btn-interest-prev").addEventListener("click", () => showStep(4));
-      document.getElementById("btn-interest-next").addEventListener("click", () => showStep(6));
+      document.getElementById("btn-interest-prev").addEventListener("click", function () {
+        showStep(4);
+      });
 
-      document.getElementById("btn-cv-prev").addEventListener("click", () => showStep(5));
-      document.getElementById("btn-cv-next").addEventListener("click", () => showStep(7));
+      document.getElementById("btn-interest-next").addEventListener("click", function () {
+        showStep(6);
+      });
 
-      document.getElementById("btn-7-back").addEventListener("click", () => showStep(6));
-      document.getElementById("btn-7-continue").addEventListener("click", () => showStep(8));
+      document.getElementById("btn-cv-prev").addEventListener("click", function () {
+        showStep(5);
+      });
 
-      document.getElementById("btn-route-questions").addEventListener("click", () => showStep(101));
-      document.getElementById("btn-route-wheel").addEventListener("click", () => {
+      document.getElementById("btn-cv-next").addEventListener("click", function () {
+        showStep(7);
+      });
+
+      document.getElementById("btn-7-back").addEventListener("click", function () {
+        showStep(6);
+      });
+
+      document.getElementById("btn-7-continue").addEventListener("click", function () {
+        showStep(8);
+      });
+
+      document.getElementById("btn-route-questions").addEventListener("click", function () {
+        showStep(101);
+      });
+
+      document.getElementById("btn-route-wheel").addEventListener("click", function () {
         state.wheelSpins = 3;
         document.getElementById("spins-left").textContent = state.wheelSpins;
         document.getElementById("wheel-selected").textContent = "Ei valintaa vielä";
@@ -945,7 +877,9 @@
         showStep(99);
       });
 
-      document.getElementById("btn-8-back").addEventListener("click", () => showStep(7));
+      document.getElementById("btn-8-back").addEventListener("click", function () {
+        showStep(7);
+      });
 
       function spinWheel() {
         if (state.wheelSpins <= 0) return;
@@ -955,6 +889,7 @@
 
         document.getElementById("spins-left").textContent = state.wheelSpins;
         document.getElementById("wheel-selected").textContent = activity;
+
         setActivity(activity);
 
         document.getElementById("wheel-continue").style.display = "inline-block";
@@ -974,38 +909,62 @@
 
       document.getElementById("spin-btn").addEventListener("click", spinWheel);
       document.getElementById("wheel-respin").addEventListener("click", spinWheel);
-      document.getElementById("wheel-continue").addEventListener("click", () => showStep(10));
+      document.getElementById("wheel-continue").addEventListener("click", function () {
+        showStep(10);
+      });
 
-      document.getElementById("btn-10-back").addEventListener("click", () => showStep(8));
-      document.getElementById("btn-10-next").addEventListener("click", () => showStep(11));
+      document.getElementById("btn-10-back").addEventListener("click", function () {
+        showStep(8);
+      });
 
-      document.querySelectorAll(".contact-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
+      document.getElementById("btn-10-next").addEventListener("click", function () {
+        showStep(11);
+      });
+
+      document.querySelectorAll(".contact-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
           const method = btn.dataset.method;
 
-          if (method === "smoke") {
+          if (method === "Savumerkit") {
             btn.classList.add("smoke");
-            setTimeout(() => {
+            setTimeout(function () {
               btn.style.display = "none";
             }, 900);
             return;
           }
 
-          document.querySelectorAll(".contact-btn").forEach(b => b.classList.remove("selected"));
+          document.querySelectorAll(".contact-btn").forEach(function (b) {
+            b.classList.remove("selected");
+          });
+
           btn.classList.add("selected");
 
-          document.getElementById("contact-selected").textContent = "Valitsit: " + btn.textContent;
+          document.getElementById("contact-selected").textContent = "Valitsit: " + method;
           document.getElementById("contact-input").style.display = "block";
           document.getElementById("btn-11-next").style.display = "inline-block";
         });
       });
 
-      document.getElementById("btn-11-back").addEventListener("click", () => showStep(10));
-      document.getElementById("btn-11-next").addEventListener("click", () => showStep(13));
+      document.getElementById("btn-11-back").addEventListener("click", function () {
+        showStep(10);
+      });
 
-      document.getElementById("btn-13-next").addEventListener("click", () => showStep(14));
+      document.getElementById("btn-11-next").addEventListener("click", function () {
+        const value = document.getElementById("contact-value").value.trim();
 
-      document.getElementById("btn-14-end").addEventListener("click", () => {
+        if (!value) {
+          showToast("Anna yhteystieto ennen jatkamista.");
+          return;
+        }
+
+        showStep(13);
+      });
+
+      document.getElementById("btn-13-next").addEventListener("click", function () {
+        showStep(14);
+      });
+
+      document.getElementById("btn-14-end").addEventListener("click", function () {
         showToast("Kiitos — nyt loppui oikeasti.");
       });
     });
