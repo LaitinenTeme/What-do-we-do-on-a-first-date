@@ -10,7 +10,8 @@
       --bg-end: #ffffff;
       --fg: #111;
       --accent: #ff6b6b;
-      --content-width: 780px;
+      --content-width: 820px;
+      --card-bg: rgba(255,255,255,0.92);
     }
     html,body{
       height:100%;
@@ -31,7 +32,7 @@
     .card{
       width:100%;
       max-width:var(--content-width);
-      background: rgba(255,255,255,0.85);
+      background: var(--card-bg);
       box-shadow: 0 6px 30px rgba(12,12,12,0.12);
       border-radius:14px;
       padding:28px;
@@ -108,20 +109,58 @@
       background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); padding:12px; border-radius:10px; cursor:pointer; font-weight:700; color:#111;
       text-align:center;
     }
-    .fact-btn.clicked { background:#ff6b6b; color:#fff; border-color:rgba(0,0,0,0.06); cursor:default; opacity:0.98; transform:translateY(0); }
+    .fact-btn.clicked { background:#ff6b6b; color:#fff; border-color:rgba(0,0,0,0.06); cursor:default; opacity:0.98; }
     .fact-msg { font-size:14px; color:#c62828; margin-top:6px; min-height:18px; }
     .game-success { margin-top:12px; padding:12px; background:#e6fff1; border:1px solid #b6f0d3; border-radius:10px; color:#066; font-weight:700; }
 
+    /* Questions style */
+    .question-box { padding:18px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(0,0,0,0.04); margin-top:12px; }
+    .yesno { display:flex; gap:12px; margin-top:12px; }
+    .yesno button { min-width:120px; padding:12px; border-radius:10px; background:#eee; color:#111; border:1px solid rgba(0,0,0,0.06); }
+    .yesno button.selected { background:var(--accent); color:white; }
+
+    /* Wheel styles */
+    .wheel-wrap { display:flex; gap:18px; align-items:center; margin-top:14px; flex-wrap:wrap; }
+    .wheel {
+      width:320px; height:320px; border-radius:50%; position:relative; overflow:visible;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.15); transform:rotate(0deg);
+      transition: transform 4s cubic-bezier(.17,.67,.03,.98);
+    }
+    .wheel .pointer {
+      position:absolute; left:50%; top:-18px; transform:translateX(-50%); width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid #111;
+      z-index:30;
+    }
+    .wheel .label {
+      position:absolute; left:50%; top:50%; transform-origin:0 0;
+      font-size:12px; font-weight:700; color:#222; text-shadow:0 1px 0 rgba(255,255,255,0.6);
+    }
+    .spin-controls { display:flex; gap:8px; flex-direction:column; }
+
+    /* Contact buttons */
+    .contact-grid { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+    .contact-btn { padding:10px 12px; border-radius:10px; background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); cursor:pointer; font-weight:700; }
+    .smoke { animation: smoke 900ms forwards; }
+    @keyframes smoke {
+      0%{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+      100%{ opacity:0; transform:translateY(-30px) scale(1.6); filter:blur(6px); }
+    }
+
+    .result-activity { margin-top:12px; padding:14px; background:#fff7e6; border-radius:10px; border:1px solid #ffe6c2; font-weight:700; }
+
     .small{ font-size:13px; color:#555; }
+    @media (max-width:900px){
+      .wheel { width:260px; height:260px; }
+    }
     @media (max-width:700px){
       .cv-row{ flex-direction:column; }
       .cv-photo{ width:120px; height:120px; }
+      .wheel { width:220px; height:220px; }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="card" role="main">
+    <div class="card" role="main" id="card">
       <h1 id="title">Mitä tehdä ensitreffeillä?</h1>
       <p class="lead" id="subtitle">Kevyt ja flirttaileva askel-askeleelta -kysely.</p>
 
@@ -198,7 +237,7 @@
       <!-- Step 5: Interest -->
       <section class="step" data-step="5" id="step-5">
         <h2 id="interest-title">Haluatko jatkaa?</h2>
-        <p id="interest-text">Valitse kumpi: kiltti lopetus tai rohkea jatko.</p>
+        <p id="interest-text">Valitse kumpi: kohtelias lopetus tai rohkea jatko.</p>
 
         <div class="choice-grid">
           <button id="btn-no" class="choice-btn">Kiitos mutta ei kiitos</button>
@@ -216,7 +255,7 @@
       <!-- Step 6: Intro CV -->
       <section class="step" data-step="6" id="step-6">
         <h2 id="cv-intro-title">Intro CV</h2>
-        <p id="cv-intro-text">Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa. Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä paremmin. Mennään seuraavalle sivulle, niin näytän CV:ni ja pelataan 2 totuutta ja 1 valhe peliä!</p>
+        <p id="cv-intro-text">Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa. Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä paremmin. Mennään seuraavalle sivulle, niin näytän CV:ni ja pelataan "3 totuutta ja 1 valhe -peli"!</p>
 
         <div class="controls">
           <button id="btn-cv-prev" class="secondary">Takaisin</button>
@@ -224,7 +263,7 @@
         </div>
       </section>
 
-      <!-- Step 7: CV page + truth/lie game (IMPLEMENTED) -->
+      <!-- Step 7: CV page + game -->
       <section class="step" data-step="7" id="step-7">
         <h2>CV</h2>
         <div class="cv-row">
@@ -234,14 +273,12 @@
             <div><strong>Ikä:</strong> Cheekin Jippikayjei oli hitti, kun olin peruskoulussa</div>
             <div><strong>Ammatti:</strong> korkeasti koulutettu erikoismies</div>
             <div><strong>Luonne:</strong> looginen mutta aina pilke silmäkulmassa</div>
-            <div style="margin-top:8px;" class="small">Seuraavaksi pelataan "4 totuutta ja 1 valhe… tai no, melkein". Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.</div>
+            <div style="margin-top:8px;" class="small">Seuraavaksi pelataan "3 totuutta ja 1 valhe" — tai no, melkein. Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.</div>
           </div>
         </div>
 
-        <div class="facts-title">4 totuutta ja 1 valhe… tai no, melkein</div>
-        <div class="facts-grid" id="facts-grid" aria-live="polite">
-          <!-- Buttons injected by JS -->
-        </div>
+        <div class="facts-title">3 totuutta ja 1 valhe… tai no, melkein</div>
+        <div class="facts-grid" id="facts-grid" aria-live="polite"></div>
         <div class="fact-msg" id="fact-msg"></div>
         <div id="game-success" class="game-success" style="display:none;">
           Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.
@@ -253,13 +290,105 @@
         </div>
       </section>
 
-      <!-- Step 8: Aktiviteetin aloitus (placeholder) -->
-      <section class="step" data-step="8" id="step-8" aria-hidden="true">
-        <h2>Aktiviteetin valinta: tulossa</h2>
-        <p>Tässä valitaan miten jatketaan — kysymysreitti tai onnenpyörä. Tämä lisätään seuraavassa iteraatiossa.</p>
-        <div class="controls">
+      <!-- Step 8: Activity choice (question route or wheel) -->
+      <section class="step" data-step="8" id="step-8">
+        <h2>Aktiviteetin valinta</h2>
+        <p>Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit tai 2) pyöräyttää onnenpyörää.</p>
+        <div class="choice-grid">
+          <button id="btn-route-questions" class="choice-btn">Vastaan kysymyksiin</button>
+          <button id="btn-route-wheel" class="choice-btn">Pyöräytän onnenpyörää</button>
+        </div>
+        <div class="controls" style="margin-top:14px;">
           <button id="btn-8-back" class="secondary">Takaisin</button>
-          <button id="btn-8-done">Valmis</button>
+          <button id="btn-8-next" style="display:none;">Jatka</button>
+        </div>
+      </section>
+
+      <!-- Steps 9..18: Individual yes/no question steps (one per question) -->
+      <!-- We'll generate these dynamically via JS. Placeholder container -->
+      <div id="questions-container"></div>
+
+      <!-- Wheel step -->
+      <section class="step" data-step="99" id="step-wheel" aria-hidden="true">
+        <h2>Onnenpyörä</h2>
+        <p>Pyöräytä ja katso mihin kohtalosi sinut johdattaa. Saat 3 pyöräytystä.</p>
+        <div class="wheel-wrap">
+          <div style="position:relative;">
+            <div class="wheel" id="wheel"></div>
+            <div class="pointer" style="position:absolute; left:50%; top:-18px; transform:translateX(-50%); width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid #111;"></div>
+          </div>
+          <div class="spin-controls">
+            <div id="wheel-selected" class="small">Ei valintaa vielä</div>
+            <div style="display:flex; gap:8px; margin-top:8px;">
+              <button id="spin-btn">Pyöräytä</button>
+              <button id="wheel-respin" style="display:none;" class="secondary">Pyöräytä uudelleen</button>
+              <button id="wheel-continue" style="display:none;">Jatka seuraavalle sivulle</button>
+            </div>
+            <div class="small" style="margin-top:6px;">Jäljellä olevat pyöräytykset: <span id="spins-left">3</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Result / confirm activity -->
+      <section class="step" data-step="10" id="step-10">
+        <h2 id="final-activity-title">Valittu aktiviteetti</h2>
+        <div id="result-activity" class="result-activity"></div>
+        <div class="controls" style="margin-top:14px;">
+          <button id="btn-10-back" class="secondary">Takaisin</button>
+          <button id="btn-10-next">Jatka</button>
+        </div>
+      </section>
+
+      <!-- Contact method -->
+      <section class="step" data-step="11" id="step-11">
+        <h2>Treffien aikataulu ja tiedonkulku</h2>
+        <p>Valitse miten haluatte olla yhteydessä:</p>
+        <div class="contact-grid" id="contact-grid">
+          <button class="contact-btn" data-method="instagram">Instagram DM</button>
+          <button class="contact-btn" data-method="whatsapp">WhatsApp</button>
+          <button class="contact-btn" data-method="phone">Puhelinnumero</button>
+          <button class="contact-btn" data-method="smoke">Savumerkit</button>
+          <button class="contact-btn" data-method="email">Sähköposti</button>
+          <button class="contact-btn" data-method="snapchat">Snapchat</button>
+        </div>
+        <div id="contact-selected" class="hint" style="margin-top:12px;"></div>
+        <div id="contact-input" style="margin-top:12px; display:none;">
+          <label id="contact-label">Anna yhteystieto</label>
+          <input id="contact-value" type="text" placeholder="esim. @username tai numero tai email" />
+        </div>
+        <div class="controls" style="margin-top:14px;">
+          <button id="btn-11-back" class="secondary">Takaisin</button>
+          <button id="btn-11-next" style="display:none;">Jatka</button>
+        </div>
+      </section>
+
+      <!-- Contact detail submission -->
+      <section class="step" data-step="12" id="step-12">
+        <h2>Anna yhteystieto</h2>
+        <p id="confirm-method">Valitsit: <strong id="confirm-method-val"></strong></p>
+        <label id="label-contact-detail">Kirjoita yhteystieto</label>
+        <input id="final-contact" type="text" placeholder="Anna esim. numero, @username tai sähköposti" />
+        <div class="controls" style="margin-top:14px;">
+          <button id="btn-12-back" class="secondary">Takaisin</button>
+          <button id="btn-12-next">Lähetä (vain simulaatio)</button>
+        </div>
+      </section>
+
+      <!-- End page -->
+      <section class="step" data-step="13" id="step-13">
+        <h2>Viimeinen sivu</h2>
+        <p>Tämä on viimeinen sivu, kiva kun pääsit tänne asti! Voit odottaa yhteydenottoa minulta muutaman arkipäivän kuluessa.</p>
+        <div class="controls" style="margin-top:14px;">
+          <button id="btn-13-next">Lopeta</button>
+        </div>
+      </section>
+
+      <!-- Really last page -->
+      <section class="step" data-step="14" id="step-14">
+        <h2>Oikeasti viimeinen sivu</h2>
+        <p id="ps-text">P.s. tiedän tiedän, sanoin että äskeinen sivu oli viimeinen, mutta ei ollut. Halusin vain sanoa että odotan innolla tällejämme <span id="ps-activity"></span> merkeissä, joten valmistaudu, siitä tulee kivaa!!</p>
+        <div class="controls" style="margin-top:14px;">
+          <button id="btn-14-end">Oikeasti lopeta</button>
         </div>
       </section>
 
@@ -269,401 +398,730 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    (function(){
-      // Translations for fi and en
-      const T = {
-        fi: {
-          title: "Mitä tehdä ensitreffeillä?",
-          subtitle: "Kevyt ja flirttaileva askel-askeleelta -kysely.",
-          langLabel: "Valitse kieli",
-          langNext: "Jatka",
-          nameLabel: "Kuka sinä olet?",
-          nameNext: "Jatka",
-          namePrev: "Takaisin",
-          namePlaceholder: "Kirjoita nimesi...",
-          colorLabel: "Mikä on lempivärisi?",
-          colorNext: "Jatka",
-          fontLabel: "Mikä on lempi fonttisi, harkitse tarkkaan?",
-          fontNext: "Jatka",
-          interestTitle: "Haluatko jatkaa?",
-          interestText: "Valitse kumpi: kohtelias lopetus tai rohkea jatko.",
-          noText: "Kiitos mutta ei kiitos",
-          yesText: "No miksipäs ei",
-          politeClose: "Se on täysin ok — kiitos, että kävit!",
-          cvIntroTitle: "Intro CV",
-          cvIntroText: "Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa. Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä paremmin. Mennään seuraavalle sivulle, niin näytän CV:ni ja pelataan 2 totuutta ja 1 valhe peliä!",
-          cvNext: "Jatka CV:hen",
-          errorChooseYesNo: "Valitse kyllä tai ei ennen jatkamista."
-        },
-        en: {
-          title: "What do we do on a first date?",
-          subtitle: "A light, slightly flirty step-by-step site.",
-          langLabel: "Choose language",
-          langNext: "Continue",
-          nameLabel: "Who are you?",
-          nameNext: "Continue",
-          namePrev: "Back",
-          namePlaceholder: "Type your name...",
-          colorLabel: "What's your favorite color?",
-          colorNext: "Continue",
-          fontLabel: "What's your favorite font, choose wisely?",
-          fontNext: "Continue",
-          interestTitle: "Are you interested?",
-          interestText: "Choose: a polite goodbye or a bold continue.",
-          noText: "Thanks, no thanks",
-          yesText: "Well, why not",
-          politeClose: "That's totally fine — thanks for stopping by!",
-          cvIntroTitle: "Intro CV",
-          cvIntroText: "Nice that you decided to continue. Before the big questions, let me introduce myself. Next we'll see my CV and a little truth-or-lie game!",
-          cvNext: "Continue to CV",
-          errorChooseYesNo: "Choose yes or no before continuing."
-        }
-      };
+  (function(){
+    // Translations (fi/en minimal)
+    const T = {
+      fi: { continue: "Jatka", back: "Takaisin", chooseLang: "Valitse kieli", toastLangChange: "Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.", nameReq: "Kirjoita nimesi ennen jatkamista.", chooseYesNo: "Valitse kyllä tai ei ennen jatkamista." },
+      en: { continue: "Continue", back: "Back", chooseLang: "Choose language", toastLangChange: "Haha let's stick to English for this.", nameReq: "Please enter your name before continuing.", chooseYesNo: "Choose yes or no before continuing." }
+    };
 
-      // Fun facts for fonts
-      const FUNFACTS = {
-        "Arial": "Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.",
-        "Times New Roman": "Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.",
-        "Calibri": "Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.",
-        "Aptos": "Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa."
-      };
+    // Font fun facts
+    const FUNFACTS = {
+      "Arial": "Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.",
+      "Times New Roman": "Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.",
+      "Calibri": "Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.",
+      "Aptos": "Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa."
+    };
 
-      // Color mapping to CSS gradients/values
-      const COLOR_MAP = {
-        pink: ['#ffd1e8','#ffe6f5'],
-        red: ['#ffd6d6','#ffb3b3'],
-        orange: ['#fff0d1','#ffdbae'],
-        yellow: ['#fff9d6','#fff0a8'],
-        green: ['#e6fde6','#d2f7d2'],
-        teal: ['#dff7f5','#c9f0ec'],
-        blue: ['#e6f0ff','#d7e8ff'],
-        purple: ['#f3e6ff','#e9ddff'],
-        'grad-sunset': ['#ff9a9e','#fecfef'],
-        'grad-teal': ['#a8edea','#fed6e3']
-      };
+    // Colors mapping
+    const COLOR_MAP = {
+      pink: ['#ffd1e8','#ffe6f5'],
+      red: ['#ffd6d6','#ffb3b3'],
+      orange: ['#fff0d1','#ffdbae'],
+      yellow: ['#fff9d6','#fff0a8'],
+      green: ['#e6fde6','#d2f7d2'],
+      teal: ['#dff7f5','#c9f0ec'],
+      blue: ['#e6f0ff','#d7e8ff'],
+      purple: ['#f3e6ff','#e9ddff'],
+      'grad-sunset': ['#ff9a9e','#fecfef'],
+      'grad-teal': ['#a8edea','#fed6e3']
+    };
 
-      // Facts for the game (all true)
-      const FACTS = [
-        { id: 'f1', text: 'Olen asunut Kanadassa yli 2 vuotta.' },
-        { id: 'f2', text: 'Olen käynyt Euroopan suurimmalla kultakaivoksella.' },
-        { id: 'f3', text: 'Puhun ranskaa paremmin kuin ruotsia.' },
-        { id: 'f4', text: 'Olen ollut osa SM-pikaviestijoukkuetta.' }
-      ];
+    // Activities metadata
+    const ACTIVITIES = {
+      sports: { id:'sports', label:'Urheilua (laskettelu, hiihto, kuntosali)' },
+      restaurantLunch: { id:'restaurantLunch', label:'Lounas / illallinen ravintolassa' },
+      cookDinner: { id:'cookDinner', label:'Lounas / illallinen itse kokaten' },
+      winePaint: { id:'winePaint', label:'Wine & paint' },
+      standup: { id:'standup', label:'Stand up show' },
+      theatre: { id:'theatre', label:'Teatteri / musikaali' },
+      studentEvent: { id:'studentEvent', label:'Opiskelijatapahtuma' },
+      bakeCake: { id:'bakeCake', label:'Leivotaan kakku' },
+      roadTrip: { id:'roadTrip', label:'Road trip' },
+      dance: { id:'dance', label:'Paritanssitunti / lavatanssit' },
+      pubQuiz: { id:'pubQuiz', label:'Pubivisa' },
+      arcticSwim: { id:'arcticSwim', label:'Uintireissu Jäämerelle' },
+      halti: { id:'halti', label:'Vaellus Haltille' },
+      games: { id:'games', label:'Keilaus / minigolf / biljardi' },
+      movieNight: { id:'movieNight', label:'Leffailta kotona' }
+    };
 
-      // State handling
-      let state = {
-        lang: 'fi',
-        name: '',
-        color: 'blue',
-        font: 'Arial',
-        interested: null,
-        cvGameDone: false
-      };
+    // Scoring table (derived from your CSV-like mapping)
+    const SCORE_TABLE = [
+      // gettingWetBothers
+      { q:'gettingWetBothers', ans:'yes', a:'arcticSwim', s:-4 },
+      { q:'gettingWetBothers', ans:'yes', a:'halti', s:-1 },
+      { q:'gettingWetBothers', ans:'yes', a:'restaurantLunch', s:1 },
+      { q:'gettingWetBothers', ans:'yes', a:'cookDinner', s:1 },
+      { q:'gettingWetBothers', ans:'yes', a:'winePaint', s:1 },
+      { q:'gettingWetBothers', ans:'yes', a:'standup', s:1 },
+      { q:'gettingWetBothers', ans:'yes', a:'theatre', s:1 },
+      { q:'gettingWetBothers', ans:'yes', a:'bakeCake', s:1 },
+      { q:'gettingWetBothers', ans:'yes', a:'games', s:1 },
+      { q:'gettingWetBothers', ans:'yes', a:'movieNight', s:1 },
+      { q:'gettingWetBothers', ans:'no', a:'arcticSwim', s:4 },
+      { q:'gettingWetBothers', ans:'no', a:'halti', s:1 },
+      { q:'gettingWetBothers', ans:'no', a:'roadTrip', s:1 },
 
-      const save = () => localStorage.setItem('datingAppState', JSON.stringify(state));
-      const load = () => {
-        const raw = localStorage.getItem('datingAppState');
-        if(raw) {
-          try{ Object.assign(state, JSON.parse(raw)); }catch(e){}
-        }
-      };
+      // afraidHeights
+      { q:'afraidHeights', ans:'yes', a:'halti', s:-3 },
+      { q:'afraidHeights', ans:'no', a:'halti', s:1 },
+      { q:'afraidHeights', ans:'no', a:'roadTrip', s:1 },
 
-      // UI elements
-      const steps = Array.from(document.querySelectorAll('.step'));
-      const toast = document.getElementById('toast');
+      // staysUpLate
+      { q:'staysUpLate', ans:'yes', a:'standup', s:3 },
+      { q:'staysUpLate', ans:'yes', a:'pubQuiz', s:3 },
+      { q:'staysUpLate', ans:'yes', a:'dance', s:2 },
+      { q:'staysUpLate', ans:'yes', a:'theatre', s:2 },
+      { q:'staysUpLate', ans:'yes', a:'studentEvent', s:2 },
+      { q:'staysUpLate', ans:'yes', a:'movieNight', s:1 },
+      { q:'staysUpLate', ans:'no', a:'restaurantLunch', s:2 },
+      { q:'staysUpLate', ans:'no', a:'sports', s:2 },
+      { q:'staysUpLate', ans:'no', a:'cookDinner', s:1 },
+      { q:'staysUpLate', ans:'no', a:'bakeCake', s:2 },
+      { q:'staysUpLate', ans:'no', a:'games', s:2 },
 
-      function showToast(text, ms=3000){
-        toast.textContent = text;
-        toast.classList.add('show');
-        setTimeout(()=> toast.classList.remove('show'), ms);
+      // readyToTravel
+      { q:'readyToTravel', ans:'yes', a:'roadTrip', s:4 },
+      { q:'readyToTravel', ans:'yes', a:'halti', s:3 },
+      { q:'readyToTravel', ans:'yes', a:'arcticSwim', s:3 },
+      { q:'readyToTravel', ans:'no', a:'roadTrip', s:-4 },
+      { q:'readyToTravel', ans:'no', a:'halti', s:-4 },
+      { q:'readyToTravel', ans:'no', a:'arcticSwim', s:-4 },
+      { q:'readyToTravel', ans:'no', a:'restaurantLunch', s:1 },
+      { q:'readyToTravel', ans:'no', a:'theatre', s:1 },
+      { q:'readyToTravel', ans:'no', a:'games', s:1 },
+      { q:'readyToTravel', ans:'no', a:'bakeCake', s:1 },
+      { q:'readyToTravel', ans:'no', a:'cookDinner', s:1 },
+
+      // likesFancyClothes
+      { q:'likesFancyClothes', ans:'yes', a:'restaurantLunch', s:2 },
+      { q:'likesFancyClothes', ans:'yes', a:'winePaint', s:3 },
+      { q:'likesFancyClothes', ans:'yes', a:'theatre', s:3 },
+      { q:'likesFancyClothes', ans:'yes', a:'dance', s:2 },
+      { q:'likesFancyClothes', ans:'no', a:'sports', s:3 },
+      { q:'likesFancyClothes', ans:'no', a:'cookDinner', s:2 },
+      { q:'likesFancyClothes', ans:'no', a:'bakeCake', s:2 },
+      { q:'likesFancyClothes', ans:'no', a:'halti', s:2 },
+      { q:'likesFancyClothes', ans:'no', a:'roadTrip', s:1 },
+      { q:'likesFancyClothes', ans:'no', a:'games', s:2 },
+
+      // drinksAlcohol
+      { q:'drinksAlcohol', ans:'yes', a:'winePaint', s:2 },
+      { q:'drinksAlcohol', ans:'yes', a:'pubQuiz', s:2 },
+      { q:'drinksAlcohol', ans:'yes', a:'studentEvent', s:1 },
+      { q:'drinksAlcohol', ans:'no', a:'winePaint', s:-3 },
+      { q:'drinksAlcohol', ans:'no', a:'pubQuiz', s:-2 },
+      { q:'drinksAlcohol', ans:'no', a:'studentEvent', s:-1 },
+      { q:'drinksAlcohol', ans:'no', a:'bakeCake', s:1 },
+      { q:'drinksAlcohol', ans:'no', a:'cookDinner', s:1 },
+      { q:'drinksAlcohol', ans:'no', a:'theatre', s:1 },
+      { q:'drinksAlcohol', ans:'no', a:'sports', s:1 },
+      { q:'drinksAlcohol', ans:'no', a:'movieNight', s:1 },
+
+      // prefersDay
+      { q:'prefersDay', ans:'yes', a:'restaurantLunch', s:3 },
+      { q:'prefersDay', ans:'yes', a:'sports', s:3 },
+      { q:'prefersDay', ans:'yes', a:'roadTrip', s:2 },
+      { q:'prefersDay', ans:'yes', a:'halti', s:2 },
+      { q:'prefersDay', ans:'yes', a:'bakeCake', s:1 },
+      { q:'prefersDay', ans:'yes', a:'arcticSwim', s:1 },
+      { q:'prefersDay', ans:'no', a:'cookDinner', s:2 },
+      { q:'prefersDay', ans:'no', a:'standup', s:3 },
+      { q:'prefersDay', ans:'no', a:'theatre', s:3 },
+      { q:'prefersDay', ans:'no', a:'pubQuiz', s:3 },
+      { q:'prefersDay', ans:'no', a:'dance', s:2 },
+      { q:'prefersDay', ans:'no', a:'movieNight', s:2 },
+
+      // moneyMeansQuality
+      { q:'moneyMeansQuality', ans:'yes', a:'theatre', s:2 },
+      { q:'moneyMeansQuality', ans:'yes', a:'roadTrip', s:2 },
+      { q:'moneyMeansQuality', ans:'yes', a:'arcticSwim', s:2 },
+      { q:'moneyMeansQuality', ans:'yes', a:'winePaint', s:1 },
+      { q:'moneyMeansQuality', ans:'yes', a:'restaurantLunch', s:1 },
+      { q:'moneyMeansQuality', ans:'no', a:'cookDinner', s:3 },
+      { q:'moneyMeansQuality', ans:'no', a:'bakeCake', s:3 },
+      { q:'moneyMeansQuality', ans:'no', a:'studentEvent', s:2 },
+      { q:'moneyMeansQuality', ans:'no', a:'games', s:2 },
+      { q:'moneyMeansQuality', ans:'no', a:'restaurantLunch', s:1 },
+      { q:'moneyMeansQuality', ans:'no', a:'theatre', s:-2 },
+      { q:'moneyMeansQuality', ans:'no', a:'arcticSwim', s:-2 },
+      { q:'moneyMeansQuality', ans:'no', a:'halti', s:-1 },
+      { q:'moneyMeansQuality', ans:'no', a:'roadTrip', s:-1 },
+
+      // afraidAnimals
+      { q:'afraidAnimals', ans:'yes', a:'halti', s:-1 },
+      { q:'afraidAnimals', ans:'yes', a:'roadTrip', s:-1 },
+      { q:'afraidAnimals', ans:'yes', a:'sports', s:-1 },
+      { q:'afraidAnimals', ans:'no', a:'halti', s:1 },
+      { q:'afraidAnimals', ans:'no', a:'roadTrip', s:1 },
+      { q:'afraidAnimals', ans:'no', a:'sports', s:1 },
+
+      // canDoCartwheel
+      { q:'canDoCartwheel', ans:'yes', a:'sports', s:3 },
+      { q:'canDoCartwheel', ans:'yes', a:'dance', s:2 },
+      { q:'canDoCartwheel', ans:'yes', a:'studentEvent', s:1 },
+      { q:'canDoCartwheel', ans:'no', a:'theatre', s:1 },
+      { q:'canDoCartwheel', ans:'no', a:'restaurantLunch', s:1 },
+      { q:'canDoCartwheel', ans:'no', a:'winePaint', s:1 },
+      { q:'canDoCartwheel', ans:'no', a:'cookDinner', s:1 },
+      { q:'canDoCartwheel', ans:'no', a:'movieNight', s:1 }
+    ];
+
+    // Questions list in order
+    const QUESTIONS = [
+      { id:'gettingWetBothers', text:'Haittaako jos kastut?' },
+      { id:'afraidHeights', text:'Pelkäätkö korkeita paikkoja?' },
+      { id:'staysUpLate', text:'Ruukaatko valvoa myöhään?' },
+      { id:'readyToTravel', text:'Oletko valmis matkustamaan 150 km säteellä kodistasi?' },
+      { id:'likesFancyClothes', text:'Suositko tyylikkäitä ja hienoja vaatteita enemmän kuin rentoja käytännöllisiä vaatteita?' },
+      { id:'drinksAlcohol', text:'Alkoholi?' },
+      { id:'prefersDay', text:'Onko päivä parempi kuin ilta?' },
+      { id:'moneyMeansQuality', text:'Onko rahankäyttö hyvän treffin tunnusmerkki?' },
+      { id:'afraidAnimals', text:'Pelkäätkö eläimiä?' },
+      { id:'canDoCartwheel', text:'Osaatko tehdä kuperkeikan tai kärrynpyörän?' }
+    ];
+
+    // Facts for CV game
+    const FACTS = [
+      { id:'f1', text:'Olen asunut Kanadassa yli 2 vuotta.' },
+      { id:'f2', text:'Olen käynyt Euroopan suurimmalla kultakaivoksella.' },
+      { id:'f3', text:'Puhun ranskaa paremmin kuin ruotsia.' },
+      { id:'f4', text:'Olen ollut osa SM-pikaviestijoukkuetta.' }
+    ];
+
+    // State
+    let state = {
+      lang: 'fi',
+      name: '',
+      color: 'blue',
+      font: 'Arial',
+      interested: null,
+      cvGameDone: false,
+      answers: {}, // questionId -> 'yes'/'no'
+      chosenActivity: null,
+      wheelSpins: 3,
+      contactMethod: null,
+      contactValue: null
+    };
+
+    // localStorage helpers
+    const LS_KEY = 'datingAppState_v2';
+    function loadState(){ try{ const r = localStorage.getItem(LS_KEY); if(r) Object.assign(state, JSON.parse(r)); }catch(e){} }
+    function saveState(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
+
+    // DOM helpers
+    const steps = () => Array.from(document.querySelectorAll('.step'));
+    const toast = document.getElementById('toast');
+    function showToast(text, ms=3000){ toast.textContent = text; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), ms); }
+
+    function showStep(n){
+      steps().forEach(s => s.classList.toggle('active', +s.dataset.step === +n));
+      // special for question dynamic steps: also show dynamically created ones (data-step custom set)
+      const dynamic = document.querySelectorAll('[data-step-dynamic]');
+      dynamic.forEach(s=> s.classList.toggle('active', +s.dataset.stepDynamic === +n));
+      const active = document.querySelector('.step.active, [data-step-dynamic].active');
+      if(active) active.querySelector('select, input, button')?.focus();
+    }
+
+    // Appearance
+    function applyTheme(){
+      const pair = COLOR_MAP[state.color] || COLOR_MAP.blue;
+      document.documentElement.style.setProperty('--bg-start', pair[0]);
+      document.documentElement.style.setProperty('--bg-end', pair[1] || pair[0]);
+      document.documentElement.style.setProperty('--accent', state.color === 'yellow' ? '#ffb703' : '#ff6b6b');
+    }
+    function applyFont(){
+      let fam = 'Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif';
+      if(state.font === 'Times New Roman') fam = '"Times New Roman", Times, serif';
+      if(state.font === 'Calibri') fam = 'Calibri, Candara, Segoe, "Segoe UI", sans-serif';
+      if(state.font === 'Aptos') fam = 'Aptos, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif';
+      document.body.style.fontFamily = fam;
+    }
+    function applyAll(){
+      applyTheme(); applyFont();
+      // update personalization
+      const name = state.name || '';
+      document.getElementById('subtitle').textContent = state.lang === 'fi' ? 'Kevyt ja flirttaileva askel-askeleelta -kysely.' : 'A light, slightly flirty step-by-step site.';
+      if(name){
+        const cvIntro = document.getElementById('cv-intro-text');
+        if(cvIntro) cvIntro.textContent = (state.lang === 'fi' ? `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.` :
+          `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. Choose how you'd like to proceed.`);
       }
+    }
 
-      function showStep(n){
-        steps.forEach(s => s.classList.toggle('active', +s.dataset.step === n));
-        const active = document.querySelector('.step.active');
-        if(active) active.querySelector('select, input, button')?.focus();
-      }
-
-      function applyTheme(){
-        const pair = COLOR_MAP[state.color] || COLOR_MAP.blue;
-        document.documentElement.style.setProperty('--bg-start', pair[0]);
-        document.documentElement.style.setProperty('--bg-end', pair[1] || pair[0]);
-        document.documentElement.style.setProperty('--accent', state.color === 'yellow' ? '#ffb703' : '#ff6b6b');
-      }
-
-      function applyFont(){
-        let fam = 'Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif';
-        if(state.font === 'Times New Roman') fam = '"Times New Roman", Times, serif';
-        if(state.font === 'Calibri') fam = 'Calibri, Candara, Segoe, "Segoe UI", sans-serif';
-        if(state.font === 'Aptos') fam = 'Aptos, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif';
-        document.body.style.fontFamily = fam;
-      }
-
-      function applyAll(){
-        applyTheme();
-        applyFont();
-        const name = state.name || '';
-        document.getElementById('subtitle').textContent = T[state.lang].subtitle;
-        document.getElementById('title').textContent = T[state.lang].title;
-        document.getElementById('label-language').textContent = T[state.lang].langLabel;
-        document.getElementById('btn-lang-next').textContent = T[state.lang].langNext;
-
-        document.getElementById('label-name').textContent = T[state.lang].nameLabel;
-        document.getElementById('input-name').placeholder = T[state.lang].namePlaceholder;
-        document.getElementById('btn-name-next').textContent = T[state.lang].nameNext;
-        document.getElementById('btn-name-prev').textContent = T[state.lang].namePrev;
-
-        document.getElementById('label-color').textContent = T[state.lang].colorLabel;
-        document.getElementById('btn-color-next').textContent = T[state.lang].colorNext;
-        document.getElementById('label-font').textContent = T[state.lang].fontLabel;
-        document.getElementById('btn-font-next').textContent = T[state.lang].fontNext;
-
-        document.getElementById('interest-title').textContent = T[state.lang].interestTitle;
-        document.getElementById('interest-text').textContent = T[state.lang].interestText;
-        document.getElementById('btn-no').textContent = T[state.lang].noText;
-        document.getElementById('btn-yes').textContent = T[state.lang].yesText;
-        document.getElementById('btn-interest-prev').textContent = T[state.lang].namePrev;
-        document.getElementById('btn-interest-next').textContent = T[state.lang].langNext;
-
-        document.getElementById('cv-intro-title').textContent = T[state.lang].cvIntroTitle;
-        document.getElementById('cv-intro-text').textContent = T[state.lang].cvIntroText;
-        document.getElementById('btn-cv-next').textContent = T[state.lang].cvNext;
-
-        if(name){
-          const cv = document.getElementById('cv-intro-text');
-          cv.textContent = (state.lang === 'fi' ?
-            `Terve ${name}, ${T[state.lang].cvIntroText}` :
-            `Hey ${name}, ${T[state.lang].cvIntroText}`);
-        }
-      }
-
-      // Initialize
-      load();
-
-      document.addEventListener('DOMContentLoaded',()=>{
-        // Elements
-        const selectLang = document.getElementById('select-language');
-        const btnLangNext = document.getElementById('btn-lang-next');
-
-        const inputName = document.getElementById('input-name');
-        const btnNameNext = document.getElementById('btn-name-next');
-        const btnNamePrev = document.getElementById('btn-name-prev');
-
-        const selectColor = document.getElementById('select-color');
-        const btnColorNext = document.getElementById('btn-color-next');
-        const btnColorPrev = document.getElementById('btn-color-prev');
-
-        const selectFont = document.getElementById('select-font');
-        const btnFontNext = document.getElementById('btn-font-next');
-        const btnFontPrev = document.getElementById('btn-font-prev');
-        const funfact = document.getElementById('funfact');
-
-        const btnNo = document.getElementById('btn-no');
-        const btnYes = document.getElementById('btn-yes');
-        const noResponse = document.getElementById('no-response');
-        const btnInterestNext = document.getElementById('btn-interest-next');
-        const btnInterestPrev = document.getElementById('btn-interest-prev');
-
-        const btnCvPrev = document.getElementById('btn-cv-prev');
-        const btnCvNext = document.getElementById('btn-cv-next');
-
-        // CV/game elements
-        const factsGrid = document.getElementById('facts-grid');
-        const factMsg = document.getElementById('fact-msg');
-        const gameSuccess = document.getElementById('game-success');
-        const btn7Back = document.getElementById('btn-7-back');
-        const btn7Continue = document.getElementById('btn-7-continue');
-
-        // Step 8 controls
-        const btn8Back = document.getElementById('btn-8-back');
-        const btn8Done = document.getElementById('btn-8-done');
-
-        // Set initial UI to state
-        selectLang.value = state.lang;
-        inputName.value = state.name;
-        selectColor.value = state.color;
-        selectFont.value = state.font;
-
-        applyAll();
-
-        // Language step
-        btnLangNext.addEventListener('click', ()=>{
-          let chosen = selectLang.value;
-          if(['sv','de','es','fr'].includes(chosen)){
-            state.lang = 'en';
-            showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 4000);
-          } else {
-            state.lang = chosen;
-          }
-          save();
-          applyAll();
-          showStep(2);
-        });
-
-        // Name step
-        btnNameNext.addEventListener('click', ()=>{
-          const name = inputName.value.trim();
-          if(!name){
-            showToast(state.lang === 'fi' ? 'Kirjoita nimesi ennen jatkamista.' : 'Please type your name before continuing.', 2400);
-            return;
-          }
-          state.name = name;
-          save();
-          applyAll();
-          showStep(3);
-        });
-        btnNamePrev.addEventListener('click', ()=> showStep(1));
-
-        // Color step
-        btnColorNext.addEventListener('click', ()=>{
-          state.color = selectColor.value;
-          save();
-          applyTheme();
-          showStep(4);
-        });
-        btnColorPrev.addEventListener('click', ()=> showStep(2));
-        selectColor.addEventListener('change', ()=>{
-          state.color = selectColor.value;
-          applyTheme();
-          save();
-        });
-
-        // Font step
-        selectFont.addEventListener('change', ()=>{
-          state.font = selectFont.value;
-          applyFont();
-          funfact.style.display = 'block';
-          funfact.textContent = FUNFACTS[state.font] || '';
-          save();
-        });
-        if(state.font){
-          funfact.style.display = 'block';
-          funfact.textContent = FUNFACTS[state.font] || '';
-        }
-        btnFontNext.addEventListener('click', ()=>{
-          state.font = selectFont.value;
-          save();
-          applyFont();
-          showStep(5);
-        });
-        btnFontPrev.addEventListener('click', ()=> showStep(3));
-
-        // Interest step
-        btnNo.addEventListener('click', ()=>{
-          noResponse.style.display = 'block';
-          noResponse.textContent = T[state.lang].politeClose;
-          state.interested = false;
-          btnInterestNext.style.display = 'none';
-          save();
-        });
-        btnYes.addEventListener('click', ()=>{
-          noResponse.style.display = 'none';
-          state.interested = true;
-          btnInterestNext.style.display = 'inline-block';
-          save();
-        });
-
-        btnInterestNext.addEventListener('click', ()=>{
-          if(state.interested !== true){
-            showToast(T[state.lang].errorChooseYesNo, 2200);
-            return;
-          }
-          showStep(6);
-        });
-        btnInterestPrev.addEventListener('click', ()=> showStep(4));
-
-        // CV intro step
-        btnCvPrev.addEventListener('click', ()=> showStep(5));
-        btnCvNext.addEventListener('click', ()=>{
-          showStep(7);
-        });
-
-        // Step 7: render facts (only once)
-        function renderFacts(){
-          factsGrid.innerHTML = '';
-          FACTS.forEach(f=>{
-            const btn = document.createElement('button');
-            btn.className = 'fact-btn';
-            btn.id = f.id;
-            btn.textContent = f.text;
-            btn.setAttribute('type','button');
-            btn.addEventListener('click', ()=> onFactClick(f.id));
-            factsGrid.appendChild(btn);
-          });
-        }
-
-        let clickedFacts = new Set();
-        function onFactClick(id){
-          if(clickedFacts.has(id)) return; // already clicked
-          const btn = document.getElementById(id);
-          btn.classList.add('clicked');
-          btn.disabled = true;
-          clickedFacts.add(id);
-          // show message that it's true
-          factMsg.textContent = 'Tämä vaihtoehto on totta, yritä uudelleen.';
-          // Save progress locally
-          if(clickedFacts.size === FACTS.length){
-            // all clicked
-            factMsg.textContent = '';
-            gameSuccess.style.display = 'block';
-            btn7Continue.style.display = 'inline-block';
-            state.cvGameDone = true;
-            save();
-          }
-        }
-
-        // If game already done in saved state, mark UI accordingly
-        function restoreGameState(){
-          renderFacts();
-          if(state.cvGameDone){
-            // mark all as clicked
-            FACTS.forEach(f=>{
-              const b = document.getElementById(f.id);
-              if(b){
-                b.classList.add('clicked');
-                b.disabled = true;
-              }
-            });
-            gameSuccess.style.display = 'block';
-            btn7Continue.style.display = 'inline-block';
-            clickedFacts = new Set(FACTS.map(f=>f.id));
-          } else {
-            clickedFacts = new Set();
-            gameSuccess.style.display = 'none';
-            btn7Continue.style.display = 'none';
-            factMsg.textContent = '';
-          }
-        }
-
-        // Back / Continue on step 7
-        btn7Back.addEventListener('click', ()=> showStep(6));
-        btn7Continue.addEventListener('click', ()=> {
-          // proceed to next placeholder step (8)
-          showStep(8);
-        });
-
-        // Step 8 controls
-        btn8Back.addEventListener('click', ()=> showStep(7));
-        btn8Done.addEventListener('click', ()=> showToast(state.lang === 'fi' ? 'Kiitos — jatketaan seuraavassa iteraatiossa!' : 'Thanks — next iteration!', 2400));
-
-        // Small UX: update personalization when name changes
-        inputName.addEventListener('input', (e)=>{
-          state.name = e.target.value;
-          save();
-          applyAll();
-        });
-
-        // Initialize the game UI when landing on step 7
-        // Hook into showStep by observing DOMClass toggles isn't necessary here; just prepare restore
-        renderFacts();
-        restoreGameState();
-
-        // Ensure theme & font applied initially
-        applyAll();
-        applyTheme();
-        applyFont();
+    // Build dynamic question steps
+    function buildQuestionSteps(){
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+      QUESTIONS.forEach((q, idx)=>{
+        const stepNum = 100 + idx + 1; // dynamic step ids 101..110
+        const sec = document.createElement('section');
+        sec.setAttribute('data-step-dynamic', stepNum);
+        sec.dataset.stepDynamic = stepNum;
+        sec.className = 'step';
+        sec.innerHTML = `
+          <div class="question-box">
+            <h2>Kysymys ${idx+1} / ${QUESTIONS.length}</h2>
+            <p>${q.text}</p>
+            <div class="yesno" data-qid="${q.id}">
+              <button type="button" class="yesno-yes">Kyllä</button>
+              <button type="button" class="yesno-no">Ei</button>
+            </div>
+            <div class="hint small" style="margin-top:10px;">Vastaa ennen jatkamista.</div>
+            <div class="controls" style="margin-top:12px;">
+              <button class="secondary btn-ques-prev">Takaisin</button>
+              <button class="btn-ques-next">${T[state.lang].continue}</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(sec);
       });
-    })();
+    }
+
+    // Compute activity scores from answers
+    function computeActivityScores(){
+      const totals = {};
+      Object.keys(ACTIVITIES).forEach(k => totals[k] = 0);
+      for(const entry of SCORE_TABLE){
+        const qid = entry.q;
+        const answer = state.answers[qid];
+        if(!answer) continue;
+        if(answer === entry.ans){
+          totals[entry.a] += entry.s;
+        }
+      }
+      return totals;
+    }
+
+    function decideBestActivity(){
+      const totals = computeActivityScores();
+      let best = null;
+      let bestScore = -Infinity;
+      for(const k in totals){
+        if(totals[k] > bestScore){ bestScore = totals[k]; best = [k]; }
+        else if(totals[k] === bestScore){ best.push(k); }
+      }
+      // pick randomly among ties
+      if(Array.isArray(best)) best = best[Math.floor(Math.random()*best.length)];
+      return { id: best, score: totals[best] };
+    }
+
+    // Wheel rendering (CSS conic-gradient segments + labels)
+    function renderWheel(){
+      const wheel = document.getElementById('wheel');
+      const keys = Object.keys(ACTIVITIES);
+      const colors = ['#ffd6d6','#ffdbae','#fff9d6','#e6fde6','#dff7f5','#e6f0ff','#f3e6ff','#ffd1e8','#fef0e6','#e9f7f0','#ffe6f2','#fff3d9','#dfe7ff','#f0f0f0'];
+      const segCount = keys.length;
+      const step = 100/segCount;
+      let grad = [];
+      for(let i=0;i<segCount;i++){
+        grad.push(`${colors[i%colors.length]} ${i*step}% ${(i+1)*step}%`);
+      }
+      wheel.style.background = `conic-gradient(${grad.join(',')})`;
+      // remove existing labels
+      wheel.querySelectorAll('.label').forEach(n=>n.remove());
+      // add labels positioned radially
+      for(let i=0;i<segCount;i++){
+        const el = document.createElement('div');
+        el.className = 'label';
+        const angle = (i*(360/segCount)) + (360/(segCount*2)); // center angle
+        const radius = (wheel.clientWidth/2)-40;
+        el.style.transform = `translate(-50%,-50%) rotate(${angle}deg) translate(${radius}px) rotate(${-angle}deg)`;
+        el.innerText = ACTIVITIES[keys[i]].label.split(' ')[0]; // short label
+        wheel.appendChild(el);
+      }
+      wheel.dataset.items = JSON.stringify(keys);
+    }
+
+    // Wheel spin logic
+    function spinWheel(){
+      const wheel = document.getElementById('wheel');
+      const keys = JSON.parse(wheel.dataset.items);
+      const seg = keys.length;
+      // random pick
+      const pickIndex = Math.floor(Math.random()*seg);
+      // compute rotation so that pickIndex lands near top pointer (0deg)
+      const degreesPerSeg = 360/seg;
+      const randomOffset = (Math.random()* (degreesPerSeg - 10)) - (degreesPerSeg/2) ; // jitter
+      const target = 360*4 + (360 - (pickIndex*degreesPerSeg + degreesPerSeg/2)) + randomOffset;
+      wheel.style.transition = 'transform 4s cubic-bezier(.17,.67,.03,.98)';
+      wheel.style.transform = `rotate(${target}deg)`;
+      return { pickIndex, target };
+    }
+
+    // Reset wheel rotation (instant)
+    function resetWheel(){
+      const wheel = document.getElementById('wheel');
+      wheel.style.transition = 'none';
+      wheel.style.transform = 'rotate(0deg)';
+      // force reflow
+      void wheel.offsetWidth;
+    }
+
+    // Init
+    loadState();
+    document.addEventListener('DOMContentLoaded', ()=> {
+      // Elements
+      const selectLang = document.getElementById('select-language');
+      const btnLangNext = document.getElementById('btn-lang-next');
+
+      const inputName = document.getElementById('input-name');
+      const btnNameNext = document.getElementById('btn-name-next');
+      const btnNamePrev = document.getElementById('btn-name-prev');
+
+      const selectColor = document.getElementById('select-color');
+      const btnColorNext = document.getElementById('btn-color-next');
+      const btnColorPrev = document.getElementById('btn-color-prev');
+
+      const selectFont = document.getElementById('select-font');
+      const btnFontNext = document.getElementById('btn-font-next');
+      const btnFontPrev = document.getElementById('btn-font-prev');
+      const funfact = document.getElementById('funfact');
+
+      const btnNo = document.getElementById('btn-no');
+      const btnYes = document.getElementById('btn-yes');
+      const noResponse = document.getElementById('no-response');
+      const btnInterestNext = document.getElementById('btn-interest-next');
+      const btnInterestPrev = document.getElementById('btn-interest-prev');
+
+      const btnCvPrev = document.getElementById('btn-cv-prev');
+      const btnCvNext = document.getElementById('btn-cv-next');
+
+      const factsGrid = document.getElementById('facts-grid');
+      const factMsg = document.getElementById('fact-msg');
+      const gameSuccess = document.getElementById('game-success');
+      const btn7Back = document.getElementById('btn-7-back');
+      const btn7Continue = document.getElementById('btn-7-continue');
+
+      const btnRouteQuestions = document.getElementById('btn-route-questions');
+      const btnRouteWheel = document.getElementById('btn-route-wheel');
+      const btn8Back = document.getElementById('btn-8-back');
+      const btn8Next = document.getElementById('btn-8-next');
+
+      const wheelEl = document.getElementById('wheel');
+      const spinBtn = document.getElementById('spin-btn');
+      const wheelRes = document.getElementById('wheel-selected');
+      const wheelReSpin = document.getElementById('wheel-respin');
+      const wheelContinue = document.getElementById('wheel-continue');
+      const spinsLeftEl = document.getElementById('spins-left');
+
+      const resultActivityEl = document.getElementById('result-activity');
+      const btn10Back = document.getElementById('btn-10-back');
+      const btn10Next = document.getElementById('btn-10-next');
+
+      const contactGrid = document.getElementById('contact-grid');
+      const contactSelected = document.getElementById('contact-selected');
+      const contactInput = document.getElementById('contact-input');
+      const contactLabel = document.getElementById('contact-label');
+      const contactValue = document.getElementById('contact-value');
+      const btn11Back = document.getElementById('btn-11-back');
+      const btn11Next = document.getElementById('btn-11-next');
+
+      const confirmMethodVal = document.getElementById('confirm-method-val');
+      const finalContact = document.getElementById('final-contact');
+      const btn12Back = document.getElementById('btn-12-back');
+      const btn12Next = document.getElementById('btn-12-next');
+
+      const btn13Next = document.getElementById('btn-13-next');
+      const psActivity = document.getElementById('ps-activity');
+      const btn14End = document.getElementById('btn-14-end');
+
+      // initialize selects from state
+      selectLang.value = state.lang;
+      inputName.value = state.name;
+      selectColor.value = state.color;
+      selectFont.value = state.font;
+      applyAll();
+
+      // Build questions
+      buildQuestionSteps();
+
+      // Wire language step
+      btnLangNext.addEventListener('click', ()=>{
+        let chosen = selectLang.value;
+        if(['sv','de','es','fr'].includes(chosen)){
+          state.lang = 'en';
+          showToast(T['fi'].toastLangChange, 3500);
+        } else {
+          state.lang = chosen;
+        }
+        saveState();
+        applyAll();
+        showStep(2);
+      });
+
+      // Name step
+      btnNameNext.addEventListener('click', ()=>{
+        const name = inputName.value.trim();
+        if(!name){ showToast(T[state.lang].nameReq); return; }
+        state.name = name;
+        saveState();
+        applyAll();
+        showStep(3);
+      });
+      btnNamePrev.addEventListener('click', ()=> showStep(1));
+
+      // Color step
+      selectColor.addEventListener('change', ()=>{
+        state.color = selectColor.value;
+        applyTheme();
+        saveState();
+      });
+      btnColorNext.addEventListener('click', ()=> { state.color = selectColor.value; saveState(); applyTheme(); showStep(4); });
+      btnColorPrev.addEventListener('click', ()=> showStep(2));
+
+      // Font step
+      selectFont.addEventListener('change', ()=>{
+        state.font = selectFont.value;
+        applyFont();
+        funfact.style.display = 'block';
+        funfact.textContent = FUNFACTS[state.font] || '';
+        saveState();
+      });
+      if(state.font){ funfact.style.display = 'block'; funfact.textContent = FUNFACTS[state.font] || ''; }
+      btnFontNext.addEventListener('click', ()=> { state.font = selectFont.value; saveState(); applyFont(); showStep(5); });
+      btnFontPrev.addEventListener('click', ()=> showStep(3));
+
+      // Interest step (force yes)
+      btnNo.addEventListener('click', ()=>{
+        noResponse.style.display = 'block';
+        noResponse.textContent = state.lang === 'fi' ? 'Tekninen virhe ilmenee — valitse toinen vaihtoehto.' : 'A technical error occurred — please choose the other option.';
+        state.interested = false;
+        btnInterestNext.style.display = 'none';
+        saveState();
+      });
+      btnYes.addEventListener('click', ()=>{
+        noResponse.style.display = 'none';
+        state.interested = true;
+        btnInterestNext.style.display = 'inline-block';
+        saveState();
+      });
+      btnInterestNext.addEventListener('click', ()=> {
+        if(state.interested !== true){ showToast(T[state.lang].chooseYesNo); return; }
+        showStep(6);
+      });
+      btnInterestPrev.addEventListener('click', ()=> showStep(4));
+
+      // CV intro
+      btnCvPrev.addEventListener('click', ()=> showStep(5));
+      btnCvNext.addEventListener('click', ()=> showStep(7));
+
+      // CV game rendering & logic
+      function renderFacts(){
+        factsGrid.innerHTML = '';
+        FACTS.forEach(f=>{
+          const b = document.createElement('button');
+          b.className = 'fact-btn';
+          b.id = f.id;
+          b.textContent = f.text;
+          b.type = 'button';
+          b.addEventListener('click', ()=> onFactClick(f.id));
+          factsGrid.appendChild(b);
+        });
+      }
+      let clicked = new Set();
+      function onFactClick(id){
+        if(clicked.has(id)) return;
+        const btn = document.getElementById(id);
+        btn.classList.add('clicked');
+        btn.disabled = true;
+        clicked.add(id);
+        factMsg.textContent = state.lang === 'fi' ? 'Tämä vaihtoehto on totta, yritä uudelleen.' : 'This option is true, try again.';
+        if(clicked.size === FACTS.length){
+          factMsg.textContent = '';
+          gameSuccess.style.display = 'block';
+          btn7Continue.style.display = 'inline-block';
+          state.cvGameDone = true;
+          saveState();
+        }
+      }
+      btn7Back.addEventListener('click', ()=> showStep(6));
+      btn7Continue.addEventListener('click', ()=> showStep(8));
+      renderFacts();
+      if(state.cvGameDone){
+        // mark clicked
+        FACTS.forEach(f=>{ const b=document.getElementById(f.id); if(b){ b.classList.add('clicked'); b.disabled=true; }});
+        gameSuccess.style.display = 'block';
+        btn7Continue.style.display = 'inline-block';
+        clicked = new Set(FACTS.map(f=>f.id));
+      }
+
+      // Activity route choice
+      btnRouteQuestions.addEventListener('click', ()=> {
+        // start first question
+        showQuestionStep(0);
+      });
+      btnRouteWheel.addEventListener('click', ()=> {
+        // init wheel
+        renderWheel();
+        resetWheel();
+        state.wheelSpins = 3;
+        document.getElementById('spins-left').textContent = state.wheelSpins;
+        wheelRes.textContent = 'Ei valintaa vielä';
+        wheelReSpin.style.display = 'none';
+        wheelContinue.style.display = 'none';
+        showStep(99);
+      });
+
+      btn8Back.addEventListener('click', ()=> showStep(7));
+      btn8Next.addEventListener('click', ()=> showStep(10));
+
+      // Questions dynamic handlers
+      function showQuestionStep(index){
+        const stepNum = 100 + index + 1; // as used in build
+        showStep(stepNum);
+        // attach handlers for that dynamic section
+        const sec = document.querySelector(`[data-step-dynamic="${stepNum}"]`);
+        if(!sec) return;
+        const qid = QUESTIONS[index].id;
+        const yesBtn = sec.querySelector('.yesno-yes');
+        const noBtn = sec.querySelector('.yesno-no');
+        const prevBtn = sec.querySelector('.btn-ques-prev');
+        const nextBtn = sec.querySelector('.btn-ques-next');
+
+        // set preselected if exists
+        if(state.answers[qid] === 'yes'){ yesBtn.classList.add('selected'); noBtn.classList.remove('selected'); }
+        else if(state.answers[qid] === 'no'){ noBtn.classList.add('selected'); yesBtn.classList.remove('selected'); }
+        else { yesBtn.classList.remove('selected'); noBtn.classList.remove('selected'); }
+
+        yesBtn.onclick = ()=> { state.answers[qid] = 'yes'; yesBtn.classList.add('selected'); noBtn.classList.remove('selected'); saveState(); };
+        noBtn.onclick = ()=> { state.answers[qid] = 'no'; noBtn.classList.add('selected'); yesBtn.classList.remove('selected'); saveState(); };
+
+        prevBtn.onclick = ()=> {
+          if(index === 0) showStep(8); else showQuestionStep(index-1);
+        };
+        nextBtn.onclick = ()=> {
+          if(!state.answers[qid]){ showToast(T[state.lang].chooseYesNo); return; }
+          if(index+1 < QUESTIONS.length) showQuestionStep(index+1);
+          else {
+            // compute best activity and show result step
+            const best = decideBestActivity();
+            state.chosenActivity = best.id;
+            saveState();
+            document.getElementById('result-activity').textContent = ACTIVITIES[best.id].label + ' (pisteet: ' + (best.score||0) + ')';
+            showStep(10);
+          }
+        };
+      }
+
+      // Wheel handlers
+      let wheelCurrentPick = null;
+      spinBtn.addEventListener('click', ()=>{
+        if(state.wheelSpins <= 0) return;
+        spinBtn.disabled = true;
+        const { pickIndex } = spinWheel();
+        // after animation ends (4s), compute pick
+        setTimeout(()=> {
+          const wheel = document.getElementById('wheel');
+          const keys = JSON.parse(wheel.dataset.items);
+          const chosen = keys[pickIndex];
+          state.chosenActivity = chosen;
+          wheelRes.textContent = ACTIVITIES[chosen].label;
+          wheelCurrentPick = chosen;
+          state.wheelSpins -= 1;
+          document.getElementById('spins-left').textContent = state.wheelSpins;
+          saveState();
+          spinBtn.disabled = false;
+          if(state.wheelSpins > 0){
+            wheelReSpin.style.display = 'inline-block';
+            wheelContinue.style.display = 'inline-block';
+          } else {
+            wheelReSpin.style.display = 'none';
+            wheelContinue.style.display = 'inline-block';
+          }
+        }, 4100);
+      });
+
+      wheelReSpin.addEventListener('click', ()=>{
+        // allow re-spin: reset wheel then spin
+        resetWheel();
+        setTimeout(()=> spinBtn.click(), 50);
+      });
+      wheelContinue.addEventListener('click', ()=> {
+        // show result page
+        if(!state.chosenActivity){ showToast('Valitse ensin aktiviteetti pyöräyttämällä.'); return; }
+        document.getElementById('result-activity').textContent = ACTIVITIES[state.chosenActivity].label + ' (onnenpyörä valinta)';
+        showStep(10);
+      });
+
+      // Result step
+      btn10Back.addEventListener('click', ()=>{
+        // go back to previous route selection
+        showStep(8);
+      });
+      btn10Next.addEventListener('click', ()=>{
+        if(!state.chosenActivity){ showToast('Valitse aktiviteetti ensin.'); return; }
+        // set PS activity for later
+        psActivity.textContent = ACTIVITIES[state.chosenActivity].label;
+        showStep(11);
+      });
+
+      // Contact selection
+      contactGrid.querySelectorAll('.contact-btn').forEach(b=>{
+        b.addEventListener('click', (e)=>{
+          const method = b.dataset.method;
+          if(method === 'smoke'){
+            // vanish with smoke animation and do NOT select
+            b.classList.add('smoke');
+            setTimeout(()=> b.style.display = 'none', 900);
+            return;
+          }
+          // select
+          state.contactMethod = method;
+          contactSelected.textContent = 'Valitsit: ' + (method === 'instagram' ? 'Instagram DM' : method === 'whatsapp' ? 'WhatsApp' : method === 'phone' ? 'Puhelinnumero' : method === 'email' ? 'Sähköposti' : 'Snapchat');
+          contactInput.style.display = 'block';
+          contactLabel.textContent = 'Anna ' + (method === 'phone' ? 'puhelinnumero' : method === 'email' ? 'sähköpostiosoite' : 'käyttäjänimi / tunnus');
+          btn11Next.style.display = 'inline-block';
+          saveState();
+        });
+      });
+
+      btn11Back.addEventListener('click', ()=> showStep(10));
+      btn11Next.addEventListener('click', ()=>{
+        const v = contactValue.value.trim();
+        if(!v){ showToast('Anna yhteystieto ennen jatkamista.'); return; }
+        state.contactValue = v;
+        saveState();
+        confirmMethodVal.textContent = contactSelected.textContent.replace('Valitsit: ','');
+        finalContact.value = v;
+        showStep(12);
+      });
+
+      // Confirm contact step
+      btn12Back.addEventListener('click', ()=> showStep(11));
+      btn12Next.addEventListener('click', ()=>{
+        const v = finalContact.value.trim();
+        if(!v){ showToast('Anna yhteystieto.'); return; }
+        state.contactValue = v;
+        saveState();
+        showStep(13);
+      });
+
+      btn13Next.addEventListener('click', ()=> showStep(14));
+      btn14End.addEventListener('click', ()=> {
+        showToast('Kiitos — täysi lopetus. Nähdään seuraavassa iteraatiossa!', 3000);
+        // optionally clear state or keep it
+      });
+
+      // Preserve name live
+      inputName.addEventListener('input', (e)=> { state.name = e.target.value; saveState(); applyAll(); });
+
+      // If we returned mid-flow, restore chosen activity display
+      if(state.chosenActivity){
+        document.getElementById('result-activity').textContent = ACTIVITIES[state.chosenActivity].label;
+        psActivity.textContent = ACTIVITIES[state.chosenActivity].label;
+      }
+
+      applyTheme();
+      applyFont();
+      applyAll();
+      renderWheel(); // prepare wheel labels
+      resetWheel();
+
+    }); // DOMContentLoaded end
+
+  })();
   </script>
 </body>
 </html>
