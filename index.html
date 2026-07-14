@@ -55,26 +55,11 @@
     .spin-controls { display:flex; gap:8px; flex-direction:column; }
 
     .contact-grid { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
-    .contact-btn { padding:10px 12px; border-radius:10px; background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); cursor:pointer; font-weight:700; color:#111; }
-    .contact-btn.selected { background:var(--accent); color:#fff; border-color:rgba(0,0,0,0.06); }
-
+    .contact-btn { padding:10px 12px; border-radius:10px; background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); cursor:pointer; font-weight:700; }
     .smoke { animation: smoke 900ms forwards; }
     @keyframes smoke { 0%{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); } 100%{ opacity:0; transform:translateY(-30px) scale(1.6); filter:blur(6px); } }
 
     .result-activity { margin-top:12px; padding:14px; background:#fff7e6; border-radius:10px; border:1px solid #ffe6c2; font-weight:700; }
-
-    .activity-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:12px; }
-    .activity-btn { padding:12px; border-radius:10px; background:#f7f7f7; border:1px solid rgba(0,0,0,0.06); cursor:pointer; font-weight:700; text-align:left; color:#111; }
-    .activity-btn.selected { background:var(--accent); color:white; }
-
-    /* Ensure all option-like buttons have dark text by default so they are readable on light backgrounds */
-    .choice-btn, .contact-btn, .fact-btn, .activity-btn, .yesno button {
-      color: #111 !important;
-    }
-    /* Keep selected/clicked states showing white text for contrast */
-    .choice-btn.selected, .activity-btn.selected, .yesno button.selected, .fact-btn.clicked, .contact-btn.selected {
-      color: #fff !important;
-    }
 
     .small{ font-size:13px; color:#555; }
     @media (max-width:900px){ .wheel { width:260px; height:260px; } }
@@ -432,4 +417,211 @@
       const confirmMethodVal = document.getElementById('confirm-method-val'), finalContact = document.getElementById('final-contact'), btn12Back = document.getElementById('btn-12-back'), btn12Next = document.getElementById('btn-12-next');
       const btn13Next = document.getElementById('btn-13-next'), psActivity = document.getElementById('ps-activity'), btn14End = document.getElementById('btn-14-end');
 
-      selectLang.value = state.lang; inputName.value = state.name; selectColor.value = state.color; selectFont.value = state.font; applyAll
+      selectLang.value = state.lang; inputName.value = state.name; selectColor.value = state.color; selectFont.value = state.font; applyAll();
+
+      buildQuestionSteps();
+
+      // Language
+      btnLangNext.addEventListener('click', ()=> {
+        let chosen = selectLang.value;
+        if(['sv','de','es','fr'].includes(chosen)){ state.lang = 'en'; showToast(T['fi'].toastLangChange, 3500); } else state.lang = chosen;
+        saveState(); applyAll(); showStep(2);
+      });
+
+      // Name
+      btnNameNext.addEventListener('click', ()=> {
+        const name = inputName.value.trim(); if(!name){ showToast(T[state.lang].nameReq); return; }
+        state.name = name; saveState(); applyAll(); showStep(3);
+      });
+      btnNamePrev.addEventListener('click', ()=> showStep(1));
+
+      // Color
+      selectColor.addEventListener('change', ()=> { state.color = selectColor.value; applyTheme(); saveState(); });
+      btnColorNext.addEventListener('click', ()=> { state.color = selectColor.value; saveState(); applyTheme(); showStep(4); });
+      btnColorPrev.addEventListener('click', ()=> showStep(2));
+
+      // Font
+      selectFont.addEventListener('change', ()=> { state.font = selectFont.value; applyFont(); funfact.style.display = 'block'; funfact.textContent = FUNFACTS[state.font] || ''; saveState(); });
+      if(state.font){ funfact.style.display = 'block'; funfact.textContent = FUNFACTS[state.font] || ''; }
+      btnFontNext.addEventListener('click', ()=> { state.font = selectFont.value; saveState(); applyFont(); showStep(5); });
+      btnFontPrev.addEventListener('click', ()=> showStep(3));
+
+      // Interest
+      btnNo.addEventListener('click', ()=> { noResponse.style.display = 'block'; noResponse.textContent = state.lang === 'fi' ? 'Tekninen virhe ilmenee — valitse toinen vaihtoehto.' : 'A technical error occurred — please choose the other option.'; state.interested = false; btnInterestNext.style.display = 'none'; saveState(); });
+      btnYes.addEventListener('click', ()=> { noResponse.style.display = 'none'; state.interested = true; btnInterestNext.style.display = 'inline-block'; saveState(); });
+      btnInterestNext.addEventListener('click', ()=> { if(state.interested !== true){ showToast(T[state.lang].chooseYesNo); return; } showStep(6); });
+      btnInterestPrev.addEventListener('click', ()=> showStep(4));
+
+      // CV intro
+      btnCvPrev.addEventListener('click', ()=> showStep(5));
+      btnCvNext.addEventListener('click', ()=> showStep(7));
+
+      // CV game
+      function renderFacts(){ factsGrid.innerHTML = ''; FACTS.forEach(f=>{ const b = document.createElement('button'); b.className = 'fact-btn'; b.id = f.id; b.textContent = f.text; b.type = 'button'; b.addEventListener('click', ()=> onFactClick(f.id)); factsGrid.appendChild(b); }); }
+      let clicked = new Set();
+      function onFactClick(id){ if(clicked.has(id)) return; const btn = document.getElementById(id); btn.classList.add('clicked'); btn.disabled = true; clicked.add(id); factMsg.textContent = state.lang === 'fi' ? 'Tämä vaihtoehto on totta, yritä uudelleen.' : 'This option is true, try again.'; if(clicked.size === FACTS.length){ factMsg.textContent = ''; gameSuccess.style.display = 'block'; btn7Continue.style.display = 'inline-block'; state.cvGameDone = true; saveState(); } }
+      btn7Back.addEventListener('click', ()=> showStep(6));
+      btn7Continue.addEventListener('click', ()=> showStep(8));
+      renderFacts();
+      if(state.cvGameDone){ FACTS.forEach(f=>{ const b = document.getElementById(f.id); if(b){ b.classList.add('clicked'); b.disabled = true; }}); gameSuccess.style.display = 'block'; btn7Continue.style.display = 'inline-block'; clicked = new Set(FACTS.map(f=>f.id)); }
+
+      // Activity routing
+      btnRouteQuestions.addEventListener('click', ()=> { showQuestionStep(0); });
+      btnRouteWheel.addEventListener('click', ()=> { renderWheel(); resetWheel(); state.wheelSpins = 3; document.getElementById('spins-left').textContent = state.wheelSpins; wheelRes.textContent = 'Ei valintaa vielä'; wheelReSpin.style.display = 'none'; wheelContinue.style.display = 'none'; showStep(99); });
+      btn8Back.addEventListener('click', ()=> showStep(7));
+
+      // Question dynamic logic
+      function showQuestionStep(index){
+        const stepNum = 100 + index + 1;
+        showStep(stepNum);
+        const sec = document.querySelector(`[data-step-dynamic="${stepNum}"]`);
+        if(!sec) return;
+        const qid = QUESTIONS[index].id;
+        const yesBtn = sec.querySelector('.yesno-yes');
+        const noBtn = sec.querySelector('.yesno-no');
+        const prevBtn = sec.querySelector('.btn-ques-prev');
+        const nextBtn = sec.querySelector('.btn-ques-next');
+
+        if(state.answers[qid] === 'yes'){ yesBtn.classList.add('selected'); noBtn.classList.remove('selected'); }
+        else if(state.answers[qid] === 'no'){ noBtn.classList.add('selected'); yesBtn.classList.remove('selected'); }
+        else { yesBtn.classList.remove('selected'); noBtn.classList.remove('selected'); }
+
+        yesBtn.onclick = ()=> { state.answers[qid] = 'yes'; yesBtn.classList.add('selected'); noBtn.classList.remove('selected'); saveState(); };
+        noBtn.onclick = ()=> { state.answers[qid] = 'no'; noBtn.classList.add('selected'); yesBtn.classList.remove('selected'); saveState(); };
+
+        prevBtn.onclick = ()=> { if(index === 0) showStep(8); else showQuestionStep(index-1); };
+        nextBtn.onclick = ()=> {
+          if(!state.answers[qid]){ showToast(T[state.lang].chooseYesNo); return; }
+          if(index+1 < QUESTIONS.length) showQuestionStep(index+1);
+          else {
+            const best = decideBestActivity();
+            state.chosenActivity = best.id;
+            saveState();
+            // show result with the requested compliment text
+            const activityLabel = ACTIVITIES[best.id].label;
+            if(state.lang === 'fi'){
+              resultActivityEl.textContent = `${activityLabel}`;
+              resultActivitySub.textContent = `Noniin ${state.name || ''}, valitsit siis ${activityLabel}, loistava päätös, en olisi itse osannut valita paremmin. Olet selvästi päätöksentekijä!`;
+            } else {
+              resultActivityEl.textContent = `${activityLabel}`;
+              resultActivitySub.textContent = `Alright ${state.name || ''}, you chose ${activityLabel} — great choice, I couldn't have picked better. You are clearly decisive!`;
+            }
+            showStep(10);
+          }
+        };
+      }
+
+      // Wheel logic
+      let wheelCurrentPick = null;
+      spinBtn.addEventListener('click', ()=>{
+        if(state.wheelSpins <= 0) return;
+        spinBtn.disabled = true;
+        const { pickIndex } = spinWheel();
+        setTimeout(()=> {
+          const wheel = document.getElementById('wheel');
+          const keys = JSON.parse(wheel.dataset.items);
+          const chosen = keys[pickIndex];
+          state.chosenActivity = chosen;
+          wheelRes.textContent = ACTIVITIES[chosen].label;
+          wheelCurrentPick = chosen;
+          state.wheelSpins -= 1;
+          document.getElementById('spins-left').textContent = state.wheelSpins;
+          saveState();
+          spinBtn.disabled = false;
+          if(state.wheelSpins > 0){
+            wheelReSpin.style.display = 'inline-block';
+            wheelContinue.style.display = 'inline-block';
+          } else {
+            wheelReSpin.style.display = 'none';
+            wheelContinue.style.display = 'inline-block';
+          }
+        }, 4100);
+      });
+
+      wheelReSpin.addEventListener('click', ()=> { resetWheel(); setTimeout(()=> spinBtn.click(), 50); });
+      wheelContinue.addEventListener('click', ()=> {
+        if(!state.chosenActivity){ showToast('Valitse ensin aktiviteetti pyöräyttämällä.'); return; }
+        const activityLabel = ACTIVITIES[state.chosenActivity].label;
+        if(state.lang === 'fi'){
+          resultActivityEl.textContent = `${activityLabel}`;
+          resultActivitySub.textContent = `Noniin ${state.name || ''}, valitsit siis ${activityLabel}, loistava päätös, en olisi itse osannut valita paremmin. Olet selvästi päätöksentekijä!`;
+        } else {
+          resultActivityEl.textContent = `${activityLabel}`;
+          resultActivitySub.textContent = `Alright ${state.name || ''}, you chose ${activityLabel} — great choice, I couldn't have picked better. You are clearly decisive!`;
+        }
+        showStep(10);
+      });
+
+      // Result step
+      btn10Back.addEventListener('click', ()=> showStep(8));
+      btn10Next.addEventListener('click', ()=> {
+        if(!state.chosenActivity){ showToast('Valitse aktiviteetti ensin.'); return; }
+        psActivity.textContent = ACTIVITIES[state.chosenActivity].label;
+        showStep(11);
+      });
+
+      // Contact
+      contactGrid.querySelectorAll('.contact-btn').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const method = b.dataset.method;
+          if(method === 'smoke'){
+            b.classList.add('smoke');
+            setTimeout(()=> b.style.display = 'none', 900);
+            return;
+          }
+          state.contactMethod = method;
+          contactSelected.textContent = 'Valitsit: ' + (method === 'instagram' ? 'Instagram DM' : method === 'whatsapp' ? 'WhatsApp' : method === 'phone' ? 'Puhelinnumero' : method === 'email' ? 'Sähköposti' : 'Snapchat');
+          contactInput.style.display = 'block';
+          contactLabel.textContent = 'Anna ' + (method === 'phone' ? 'puhelinnumero' : method === 'email' ? 'sähköpostiosoite' : 'käyttäjänimi / tunnus');
+          btn11Next.style.display = 'inline-block';
+          saveState();
+        });
+      });
+
+      btn11Back.addEventListener('click', ()=> showStep(10));
+      btn11Next.addEventListener('click', ()=> {
+        const v = contactValue.value.trim();
+        if(!v){ showToast('Anna yhteystieto ennen jatkamista.'); return; }
+        state.contactValue = v;
+        saveState();
+        document.getElementById('confirm-method-val').textContent = contactSelected.textContent.replace('Valitsit: ','');
+        finalContact.value = v;
+        showStep(12);
+      });
+
+      // Confirm contact step
+      btn12Back.addEventListener('click', ()=> showStep(11));
+      btn12Next.addEventListener('click', ()=> {
+        const v = finalContact.value.trim();
+        if(!v){ showToast('Anna yhteystieto.'); return; }
+        state.contactValue = v;
+        saveState();
+        showStep(13);
+      });
+
+      btn13Next.addEventListener('click', ()=> showStep(14));
+      btn14End.addEventListener('click', ()=> {
+        showToast('Kiitos — täysi lopetus. Nähdään seuraavassa iteraatiossa!', 3000);
+      });
+
+      inputName.addEventListener('input', (e)=> { state.name = e.target.value; saveState(); applyAll(); });
+
+      if(state.chosenActivity){
+        // if returning mid-flow, populate result message so user sees it at result step
+        const activityLabel = ACTIVITIES[state.chosenActivity].label;
+        if(state.lang === 'fi'){
+          resultActivityEl.textContent = `${activityLabel}`;
+          resultActivitySub.textContent = `Noniin ${state.name || ''}, valitsit siis ${activityLabel}, loistava päätös, en olisi itse osannut valita paremmin. Olet selvästi päätöksentekijä!`;
+        } else {
+          resultActivityEl.textContent = `${activityLabel}`;
+          resultActivitySub.textContent = `Alright ${state.name || ''}, you chose ${activityLabel} — great choice, I couldn't have picked better. You are clearly decisive!`;
+        }
+        psActivity.textContent = activityLabel;
+      }
+
+      applyTheme(); applyFont(); applyAll(); renderWheel(); resetWheel();
+    });
+  })();
+  </script>
+</body>
+</html>
