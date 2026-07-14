@@ -1,117 +1,116 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name: 1;  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        transform: translateY(0);
-      }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>What do we do on a first date?</title>
+  <style>
+    :root{
+      --bg-start: #ffffff;
+      --bg-end: #ffffff;
+      --fg: #111;
+      --accent: #ff6b6b;
+      --content-width: 720px;
     }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      padding: 32px;
-      backdrop-filter: blur(10px);
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      color:var(--fg);
+      background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
+      transition: background 600ms ease, color 300ms ease;
     }
-
-    h1 {
-      margin-top: 0;
-      line-height: 1.15;
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 20px;
+      box-sizing:border-box;
     }
-
-    p {
-      line-height: 1.6;
+    .card{
+      width:100%;
+      max-width:var(--content-width);
+      background: rgba(255,255,255,0.85);
+      box-shadow: 0 6px 30px rgba(12,12,12,0.12);
+      border-radius:14px;
+      padding:28px;
+      box-sizing:border-box;
+      backdrop-filter: blur(4px);
     }
-
-    label {
-      display: block;
-      font-weight: 700;
-      margin: 16px 0 8px;
+    h1{ margin:0 0 12px 0; font-size:22px; }
+    p.lead{ margin:6px 0 18px 0; color:#333; }
+    .step{ display:none; }
+    .step.active{ display:block; }
+    .controls{ margin-top:18px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    button, .big-btn {
+      background:var(--accent);
+      color:white;
+      border:none;
+      padding:10px 16px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
-
-    input,
-    select {
-      width: 100%;
-      padding: 14px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      font-size: 1rem;
-      background: white;
+    button.secondary, .secondary {
+      background:transparent;
+      color:var(--accent);
+      border:2px solid var(--accent);
     }
-
-    button {
-      margin-top: 20px;
-      border: none;
-      border-radius: 14px;
-      padding: 14px 18px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      background: var(--accent);
-      color: white;
-      transition: background 180ms ease, transform 120ms ease;
+    input[type="text"], select {
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      min-width:220px;
+      font-size:16px;
     }
-
-    button:hover {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
+    label{ display:block; margin-bottom:6px; font-weight:600; }
+    .hint{ color:#666; font-size:14px; margin-top:8px; }
+    .funfact{
+      margin-top:12px;
+      padding:12px;
+      background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.01));
+      border-radius:8px;
+      border:1px dashed rgba(0,0,0,0.06);
     }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 20px;
+    .toast{
+      display:none;
+      padding:10px 12px;
+      background:#111;
+      color:#fff;
+      border-radius:8px;
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      z-index:999;
+      opacity:0;
+      transition:opacity 300ms ease;
     }
-
-    .secondary {
-      background: var(--secondary);
-      color: var(--text);
+    .toast.show{ display:block; opacity:1; }
+    .choice-grid{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .choice-btn {
+      background:#eee; color:#111; border:none; padding:12px 14px; border-radius:10px; cursor:pointer; font-weight:600;
     }
-
-    .secondary:hover {
-      background: rgba(0, 0, 0, 0.14);
-    }
-
-    .message {
-      margin-top: 16px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid var(--border);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .fact-box {
-      margin-top: 18px;
-      padding: 16px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.85);
-    }
-
-    .small-note {
-      color: var(--muted);
-      font-size: 0.95rem;
+    .polite-box { padding:12px; background:#fff4e6; border-radius:8px; border:1px solid #ffe6c2; margin-top:12px; }
+    .small{ font-size:13px; color:#555; }
+    @media (max-width:600px){
+      .card{ padding:18px; border-radius:12px; }
+      h1{ font-size:18px; }
     }
   </style>
 </head>
-
 <body>
-  <main id="app">
-    <!-- STEP 1 -->
-    <section class="step active" id="step-1">
-      <div class="card">
-        <h1>Valitse kieli</h1>
-        <p>Aloitetaan aivan rauhallisesti.</p>
+  <div class="wrap">
+    <div class="card" role="main">
+      <h1 id="title">Mitä tehdä ensitreffeillä?</h1>
+      <p class="lead" id="subtitle">Kevyt ja flirttaileva askel-askeleelta -kysely.</p>
 
-        <label for="languageSelect">Kieli</label>
-        <select id="languageSelect">
+      <!-- Step 1: Language -->
+      <section class="step active" data-step="1" id="step-1">
+        <label id="label-language">Valitse kieli / Choose language</label>
+        <select id="select-language" aria-label="Kieli">
           <option value="fi">Suomi</option>
           <option value="en">English</option>
           <option value="sv">Svenska</option>
@@ -120,330 +119,426 @@
           <option value="fr">Français</option>
         </select>
 
-        <div id="languageMessage" class="message hidden"></div>
+        <div class="controls">
+          <button id="btn-lang-next">Jatka</button>
+        </div>
+      </section>
 
-        <button id="step1Btn">Jatka</button>
-      </div>
-    </section>
+      <!-- Step 2: Name -->
+      <section class="step" data-step="2" id="step-2">
+        <label id="label-name">Kuka sinä olet?</label>
+        <input type="text" id="input-name" placeholder="Kirjoita nimesi..." />
+        <div class="hint" id="hint-name">Nimesi tallennetaan vain paikallisesti selaimeesi.</div>
+        <div class="controls">
+          <button id="btn-name-prev" class="secondary">Takaisin</button>
+          <button id="btn-name-next">Jatka</button>
+        </div>
+      </section>
 
-    <!-- STEP 2 -->
-    <section class="step" id="step-2">
-      <div class="card">
-        <h1>Kuka sinä olet?</h1>
-        <p>Voit kirjoittaa nimesi tähän.</p>
-
-        <label for="nameInput">Nimi</label>
-        <input id="nameInput" type="text" placeholder="Kirjoita nimesi" />
-
-        <div id="nameMessage" class="message hidden"></div>
-
-        <button id="step2Btn">Jatka</button>
-      </div>
-    </section>
-
-    <!-- STEP 3 -->
-    <section class="step" id="step-3">
-      <div class="card">
-        <h1 id="colorTitle">Muokataan vielä muutamaa asetusta</h1>
-        <p>Valitse lempivärisi. Tausta muuttuu valinnan mukaan.</p>
-
-        <label for="colorSelect">Mikä on lempivärisi?</label>
-        <select id="colorSelect">
-          <option value="">Valitse väri</option>
-          <option value="blue">Sininen / Blue</option>
-          <option value="green">Vihreä / Green</option>
-          <option value="red">Punainen / Red</option>
-          <option value="purple">Violetti / Purple</option>
-          <option value="pink">Pinkki / Pink</option>
-          <option value="orange">Oranssi / Orange</option>
-          <option value="yellow">Keltainen / Yellow</option>
-          <option value="gray">Harmaa / Gray</option>
-          <option value="black">Musta / Black</option>
+      <!-- Step 3: Color -->
+      <section class="step" data-step="3" id="step-3">
+        <label id="label-color">Mikä on lempivärisi?</label>
+        <select id="select-color" aria-label="Lempiväri">
+          <option value="pink">Pink</option>
+          <option value="red">Red</option>
+          <option value="orange">Orange</option>
+          <option value="yellow">Yellow</option>
+          <option value="green">Green</option>
+          <option value="teal">Teal</option>
+          <option value="blue">Blue</option>
+          <option value="purple">Purple</option>
+          <option value="grad-sunset">Sunset (gradient)</option>
+          <option value="grad-teal">Teal Wave (gradient)</option>
         </select>
 
-        <div id="colorMessage" class="message hidden"></div>
+        <div class="hint" id="hint-color">Valitun värin pitäisi näkyä taustassa.</div>
 
-        <button id="step3Btn">Jatka</button>
-      </div>
-    </section>
+        <div class="controls">
+          <button id="btn-color-prev" class="secondary">Takaisin</button>
+          <button id="btn-color-next">Jatka</button>
+        </div>
+      </section>
 
-    <!-- STEP 4 -->
-    <section class="step" id="step-4">
-      <div class="card">
-        <h1>Valitaan vielä fontti</h1>
-        <p>Harkitse tarkkaan, tämä valinta kertoo paljon sinusta ihmisenä.</p>
-
-        <label for="fontSelect">Lempifontti</label>
-        <select id="fontSelect">
-          <option value="">Valitse fontti</option>
-          <option value="Arial, sans-serif">Arial</option>
-          <option value="'Times New Roman', serif">Times New Roman</option>
-          <option value="Calibri, sans-serif">Calibri</option>
-          <option value="'Aptos', Arial, sans-serif">Aptos</option>
+      <!-- Step 4: Font -->
+      <section class="step" data-step="4" id="step-4">
+        <label id="label-font">Mikä on lempi fonttisi, harkitse tarkkaan?</label>
+        <select id="select-font" aria-label="Fontti">
+          <option value="Arial">Arial</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Calibri">Calibri</option>
+          <option value="Aptos">Aptos</option>
         </select>
 
-        <div id="fontMessage" class="message hidden"></div>
+        <div id="funfact" class="funfact" style="display:none;"></div>
 
-        <div id="fontFactBox" class="fact-box hidden">
-          <strong>Tiesitkö!</strong>
-          <p id="fontFactText"></p>
+        <div class="controls">
+          <button id="btn-font-prev" class="secondary">Takaisin</button>
+          <button id="btn-font-next">Jatka</button>
+        </div>
+      </section>
+
+      <!-- Step 5: Interest -->
+      <section class="step" data-step="5" id="step-5">
+        <h2 id="interest-title">Haluatko jatkaa?</h2>
+        <p id="interest-text">Valitse kumpi: kiltti lopetus tai rohkea jatko.</p>
+
+        <div class="choice-grid">
+          <button id="btn-no" class="choice-btn">Kiitos mutta ei kiitos</button>
+          <button id="btn-yes" class="choice-btn">No miksipäs ei</button>
         </div>
 
-        <button id="step4Btn">Jatka</button>
-      </div>
-    </section>
+        <div id="no-response" class="polite-box" style="display:none;"></div>
 
-    <!-- STEP 5 -->
-    <section class="step" id="step-5">
-      <div class="card">
-        <h1>Nyt päästään itse aiheeseen</h1>
-        <p id="interestText"></p>
-
-        <div class="btn-row">
-          <button class="secondary" id="declineBtn">Kiitos mutta ei kiitos</button>
-          <button id="acceptBtn">No miksipäs ei…</button>
+        <div class="controls" style="margin-top:14px;">
+          <button id="btn-interest-prev" class="secondary">Takaisin</button>
+          <button id="btn-interest-next" style="display:none;">Jatka</button>
         </div>
+      </section>
 
-        <div id="declineMessage" class="message hidden"></div>
-      </div>
-    </section>
+      <!-- Step 6: Intro CV -->
+      <section class="step" data-step="6" id="step-6">
+        <h2 id="cv-intro-title">Intro CV</h2>
+        <p id="cv-intro-text">Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa. Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä paremmin. Mennään seuraavalle sivulle, niin näytän CV:ni ja pelataan 2 totuutta ja 1 valhe peliä!</p>
 
-    <!-- STEP 6 -->
-    <section class="step" id="step-6">
-      <div class="card">
-        <h1>Mukava nähdä, että mielenkiintosi voitti</h1>
-        <p>
-          Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle,
-          sallinette minun esittäytyä paremmin.
-        </p>
-        <p class="small-note">
-          Seuraavaksi rakennetaan tähän CV-sivu ja totuus/valhe-peli.
-        </p>
-      </div>
-    </section>
-  </main>
+        <div class="controls">
+          <button id="btn-cv-prev" class="secondary">Takaisin</button>
+          <button id="btn-cv-next">Jatka CV:hen (seuraavassa iteraatiossa)</button>
+        </div>
+      </section>
+
+      <!-- Placeholder step: Next (not part of the requested set) -->
+      <section class="step" data-step="7" id="step-7" aria-hidden="true">
+        <h2>CV & Peli: tulossa</h2>
+        <p>CV-sivu ja "4 totuutta ja 1 valhe" -peli lisätään seuraavassa iteraatiossa. Kiitos kun kokeilit!</p>
+        <div class="controls">
+          <button id="btn-7-back" class="secondary">Takaisin</button>
+          <button id="btn-7-done">Valmis</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
 
   <script>
-    const state = {
-      name: "",
-      language: "fi",
-      color: "",
-      font: ""
-    };
+    (function(){
+      // Translations for fi and en
+      const T = {
+        fi: {
+          title: "Mitä tehdä ensitreffeillä?",
+          subtitle: "Kevyt ja flirttaileva askel-askeleelta -kysely.",
+          langLabel: "Valitse kieli",
+          langNext: "Jatka",
+          nameLabel: "Kuka sinä olet?",
+          nameNext: "Jatka",
+          namePrev: "Takaisin",
+          namePlaceholder: "Kirjoita nimesi...",
+          colorLabel: "Mikä on lempivärisi?",
+          colorNext: "Jatka",
+          fontLabel: "Mikä on lempi fonttisi, harkitse tarkkaan?",
+          fontNext: "Jatka",
+          interestTitle: "Haluatko jatkaa?",
+          interestText: "Valitse kumpi: kohtelias lopetus tai rohkea jatko.",
+          noText: "Kiitos mutta ei kiitos",
+          yesText: "No miksipäs ei",
+          politeClose: "Se on täysin ok — kiitos, että kävit!",
+          cvIntroTitle: "Intro CV",
+          cvIntroText: "Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa. Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä paremmin. Mennään seuraavalle sivulle, niin näytän CV:ni ja pelataan 2 totuutta ja 1 valhe peliä!",
+          cvNext: "Jatka CV:hen (seuraavassa iteraatiossa)",
+          errorChooseYesNo: "Valitse kyllä tai ei ennen jatkamista."
+        },
+        en: {
+          title: "What do we do on a first date?",
+          subtitle: "A light, slightly flirty step-by-step site.",
+          langLabel: "Choose language",
+          langNext: "Continue",
+          nameLabel: "Who are you?",
+          nameNext: "Continue",
+          namePrev: "Back",
+          namePlaceholder: "Type your name...",
+          colorLabel: "What's your favorite color?",
+          colorNext: "Continue",
+          fontLabel: "What's your favorite font, choose wisely?",
+          fontNext: "Continue",
+          interestTitle: "Are you interested?",
+          interestText: "Choose: a polite goodbye or a bold continue.",
+          noText: "Thanks, no thanks",
+          yesText: "Well, why not",
+          politeClose: "That's totally fine — thanks for stopping by!",
+          cvIntroTitle: "Intro CV",
+          cvIntroText: "Nice that you decided to continue. Before the big questions, let me introduce myself. Next we'll see my CV and a little truth-or-lie game!",
+          cvNext: "Continue to CV (next iteration)",
+          errorChooseYesNo: "Choose yes or no before continuing."
+        }
+      };
 
-    const colorThemes = {
-      blue: ["#dff1ff", "#b9d8ff"],
-      green: ["#e7f7e8", "#c6efce"],
-      red: ["#ffe6e6", "#ffc9c9"],
-      purple: ["#f1e7ff", "#dcc8ff"],
-      pink: ["#ffe8f4", "#ffd1e8"],
-      orange: ["#fff0e0", "#ffd6ad"],
-      yellow: ["#fffbe0", "#fff0a8"],
-      gray: ["#f4f4f4", "#dddddd"],
-      black: ["#f0f0f0", "#cfcfcf"]
-    };
+      // Fun facts for fonts
+      const FUNFACTS = {
+        "Arial": "Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.",
+        "Times New Roman": "Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.",
+        "Calibri": "Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.",
+        "Aptos": "Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa."
+      };
 
-    const fontFacts = {
-      "Arial, sans-serif":
-        "Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.",
-      "'Times New Roman', serif":
-        "Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.",
-      "Calibri, sans-serif":
-        "Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.",
-      "'Aptos', Arial, sans-serif":
-        "Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa."
-    };
+      // Color mapping to CSS gradients/values
+      const COLOR_MAP = {
+        pink: ['#ffd1e8','#ffe6f5'],
+        red: ['#ffd6d6','#ffb3b3'],
+        orange: ['#fff0d1','#ffdbae'],
+        yellow: ['#fff9d6','#fff0a8'],
+        green: ['#e6fde6','#d2f7d2'],
+        teal: ['#dff7f5','#c9f0ec'],
+        blue: ['#e6f0ff','#d7e8ff'],
+        purple: ['#f3e6ff','#e9ddff'],
+        'grad-sunset': ['#ff9a9e','#fecfef'],
+        'grad-teal': ['#a8edea','#fed6e3']
+      };
 
-    function showStep(stepId) {
-      document.querySelectorAll(".step").forEach((step) => {
-        step.classList.remove("active");
+      // State handling
+      let state = {
+        lang: 'fi',
+        name: '',
+        color: 'blue',
+        font: 'Arial',
+        interested: null
+      };
+
+      const save = () => localStorage.setItem('datingAppState', JSON.stringify(state));
+      const load = () => {
+        const raw = localStorage.getItem('datingAppState');
+        if(raw) {
+          try{ Object.assign(state, JSON.parse(raw)); }catch(e){}
+        }
+      };
+
+      // UI elements
+      const steps = Array.from(document.querySelectorAll('.step'));
+      const toast = document.getElementById('toast');
+
+      function showToast(text, ms=3000){
+        toast.textContent = text;
+        toast.classList.add('show');
+        setTimeout(()=> toast.classList.remove('show'), ms);
+      }
+
+      function showStep(n){
+        steps.forEach(s => s.classList.toggle('active', +s.dataset.step === n));
+        // set focus for accessibility
+        const active = document.querySelector('.step.active');
+        if(active) active.querySelector('select, input, button')?.focus();
+      }
+
+      function applyTheme(){
+        const pair = COLOR_MAP[state.color] || COLOR_MAP.blue;
+        document.documentElement.style.setProperty('--bg-start', pair[0]);
+        document.documentElement.style.setProperty('--bg-end', pair[1] || pair[0]);
+        // accent color based on color (simple)
+        document.documentElement.style.setProperty('--accent', state.color === 'yellow' ? '#ffb703' : '#ff6b6b');
+      }
+
+      function applyFont(){
+        // Map to CSS font-family
+        let fam = 'Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif';
+        if(state.font === 'Times New Roman') fam = '"Times New Roman", Times, serif';
+        if(state.font === 'Calibri') fam = 'Calibri, Candara, Segoe, "Segoe UI", sans-serif';
+        if(state.font === 'Aptos') fam = 'Aptos, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif';
+        document.body.style.fontFamily = fam;
+      }
+
+      function applyAll(){
+        applyTheme();
+        applyFont();
+        // update name-based text
+        const name = state.name || '';
+        document.getElementById('subtitle').textContent = T[state.lang].subtitle;
+        // Update some labels per language
+        document.getElementById('title').textContent = T[state.lang].title;
+        document.getElementById('label-language').textContent = T[state.lang].langLabel;
+        document.getElementById('btn-lang-next').textContent = T[state.lang].langNext;
+
+        document.getElementById('label-name').textContent = T[state.lang].nameLabel;
+        document.getElementById('input-name').placeholder = T[state.lang].namePlaceholder;
+        document.getElementById('btn-name-next').textContent = T[state.lang].nameNext;
+        document.getElementById('btn-name-prev').textContent = T[state.lang].namePrev;
+
+        document.getElementById('label-color').textContent = T[state.lang].colorLabel;
+        document.getElementById('btn-color-next').textContent = T[state.lang].colorNext;
+        document.getElementById('label-font').textContent = T[state.lang].fontLabel;
+        document.getElementById('btn-font-next').textContent = T[state.lang].fontNext;
+
+        document.getElementById('interest-title').textContent = T[state.lang].interestTitle;
+        document.getElementById('interest-text').textContent = T[state.lang].interestText;
+        document.getElementById('btn-no').textContent = T[state.lang].noText;
+        document.getElementById('btn-yes').textContent = T[state.lang].yesText;
+        document.getElementById('btn-interest-prev').textContent = T[state.lang].namePrev;
+        document.getElementById('btn-interest-next').textContent = T[state.lang].langNext;
+
+        document.getElementById('cv-intro-title').textContent = T[state.lang].cvIntroTitle;
+        document.getElementById('cv-intro-text').textContent = T[state.lang].cvIntroText;
+        document.getElementById('btn-cv-next').textContent = T[state.lang].cvNext;
+
+        // If we have a name, personalize some text
+        if(name){
+          const cv = document.getElementById('cv-intro-text');
+          cv.textContent = (state.lang === 'fi' ?
+            `Terve ${name}, ${T[state.lang].cvIntroText}` :
+            `Hey ${name}, ${T[state.lang].cvIntroText}`);
+        }
+      }
+
+      // Load state and initialize UI values
+      load();
+      // set UI selects to state after DOM is ready
+      document.addEventListener('DOMContentLoaded',()=>{
+        // Elements
+        const selectLang = document.getElementById('select-language');
+        const btnLangNext = document.getElementById('btn-lang-next');
+
+        const inputName = document.getElementById('input-name');
+        const btnNameNext = document.getElementById('btn-name-next');
+        const btnNamePrev = document.getElementById('btn-name-prev');
+
+        const selectColor = document.getElementById('select-color');
+        const btnColorNext = document.getElementById('btn-color-next');
+        const btnColorPrev = document.getElementById('btn-color-prev');
+
+        const selectFont = document.getElementById('select-font');
+        const btnFontNext = document.getElementById('btn-font-next');
+        const btnFontPrev = document.getElementById('btn-font-prev');
+        const funfact = document.getElementById('funfact');
+
+        const btnNo = document.getElementById('btn-no');
+        const btnYes = document.getElementById('btn-yes');
+        const noResponse = document.getElementById('no-response');
+        const btnInterestNext = document.getElementById('btn-interest-next');
+        const btnInterestPrev = document.getElementById('btn-interest-prev');
+
+        const btnCvPrev = document.getElementById('btn-cv-prev');
+        const btnCvNext = document.getElementById('btn-cv-next');
+
+        // Set initial UI to state
+        selectLang.value = state.lang;
+        inputName.value = state.name;
+        selectColor.value = state.color;
+        selectFont.value = state.font;
+
+        applyAll();
+
+        // Language step
+        btnLangNext.addEventListener('click', ()=>{
+          let chosen = selectLang.value;
+          // If chosen is one of sv/de/es/fr -> auto switch to English and show joke message
+          if(['sv','de','es','fr'].includes(chosen)){
+            state.lang = 'en';
+            showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 4000);
+          } else {
+            state.lang = chosen;
+          }
+          save();
+          applyAll();
+          showStep(2);
+        });
+
+        // Name step
+        btnNameNext.addEventListener('click', ()=>{
+          const name = inputName.value.trim();
+          if(!name){
+            showToast(state.lang === 'fi' ? 'Kirjoita nimesi ennen jatkamista.' : 'Please type your name before continuing.', 2400);
+            return;
+          }
+          state.name = name;
+          save();
+          applyAll();
+          showStep(3);
+        });
+        btnNamePrev.addEventListener('click', ()=> showStep(1));
+
+        // Color step
+        btnColorNext.addEventListener('click', ()=>{
+          state.color = selectColor.value;
+          save();
+          applyTheme();
+          showStep(4);
+        });
+        btnColorPrev.addEventListener('click', ()=> showStep(2));
+        selectColor.addEventListener('change', ()=>{
+          state.color = selectColor.value;
+          applyTheme();
+          save();
+        });
+
+        // Font step
+        selectFont.addEventListener('change', ()=>{
+          state.font = selectFont.value;
+          applyFont();
+          funfact.style.display = 'block';
+          funfact.textContent = FUNFACTS[state.font] || '';
+          save();
+        });
+        // show funfact immediately if font existed in state
+        if(state.font){
+          funfact.style.display = 'block';
+          funfact.textContent = FUNFACTS[state.font] || '';
+        }
+        btnFontNext.addEventListener('click', ()=>{
+          state.font = selectFont.value;
+          save();
+          applyFont();
+          showStep(5);
+        });
+        btnFontPrev.addEventListener('click', ()=> showStep(3));
+
+        // Interest step
+        btnNo.addEventListener('click', ()=>{
+          noResponse.style.display = 'block';
+          noResponse.textContent = T[state.lang].politeClose;
+          state.interested = false;
+          btnInterestNext.style.display = 'none';
+          save();
+        });
+        btnYes.addEventListener('click', ()=>{
+          noResponse.style.display = 'none';
+          state.interested = true;
+          btnInterestNext.style.display = 'inline-block';
+          save();
+        });
+
+        btnInterestNext.addEventListener('click', ()=>{
+          if(state.interested !== true){
+            showToast(T[state.lang].errorChooseYesNo, 2200);
+            return;
+          }
+          showStep(6);
+        });
+        btnInterestPrev.addEventListener('click', ()=> showStep(4));
+
+        // CV intro step
+        btnCvPrev.addEventListener('click', ()=> showStep(5));
+        btnCvNext.addEventListener('click', ()=>{
+          // Next step is placeholder; the user asked to stop at step 6 for now
+          showStep(7);
+        });
+
+        // Step 7 controls
+        document.getElementById('btn-7-back').addEventListener('click', ()=> showStep(6));
+        document.getElementById('btn-7-done').addEventListener('click', ()=>{
+          showToast(state.lang === 'fi' ? 'Kiitos — nähdään seuraavassa iteraatiossa!' : 'Thanks — see you in the next iteration!', 2800);
+        });
+
+        // Small UX: update personalization where applicable when name input changes
+        inputName.addEventListener('input', (e)=>{
+          state.name = e.target.value;
+          save();
+          applyAll();
+        });
+
+        // Ensure theme & font applied initially
+        applyAll();
+        applyTheme();
+        applyFont();
       });
-
-      document.getElementById(stepId).classList.add("active");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function showMessage(id, text) {
-      const box = document.getElementById(id);
-      box.textContent = text;
-      box.classList.remove("hidden");
-    }
-
-    function hideMessage(id) {
-      document.getElementById(id).classList.add("hidden");
-    }
-
-    function applyColor(color) {
-      const theme = colorThemes[color] || ["#ffffff", "#ffffff"];
-      document.documentElement.style.setProperty("--bg1", theme[0]);
-      document.documentElement.style.setProperty("--bg2", theme[1]);
-    }
-
-    function applyFont(font) {
-      document.documentElement.style.setProperty("--font-main", font || "Arial, sans-serif");
-    }
-
-    function updateInterestText() {
-      document.getElementById("interestText").textContent =
-        `Moi ${state.name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. ` +
-        `On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ` +
-        `ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.`;
-    }
-
-    document.getElementById("step1Btn").addEventListener("click", () => {
-      const language = document.getElementById("languageSelect").value;
-
-      if (language === "fi" || language === "en") {
-        state.language = language;
-        hideMessage("languageMessage");
-      } else {
-        state.language = "en";
-        showMessage(
-          "languageMessage",
-          "Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla."
-        );
-      }
-
-      showStep("step-2");
-    });
-
-    document.getElementById("step2Btn").addEventListener("click", () => {
-      const name = document.getElementById("nameInput").value.trim();
-
-      if (!name) {
-        showMessage("nameMessage", "Kirjoita nimi ennen jatkamista.");
-        return;
-      }
-
-      hideMessage("nameMessage");
-      state.name = name;
-
-      document.getElementById("colorTitle").textContent =
-        `Terve ${state.name}, muokataan vielä muutamaa asetusta`;
-
-      updateInterestText();
-
-      showStep("step-3");
-    });
-
-    document.getElementById("colorSelect").addEventListener("change", () => {
-      const color = document.getElementById("colorSelect").value;
-      state.color = color;
-      applyColor(color);
-    });
-
-    document.getElementById("step3Btn").addEventListener("click", () => {
-      const color = document.getElementById("colorSelect").value;
-
-      if (!color) {
-        showMessage("colorMessage", "Valitse väri ennen jatkamista.");
-        return;
-      }
-
-      hideMessage("colorMessage");
-      state.color = color;
-      applyColor(color);
-
-      showStep("step-4");
-    });
-
-    document.getElementById("fontSelect").addEventListener("change", () => {
-      const font = document.getElementById("fontSelect").value;
-      state.font = font;
-      applyFont(font);
-
-      if (font) {
-        document.getElementById("fontFactText").textContent = fontFacts[font];
-        document.getElementById("fontFactBox").classList.remove("hidden");
-      }
-    });
-
-    document.getElementById("step4Btn").addEventListener("click", () => {
-      const font = document.getElementById("fontSelect").value;
-
-      if (!font) {
-        showMessage("fontMessage", "Valitse fontti ennen jatkamista.");
-        return;
-      }
-
-      hideMessage("fontMessage");
-      state.font = font;
-      applyFont(font);
-
-      showStep("step-5");
-    });
-
-    document.getElementById("declineBtn").addEventListener("click", () => {
-      showMessage(
-        "declineMessage",
-        "Ymmärretty. Tämä reitti voidaan myöhemmin ohjata kohteliaaseen lopetukseen."
-      );
-    });
-
-    document.getElementById("acceptBtn").addEventListener("click", () => {
-      showStep("step-6");
-    });
+    })();
   </script>
 </body>
 </html>
-  <title>What do we do on a first date?</title>
-
-  <style>
-    :root {
-      --bg1: #ffffff;
-      --bg2: #ffffff;
-      --text: #111111;
-      --muted: #666666;
-      --card: rgba(255, 255, 255, 0.92);
-      --border: rgba(0, 0, 0, 0.12);
-      --shadow: 0 14px 40px rgba(0, 0, 0, 0.08);
-      --accent: #1f6feb;
-      --accent-hover: #1258bc;
-      --secondary: rgba(0, 0, 0, 0.08);
-      --font-main: Arial, sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-    }
-
-    body {
-      font-family: var(--font-main);
-      color: var(--text);
-      background: linear-gradient(135deg, var(--bg1), var(--bg2));
-      transition: background 350ms ease, font-family 200ms ease;
-    }
-
-    #app {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 20px;
-    }
-
-    .step {
-      display: none;
-      width: 100%;
-      max-width: 760px;
-    }
-
-    .step.active {
-      display: block;
-      animation: fadeIn 220ms ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-
-      to {
