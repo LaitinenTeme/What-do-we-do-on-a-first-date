@@ -74,7 +74,7 @@
   <div class="wrap">
     <div class="card" role="main" id="card">
       <h1 id="title">Mitä tehdä ensitreffeillä?</h1>
-      <p class="lead" id="subtitle">Kevyt ja flirttaileva askel-askeleelta -kysely.</p>
+      <p class="lead" id="subtitle" style="display:none;">Kevyt ja flirttaileva askel-askeleelta -kysely.</p>
 
       <!-- Step 1...6 same as before -->
       <section class="step active" data-step="1" id="step-1">
@@ -243,9 +243,21 @@
   (function(){
     const T = { fi: { continue:"Jatka", back:"Takaisin", toastLangChange:"Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.", nameReq:"Kirjoita nimesi ennen jatkamista.", chooseYesNo:"Valitse kyllä tai ei ennen jatkamista." }, en:{ continue:"Continue", back:"Back", toastLangChange:"Haha let's stick to English for this.", nameReq:"Please enter your name before continuing.", chooseYesNo:"Choose yes or no before continuing." } };
 
-    const FUNFACTS = { "Arial":"Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.", "Times New Roman":"Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.", "Calibri":"Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.", "Aptos":"Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa." };
+    const FUNFACTS = { 
+      "Arial":"Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.", 
+      "Times New Roman":"Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.", 
+      "Calibri":"Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.", 
+      "Aptos":"Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa." 
+    };
+    
+    const FUNFACTS_EN = { 
+      "Arial":"Did you know! A person who chooses Arial is usually straightforward, understated and probably a green flag.", 
+      "Times New Roman":"Did you know! A person who chooses Times New Roman is usually a bit old school, somewhat intense, but undeniably reliable choice.", 
+      "Calibri":"Did you know! A person who chooses Calibri is usually nice, charming and dangerously easy to like.", 
+      "Aptos":"Did you know! A person who chooses Aptos is usually modern, smooth and effortlessly charming without trying too hard." 
+    };
 
-    const COLOR_MAP = { pink:['#ffd1e8','#ffe6f5'], red:['#ffd6d6','#ffb3b3'], orange:['#fff0d1','#ffdbae'], yellow:['#fff9d6','#fff0a8'], green:['#e6fde6','#d2f7d2'], teal:['#dff7f5','#c9f0ec'], blue:['#e6f0ff','#d7e8ff'], purple:['#f3e6ff','#e9ddff'], 'grad-sunset':['#ff9a9e','#fecfef'], 'grad-teal':['#a8edea','#fed6e3'] };
+    const COLOR_MAP = { white:['#ffffff','#ffffff'], pink:['#ffd1e8','#ffe6f5'], red:['#ffd6d6','#ffb3b3'], orange:['#fff0d1','#ffdbae'], yellow:['#fff9d6','#fff0a8'], green:['#e6fde6','#d2f7d2'], teal:['#dff7f5','#c9f0ec'], blue:['#e6f0ff','#d7e8ff'], purple:['#f3e6ff','#e9ddff'], 'grad-sunset':['#ff9a9e','#fecfef'], 'grad-teal':['#a8edea','#fed6e3'] };
 
     const ACTIVITIES = { sports:{id:'sports',label:'Urheilua (laskettelu, hiihto, kuntosali)'}, restaurantLunch:{id:'restaurantLunch',label:'Lounas / illallinen ravintolassa'}, cookDinner:{id:'cookDinner',label:'Lounas / illallinen itse kokaten'}, winePaint:{id:'winePaint',label:'Wine & paint'}, standup:{id:'standup',label:'Stand up show'}, theatre:{id:'theatre',label:'Teatteri / musikaali'}, studentEvent:{id:'studentEvent',label:'Opiskelijatapahtuma'}, bakeCake:{id:'bakeCake',label:'Leivotaan kakku'}, roadTrip:{id:'roadTrip',label:'Road trip'}, dance:{id:'dance',label:'Paritanssitunti / lavatanssit'}, pubQuiz:{id:'pubQuiz',label:'Pubivisa'}, arcticSwim:{id:'arcticSwim',label:'Uintireissu Jäämerelle'}, halti:{id:'halti',label:'Vaellus Haltille'}, games:{id:'games',label:'Keilaus / minigolf / biljardi'}, movieNight:{id:'movieNight',label:'Leffailta kotona'} };
 
@@ -275,13 +287,80 @@
       { id:'canDoCartwheel', text:'Osaatko tehdä kuperkeikan tai kärrynpyörän?' }
     ];
 
+    const QUESTIONS_EN = [
+      { id:'gettingWetBothers', text:'Does getting wet bother you?' },
+      { id:'afraidHeights', text:'Are you afraid of heights?' },
+      { id:'staysUpLate', text:'Do you like to stay up late?' },
+      { id:'readyToTravel', text:'Are you ready to travel 150 km from home?' },
+      { id:'likesFancyClothes', text:'Do you prefer fancy and nice clothes over casual practical clothes?' },
+      { id:'drinksAlcohol', text:'Alcohol?' },
+      { id:'prefersDay', text:'Is daytime better than evening?' },
+      { id:'moneyMeansQuality', text:'Is spending money a sign of a good date?' },
+      { id:'afraidAnimals', text:'Are you afraid of animals?' },
+      { id:'canDoCartwheel', text:'Can you do a cartwheel or handspring?' }
+    ];
+
     const FACTS = [ { id:'f1', text:'Olen asunut Kanadassa yli 2 vuotta.' }, { id:'f2', text:'Olen käynyt Euroopan suurimmalla kultakaivoksella.' }, { id:'f3', text:'Puhun ranskaa paremmin kuin ruotsia.' }, { id:'f4', text:'Olen ollut osa SM-pikaviestijoukkuetta.' } ];
 
-    let state = { lang:'fi', name:'', color:'blue', font:'Arial', interested:null, cvGameDone:false, answers:{}, chosenActivity:null, wheelSpins:3, contactMethod:null, contactValue:null };
+    const TEXT_CONTENT = {
+      fi: {
+        labelLanguage: 'Valitse kieli / Choose language',
+        labelName: 'Kuka sinä olet?',
+        hintName: 'Nimesi tallennetaan vain paikallisesti selaimeesi.',
+        labelColor: 'Mikä on lempivärisi?',
+        hintColor: 'Valitun värin pitäisi näkyä taustassa.',
+        labelFont: 'Mikä on lempi fonttisi, harkitse tarkkaan?',
+        interestTitle: 'Haluatko jatkaa?',
+        interestText: 'Valitse kumpi: kohtelias lopetus tai rohkea jatko.',
+        btnNo: 'Kiitos mutta ei kiitos',
+        btnYes: 'No miksipäs ei',
+        cvIntroTitle: 'Intro CV',
+        activitiesTitle: 'Aktiviteetin valinta',
+        title: 'Mitä tehdä ensitreffeillä?'
+      },
+      en: {
+        labelLanguage: 'Select language / Choose language',
+        labelName: 'Who are you?',
+        hintName: 'Your name is stored only locally in your browser.',
+        labelColor: 'What is your favorite color?',
+        hintColor: 'The selected color should appear in the background.',
+        labelFont: 'What is your favorite font, think carefully?',
+        interestTitle: 'Do you want to continue?',
+        interestText: 'Choose: polite ending or brave continuation.',
+        btnNo: 'Thanks but no thanks',
+        btnYes: 'Why not',
+        cvIntroTitle: 'Intro CV',
+        activitiesTitle: 'Activity selection',
+        title: 'What do we do on a first date?'
+      }
+    };
+
+    function updateUILanguage(){
+      const lang = state.lang;
+      const tc = TEXT_CONTENT[lang];
+      
+      document.getElementById('title').textContent = tc.title;
+      document.getElementById('label-language').textContent = tc.labelLanguage;
+      document.getElementById('label-name').textContent = tc.labelName;
+      document.getElementById('hint-name').textContent = tc.hintName;
+      document.getElementById('label-color').textContent = tc.labelColor;
+      document.getElementById('hint-color').textContent = tc.hintColor;
+      document.getElementById('label-font').textContent = tc.labelFont;
+      document.getElementById('interest-title').textContent = tc.interestTitle;
+      document.getElementById('interest-text').textContent = tc.interestText;
+      document.getElementById('btn-no').textContent = tc.btnNo;
+      document.getElementById('btn-yes').textContent = tc.btnYes;
+      document.getElementById('cv-intro-title').textContent = tc.cvIntroTitle;
+      
+      buildQuestionSteps();
+    }
+
+    let state = { lang:'fi', name:'', color:'white', font:'Arial', interested:null, cvGameDone:false, answers:{}, chosenActivity:null, wheelSpins:3, contactMethod:null, contactValue:null };
 
     const LS_KEY = 'datingAppState_v3';
     function loadState(){ try{ const r = localStorage.getItem(LS_KEY); if(r) Object.assign(state, JSON.parse(r)); }catch(e){} }
     function saveState(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
+    function resetState(){ state = { lang:'fi', name:'', color:'white', font:'Arial', interested:null, cvGameDone:false, answers:{}, chosenActivity:null, wheelSpins:3, contactMethod:null, contactValue:null }; localStorage.removeItem(LS_KEY); }
 
     function steps(){ return Array.from(document.querySelectorAll('.step')); }
     const toast = document.getElementById('toast');
@@ -297,9 +376,9 @@
 
     function applyTheme(){ const pair = COLOR_MAP[state.color] || COLOR_MAP.blue; document.documentElement.style.setProperty('--bg-start', pair[0]); document.documentElement.style.setProperty('--bg-end', pair[1] || pair[0]); document.documentElement.style.setProperty('--accent', state.color === 'yellow' ? '#ffb703' : '#ff6b6b'); }
     function applyFont(){ let fam='Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; if(state.font==='Times New Roman') fam='"Times New Roman", Times, serif'; if(state.font==='Calibri') fam='Calibri, Candara, Segoe, "Segoe UI", sans-serif'; if(state.font==='Aptos') fam='Aptos, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; document.body.style.fontFamily=fam; }
-    function applyAll(){ applyTheme(); applyFont(); const name = state.name || ''; document.getElementById('subtitle').textContent = state.lang === 'fi' ? 'Kevyt ja flirttaileva askel-askeleelta -kysely.' : 'A light, slightly flirty step-by-step site.'; if(name){ const cvIntro = document.getElementById('cv-intro-text'); if(cvIntro) cvIntro.textContent = (state.lang==='fi' ? `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.` : `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. Choose how you'd like to proceed.`); } }
+    function applyAll(){ applyTheme(); applyFont(); const name = state.name || ''; if(name){ const cvIntro = document.getElementById('cv-intro-text'); if(cvIntro) cvIntro.textContent = (state.lang==='fi' ? `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.` : `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. Choose how you'd like to proceed.`); } }
 
-    function buildQuestionSteps(){ const container = document.getElementById('questions-container'); container.innerHTML=''; QUESTIONS.forEach((q,idx)=>{ const stepNum = 100+idx+1; const sec = document.createElement('section'); sec.setAttribute('data-step-dynamic', stepNum); sec.dataset.stepDynamic = stepNum; sec.className='step'; sec.innerHTML = `<div class="question-box"><h2>Kysymys ${idx+1} / ${QUESTIONS.length}</h2><p>${q.text}</p><div class="yesno" data-qid="${q.id}"><button type="button" class="yesno-yes">Kyllä</button><button type="button" class="yesno-no">Ei</button></div><div class="hint small" style="margin-top:10px;">Vastaa ennen jatkamista.</div><div class="controls" style="margin-top:12px;"><button class="secondary btn-ques-prev">Takaisin</button><button class="btn-ques-next">${T[state.lang].continue}</button></div></div>`; container.appendChild(sec); }); }
+    function buildQuestionSteps(){ const container = document.getElementById('questions-container'); container.innerHTML=''; QUESTIONS.forEach((q,idx)=>{ const stepNum = 100+idx+1; const sec = document.createElement('section'); sec.setAttribute('data-step-dynamic', stepNum); sec.dataset.stepDynamic = stepNum; sec.className='step'; const qText = state.lang === 'fi' ? q.text : (QUESTIONS_EN[idx]?.text || q.text); const continueText = T[state.lang]?.continue || 'Jatka'; const backText = T[state.lang]?.back || 'Takaisin'; const answerText = T[state.lang]?.chooseYesNo || 'Valitse kyllä tai ei ennen jatkamista.'; const questionText = state.lang === 'fi' ? `Kysymys ${idx+1} / ${QUESTIONS.length}` : `Question ${idx+1} / ${QUESTIONS.length}`; sec.innerHTML = `<div class="question-box"><h2>${questionText}</h2><p>${qText}</p><div class="yesno" data-qid="${q.id}"><button type="button" class="yesno-yes">${state.lang === 'fi' ? 'Kyllä' : 'Yes'}</button><button type="button" class="yesno-no">${state.lang === 'fi' ? 'Ei' : 'No'}</button></div><div class="hint small" style="margin-top:10px;">${answerText}</div><div class="controls" style="margin-top:12px;"><button class="secondary btn-ques-prev">${backText}</button><button class="btn-ques-next">${continueText}</button></div></div>`; container.appendChild(sec); }); }
 
     function computeActivityScores(){ const totals={}; Object.keys(ACTIVITIES).forEach(k=>totals[k]=0); for(const e of SCORE_TABLE){ const ans = state.answers[e.q]; if(!ans) continue; if(ans===e.ans) totals[e.a]+=e.s; } return totals; }
     function decideBestActivity(){ const totals=computeActivityScores(); let best=null,bestScore=-Infinity; for(const k in totals){ if(totals[k]>bestScore){ bestScore=totals[k]; best=[k]; } else if(totals[k]===bestScore){ best.push(k); } } if(Array.isArray(best)) best=best[Math.floor(Math.random()*best.length)]; return { id:best, score:totals[best] }; }
@@ -309,7 +388,6 @@
     function spinWheel(){ const wheel=document.getElementById('wheel'); const keys=JSON.parse(wheel.dataset.items); const seg=keys.length; const pickIndex=Math.floor(Math.random()*seg); const degreesPerSeg=360/seg; const randomOffset=(Math.random()*(degreesPerSeg-10))-(degreesPerSeg/2); const target=360*4+(360-(pickIndex*degreesPerSeg+degreesPerSeg/2))+randomOffset; wheel.style.transition='transform 4s cubic-bezier(.17,.67,.03,.98)'; wheel.style.transform=`rotate(${target}deg)`; return { pickIndex, target }; }
     function resetWheel(){ const wheel=document.getElementById('wheel'); wheel.style.transition='none'; wheel.style.transform='rotate(0deg)'; void wheel.offsetWidth; }
 
-    loadState();
     document.addEventListener('DOMContentLoaded', ()=> {
       const selectLang=document.getElementById('select-language'), btnLangNext=document.getElementById('btn-lang-next');
       const inputName=document.getElementById('input-name'), btnNameNext=document.getElementById('btn-name-next'), btnNamePrev=document.getElementById('btn-name-prev');
@@ -353,8 +431,10 @@
       // language
       btnLangNext.addEventListener('click', ()=> {
         let chosen = selectLang.value;
-        if(['sv','de','es','fr'].includes(chosen)){ state.lang='en'; showToast(T['fi'].toastLangChange,3500); } else state.lang=chosen;
-        saveState(); applyAll(); showStep(2);
+        if(chosen === 'fi'){ state.lang='fi'; } 
+        else if(chosen === 'en'){ state.lang='en'; } 
+        else { state.lang='en'; showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 3500); }
+        updateUILanguage(); applyAll(); showStep(2);
       });
 
       // name
@@ -370,8 +450,8 @@
       btnColorPrev.addEventListener('click', ()=> showStep(2));
 
       // font
-      selectFont.addEventListener('change', ()=> { state.font = selectFont.value; applyFont(); funfact.style.display='block'; funfact.textContent = FUNFACTS[state.font]||''; saveState(); });
-      if(state.font){ funfact.style.display='block'; funfact.textContent = FUNFACTS[state.font]||''; }
+      selectFont.addEventListener('change', ()=> { state.font = selectFont.value; applyFont(); funfact.style.display='block'; const ff = state.lang === 'en' ? FUNFACTS_EN : FUNFACTS; funfact.textContent = ff[state.font]||''; saveState(); });
+      if(state.font){ funfact.style.display='block'; const ff = state.lang === 'en' ? FUNFACTS_EN : FUNFACTS; funfact.textContent = ff[state.font]||''; }
       btnFontNext.addEventListener('click', ()=> { state.font = selectFont.value; saveState(); applyFont(); showStep(5); });
       btnFontPrev.addEventListener('click', ()=> showStep(3));
 
