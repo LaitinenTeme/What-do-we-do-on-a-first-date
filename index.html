@@ -87,14 +87,14 @@
           <option value="es">Español</option>
           <option value="fr">Français</option>
         </select>
-        <div class="controls"><button id="btn-lang-next">Jatka</button></div>
+        <div class="controls"><button id="btn-lang-next" data-i18n-btn="continue">Jatka</button></div>
       </section>
 
       <section class="step" data-step="2" id="step-2">
         <label id="label-name">Kuka sinä olet?</label>
         <input type="text" id="input-name" placeholder="Kirjoita nimesi..." />
         <div class="hint" id="hint-name">Nimesi tallennetaan vain paikallisesti selaimeesi.</div>
-        <div class="controls"><button id="btn-name-prev" class="secondary">Takaisin</button><button id="btn-name-next">Jatka</button></div>
+        <div class="controls"><button id="btn-name-prev" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-name-next" data-i18n-btn="continue">Jatka</button></div>
       </section>
 
       <section class="step" data-step="3" id="step-3">
@@ -103,14 +103,14 @@
           <option value="pink">Pink</option><option value="red">Red</option><option value="orange">Orange</option><option value="yellow">Yellow</option><option value="green">Green</option><option value="teal">Teal</option><option value="blue">Blue</option><option value="purple">Purple</option><option value="grad-sunset">Sunset (gradient)</option><option value="grad-teal">Teal Wave (gradient)</option>
         </select>
         <div class="hint" id="hint-color">Valitun värin pitäisi näkyä taustassa.</div>
-        <div class="controls"><button id="btn-color-prev" class="secondary">Takaisin</button><button id="btn-color-next">Jatka</button></div>
+        <div class="controls"><button id="btn-color-prev" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-color-next" data-i18n-btn="continue">Jatka</button></div>
       </section>
 
       <section class="step" data-step="4" id="step-4">
         <label id="label-font">Mikä on lempi fonttisi, harkitse tarkkaan?</label>
         <select id="select-font" aria-label="Fontti"><option value="Arial">Arial</option><option value="Times New Roman">Times New Roman</option><option value="Calibri">Calibri</option><option value="Aptos">Aptos</option></select>
         <div id="funfact" class="funfact" style="display:none;"></div>
-        <div class="controls"><button id="btn-font-prev" class="secondary">Takaisin</button><button id="btn-font-next">Jatka</button></div>
+        <div class="controls"><button id="btn-font-prev" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-font-next" data-i18n-btn="continue">Jatka</button></div>
       </section>
 
       <section class="step" data-step="5" id="step-5">
@@ -118,13 +118,13 @@
         <p id="interest-text">Valitse kumpi: kohtelias lopetus tai rohkea jatko.</p>
         <div class="choice-grid"><button id="btn-no" class="choice-btn">Kiitos mutta ei kiitos</button><button id="btn-yes" class="choice-btn">No miksipäs ei</button></div>
         <div id="no-response" class="polite-box" style="display:none;"></div>
-        <div class="controls" style="margin-top:14px;"><button id="btn-interest-prev" class="secondary">Takaisin</button><button id="btn-interest-next" style="display:none;">Jatka</button></div>
+        <div class="controls" style="margin-top:14px;"><button id="btn-interest-prev" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-interest-next" style="display:none;" data-i18n-btn="continue">Jatka</button></div>
       </section>
 
       <section class="step" data-step="6" id="step-6">
         <h2 id="cv-intro-title">Intro CV</h2>
         <p id="cv-intro-text">Mukava nähdä, että mielenkiintosi voitti ja päätit jatkaa matkaa. Loistavaa! Mutta ennen kuin päästään isojen kysymysten äärelle, sallinette minun esittäytyä paremmin. Mennään seuraavalle sivulle, niin näytän CV:ni ja pelataan "3 totuutta ja 1 valhe -peli"!</p>
-        <div class="controls"><button id="btn-cv-prev" class="secondary">Takaisin</button><button id="btn-cv-next">Jatka CV:hen</button></div>
+        <div class="controls"><button id="btn-cv-prev" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-cv-next" data-i18n-btn="continueToCv">Jatka CV:hen</button></div>
       </section>
 
       <!-- Step 7: CV + game -->
@@ -135,32 +135,18 @@
         <div class="facts-grid" id="facts-grid" aria-live="polite"></div>
         <div class="fact-msg" id="fact-msg"></div>
         <div id="game-success" class="game-success" style="display:none;">Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.</div>
-        <div class="controls" style="margin-top:14px;"><button id="btn-7-back" class="secondary">Takaisin</button><button id="btn-7-continue" style="display:none;">Jatka</button></div>
+        <div class="controls" style="margin-top:14px;"><button id="btn-7-back" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-7-continue" style="display:none;" data-i18n-btn="continue">Jatka</button></div>
       </section>
 
       <!-- Step 8: choose route -->
       <section class="step" data-step="8" id="step-8">
         <h2 data-i18n-h2="activitiesTitle">Aktiviteetin valinta</h2>
-        <p data-i18n-p="routeText">Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit, 2) pyöräyttää onnenpyörää tai 3) valita suoraan listasta.</p>
+        <p data-i18n-p="routeText">Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit tai 2) pyöräyttää onnenpyörää.</p>
         <div class="choice-grid">
-          <button id="btn-route-questions" class="choice-btn">Vastaan kysymyksiin</button>
-          <button id="btn-route-wheel" class="choice-btn">Pyöräytän onnenpyörää</button>
-          <button id="btn-route-list" class="choice-btn">Valitse suoraan listasta</button>
+          <button id="btn-route-questions" class="choice-btn" data-i18n-btn="routeQuestions">Vastaan kysymyksiin</button>
+          <button id="btn-route-wheel" class="choice-btn" data-i18n-btn="routeWheel">Pyöräytän onnenpyörää</button>
         </div>
-        <div class="controls" style="margin-top:14px;"><button id="btn-8-back" class="secondary">Takaisin</button><button id="btn-8-next" style="display:none;">Jatka</button></div>
-      </section>
-
-      <!-- Step 9: Direct activity list (user can pick) -->
-      <section class="step" data-step="9" id="step-9" aria-hidden="true">
-        <h2>Valitse aktiviteetti</h2>
-        <p data-i18n-p="activitySelectText">Valitse listasta suoraan se aktiviteetti, joka kiinnostaa eniten (voit itse vaikuttaa lopputulokseen).</p>
-        <div class="activity-grid" id="activity-grid">
-          <!-- populated by JS -->
-        </div>
-        <div class="controls" style="margin-top:14px;">
-          <button id="btn-9-back" class="secondary">Takaisin</button>
-          <button id="btn-9-next" style="display:none;">Jatka</button>
-        </div>
+        <div class="controls" style="margin-top:14px;"><button id="btn-8-back" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-8-next" style="display:none;" data-i18n-btn="continue">Jatka</button></div>
       </section>
 
       <!-- Questions container (dynamic steps 101..110) -->
@@ -178,20 +164,20 @@
           <div class="spin-controls">
             <div id="wheel-selected" class="small">Ei valintaa vielä</div>
             <div style="display:flex; gap:8px; margin-top:8px;">
-              <button id="spin-btn">Pyöräytä</button>
-              <button id="wheel-respin" style="display:none;" class="secondary">Pyöräytä uudelleen</button>
-              <button id="wheel-continue" style="display:none;">Jatka seuraavalle sivulle</button>
+              <button id="spin-btn" data-i18n-btn="spin">Pyöräytä</button>
+              <button id="wheel-respin" style="display:none;" class="secondary" data-i18n-btn="respin">Pyöräytä uudelleen</button>
+              <button id="wheel-continue" style="display:none;" data-i18n-btn="continueToNext">Jatka seuraavalle sivulle</button>
             </div>
-            <div class="small" style="margin-top:6px;">Jäljellä olevat pyöräytykset: <span id="spins-left">3</span></div>
+            <div class="small" style="margin-top:6px;"><span data-i18n-inline="spinsLeftLabel">Jäljellä olevat pyöräytykset:</span> <span id="spins-left">3</span></div>
           </div>
         </div>
       </section>
 
       <!-- Step 10: Result -->
       <section class="step" data-step="10" id="step-10">
-        <h2 id="final-activity-title">Valittu aktiviteetti</h2>
+        <h2 id="final-activity-title" data-i18n-h2="selectedActivity">Valittu aktiviteetti</h2>
         <div id="result-activity" class="result-activity"></div>
-        <div class="controls" style="margin-top:14px;"><button id="btn-10-back" class="secondary">Takaisin</button><button id="btn-10-next">Jatka</button></div>
+        <div class="controls" style="margin-top:14px;"><button id="btn-10-back" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-10-next" data-i18n-btn="continue">Jatka</button></div>
       </section>
 
       <!-- Step 11..14 contact and end (same as before) -->
@@ -211,27 +197,27 @@
           <label id="contact-label">Anna yhteystieto</label>
           <input id="contact-value" type="text" placeholder="esim. @username tai numero tai email" />
         </div>
-        <div class="controls" style="margin-top:14px;"><button id="btn-11-back" class="secondary">Takaisin</button><button id="btn-11-next" style="display:none;">Jatka</button></div>
+        <div class="controls" style="margin-top:14px;"><button id="btn-11-back" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-11-next" style="display:none;" data-i18n-btn="continue">Jatka</button></div>
       </section>
 
       <section class="step" data-step="12" id="step-12">
-        <h2>Anna yhteystieto</h2>
-        <p id="confirm-method">Valitsit: <strong id="confirm-method-val"></strong></p>
-        <label id="label-contact-detail">Kirjoita yhteystieto</label>
+        <h2 data-i18n-h2="contactLabel">Anna yhteystieto</h2>
+        <p id="confirm-method"><span data-i18n-inline="selectedPrefix">Valitsit:</span> <strong id="confirm-method-val"></strong></p>
+        <label id="label-contact-detail" data-i18n-inline="contactInput">Kirjoita yhteystieto</label>
         <input id="final-contact" type="text" placeholder="Anna esim. numero, @username tai sähköposti" />
-        <div class="controls" style="margin-top:14px;"><button id="btn-12-back" class="secondary">Takaisin</button><button id="btn-12-next">Lähetä (vain simulaatio)</button></div>
+        <div class="controls" style="margin-top:14px;"><button id="btn-12-back" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-12-next" data-i18n-btn="sendSimulation">Lähetä (vain simulaatio)</button></div>
       </section>
 
       <section class="step" data-step="13" id="step-13">
-        <h2>Viimeinen sivu</h2>
-        <p>Tämä on viimeinen sivu, kiva kun pääsit tänne asti! Voit odottaa yhteydenottoa minulta muutaman arkipäivän kuluessa.</p>
-        <div class="controls" style="margin-top:14px;"><button id="btn-13-next">Lopeta</button></div>
+        <h2 data-i18n-h2="lastPage">Viimeinen sivu</h2>
+        <p data-i18n-p="lastPageText">Tämä on viimeinen sivu, kiva kun pääsit tänne asti! Voit odottaa yhteydenottoa minulta muutaman arkipäivän kuluessa.</p>
+        <div class="controls" style="margin-top:14px;"><button id="btn-13-next" data-i18n-btn="end">Lopeta</button></div>
       </section>
 
       <section class="step" data-step="14" id="step-14">
-        <h2>Oikeasti viimeinen sivu</h2>
+        <h2 data-i18n-h2="reallyLastPage">Oikeasti viimeinen sivu</h2>
         <p id="ps-text">P.s. tiedän tiedän, sanoin että äskeinen sivu oli viimeinen, mutta ei ollut. Halusin vain sanoa että odotan innolla tällejämme <span id="ps-activity"></span> merkeissä, joten valmistaudu, siitä tulee kivaa!!</p>
-        <div class="controls" style="margin-top:14px;"><button id="btn-14-end">Oikeasti lopeta</button></div>
+        <div class="controls" style="margin-top:14px;"><button id="btn-14-end" data-i18n-btn="reallyEnd">Oikeasti lopeta</button></div>
       </section>
 
     </div>
@@ -324,7 +310,7 @@
         cvTitle: 'CV',
         factsTitle: '4 totuutta ja 1 valhe… tai no, melkein',
         gameSuccess: 'Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.',
-        routeText: 'Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit, 2) pyöräyttää onnenpyörää tai 3) valita suoraan listasta.',
+        routeText: 'Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit tai 2) pyöräyttää onnenpyörää.',
         activitySelectText: 'Valitse listasta suoraaan se aktiviteetti, joka kiinnostaa eniten (voit itse vaikuttaa lopputulokseen).',
         wheelText: 'Pyöräytä ja katso mihin kohtalosi sinut johdattaa. Saat 3 pyöräytystä.',
         selectedActivity: 'Valittu aktiviteetti',
@@ -345,7 +331,19 @@
         inputUsername: 'käyttäjänimi / tunnus',
         selectedPrefix: 'Valitsit:',
         yesLabel: 'Kyllä',
-        noLabel: 'Ei'
+        noLabel: 'Ei',
+        routeQuestions: 'Vastaan kysymyksiin',
+        routeWheel: 'Pyöräytän onnenpyörää',
+        continueToCv: 'Jatka CV:hen',
+        continueToNext: 'Jatka seuraavalle sivulle',
+        spin: 'Pyöräytä',
+        respin: 'Pyöräytä uudelleen',
+        spinsLeftLabel: 'Jäljellä olevat pyöräytykset:',
+        sendSimulation: 'Lähetä (vain simulaatio)',
+        end: 'Lopeta',
+        reallyEnd: 'Oikeasti lopeta',
+        reallyLastPage: 'Oikeasti viimeinen sivu',
+        noSelectionYet: 'Ei valintaa vielä'
       },
       en: {
         labelLanguage: 'Select language / Choose language',
@@ -368,7 +366,7 @@
         cvTitle: 'CV',
         factsTitle: '4 truths and 1 lie… or well, almost',
         gameSuccess: 'Oops, that\'s also true. I apparently don\'t know the rules of this game… but now you know a few interesting facts about me.',
-        routeText: 'Choose whether you want to 1) answer questions that narrow down the activities, 2) spin a wheel of fortune or 3) select directly from a list.',
+        routeText: 'Choose whether you want to 1) answer questions that narrow down the activities or 2) spin a wheel of fortune.',
         activitySelectText: 'Choose from the list the activity that interests you most (you can influence the outcome yourself).',
         wheelText: 'Spin and see where your fate takes you. You get 3 spins.',
         selectedActivity: 'Selected activity',
@@ -389,7 +387,19 @@
         inputUsername: 'username / handle',
         selectedPrefix: 'You selected:',
         yesLabel: 'Yes',
-        noLabel: 'No'
+        noLabel: 'No',
+        routeQuestions: 'Answer questions',
+        routeWheel: 'Spin the wheel of fortune',
+        continueToCv: 'Continue to CV',
+        continueToNext: 'Continue to next page',
+        spin: 'Spin',
+        respin: 'Spin again',
+        spinsLeftLabel: 'Spins remaining:',
+        sendSimulation: 'Send (simulation only)',
+        end: 'End',
+        reallyEnd: 'Really end',
+        reallyLastPage: 'Really the last page',
+        noSelectionYet: 'No selection yet'
       }
     };
 
@@ -430,12 +440,25 @@
         if(tc[key]) el.textContent = tc[key];
       });
       
+      document.querySelectorAll('[data-i18n-btn]').forEach(el => {
+        const key = el.dataset.i18nBtn;
+        if(tc[key]) el.textContent = tc[key];
+      });
+      
+      document.querySelectorAll('[data-i18n-inline]').forEach(el => {
+        const key = el.dataset.i18nInline;
+        if(tc[key]) el.textContent = tc[key];
+      });
+      
       document.querySelectorAll('.contact-btn').forEach(btn => {
         const labelKey = `data-label-${lang}`;
         const labelFallback = `data-label-${lang === 'fi' ? 'fi' : 'en'}`;
         const newText = btn.getAttribute(labelKey) || btn.getAttribute(labelFallback);
         if(newText) btn.textContent = newText;
       });
+      
+      const wheelSelectedEl = document.getElementById('wheel-selected');
+      if(wheelSelectedEl && !state.chosenActivity) wheelSelectedEl.textContent = tc.noSelectionYet;
       
       buildQuestionSteps();
     }
@@ -481,10 +504,9 @@
       const btnNo=document.getElementById('btn-no'), btnYes=document.getElementById('btn-yes'), noResponse=document.getElementById('no-response'), btnInterestNext=document.getElementById('btn-interest-next'), btnInterestPrev=document.getElementById('btn-interest-prev');
       const btnCvPrev=document.getElementById('btn-cv-prev'), btnCvNext=document.getElementById('btn-cv-next');
       const factsGrid=document.getElementById('facts-grid'), factMsg=document.getElementById('fact-msg'), gameSuccess=document.getElementById('game-success'), btn7Back=document.getElementById('btn-7-back'), btn7Continue=document.getElementById('btn-7-continue');
-      const btnRouteQuestions=document.getElementById('btn-route-questions'), btnRouteWheel=document.getElementById('btn-route-wheel'), btnRouteList=document.getElementById('btn-route-list'), btn8Back=document.getElementById('btn-8-back');
+      const btnRouteQuestions=document.getElementById('btn-route-questions'), btnRouteWheel=document.getElementById('btn-route-wheel'), btn8Back=document.getElementById('btn-8-back');
       const wheelEl=document.getElementById('wheel'), spinBtn=document.getElementById('spin-btn'), wheelRes=document.getElementById('wheel-selected'), wheelReSpin=document.getElementById('wheel-respin'), wheelContinue=document.getElementById('wheel-continue'), spinsLeftEl=document.getElementById('spins-left');
       const resultActivityEl=document.getElementById('result-activity'), btn10Back=document.getElementById('btn-10-back'), btn10Next=document.getElementById('btn-10-next');
-      const activityGrid=document.getElementById('activity-grid'), btn9Back=document.getElementById('btn-9-back'), btn9Next=document.getElementById('btn-9-next');
 
       const contactGrid=document.getElementById('contact-grid'), contactSelected=document.getElementById('contact-selected'), contactInput=document.getElementById('contact-input'), contactLabel=document.getElementById('contact-label'), contactValue=document.getElementById('contact-value'), btn11Back=document.getElementById('btn-11-back'), btn11Next=document.getElementById('btn-11-next');
       const confirmMethodVal=document.getElementById('confirm-method-val'), finalContact=document.getElementById('final-contact'), btn12Back=document.getElementById('btn-12-back'), btn12Next=document.getElementById('btn-12-next');
@@ -494,31 +516,12 @@
 
       buildQuestionSteps();
 
-      // populate activity list
-      activityGrid.innerHTML='';
-      Object.keys(ACTIVITIES).forEach(key=>{
-        const b=document.createElement('button');
-        b.className='activity-btn';
-        b.type='button';
-        b.dataset.activity=key;
-        b.textContent = ACTIVITIES[key].label;
-        b.addEventListener('click', ()=> {
-          // mark selection visually
-          activityGrid.querySelectorAll('.activity-btn').forEach(x=>x.classList.remove('selected'));
-          b.classList.add('selected');
-          state.chosenActivity = key;
-          btn9Next.style.display = 'inline-block';
-          saveState();
-        });
-        activityGrid.appendChild(b);
-      });
-
       // language
       btnLangNext.addEventListener('click', ()=> {
         let chosen = selectLang.value;
         if(chosen === 'fi'){ state.lang='fi'; } 
         else if(chosen === 'en'){ state.lang='en'; } 
-        else { state.lang='en'; const tc = TEXT_CONTENT['en']; showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 3500); }
+        else { state.lang='en'; showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 3500); }
         saveState(); updateUILanguage(); applyAll(); showStep(2);
       });
 
@@ -590,18 +593,10 @@
         resetWheel(); 
         state.wheelSpins=3; 
         document.getElementById('spins-left').textContent = state.wheelSpins; 
-        wheelRes.textContent = state.lang==='fi' ? 'Ei valintaa vielä' : 'No selection yet'; 
+        wheelRes.textContent = TEXT_CONTENT[state.lang].noSelectionYet; 
         wheelReSpin.style.display='none'; 
         wheelContinue.style.display='none'; 
         showStep(99); 
-      });
-      btnRouteList.addEventListener('click', ()=> { // direct list
-        // reset selection ui
-        activityGrid.querySelectorAll('.activity-btn').forEach(x=>x.classList.remove('selected'));
-        btn9Next.style.display='none';
-        state.chosenActivity = null;
-        saveState();
-        showStep(9);
       });
 
       document.getElementById('btn-8-back').addEventListener('click', ()=> showStep(7));
@@ -673,18 +668,6 @@
         const methodText = state.lang === 'fi' ? '(onnenpyörä valinta)' : '(wheel selection)';
         document.getElementById('result-activity').textContent = ACTIVITIES[state.chosenActivity].label + ' ' + methodText; 
         showStep(10); 
-      });
-
-      // Direct list handlers
-      btn9Back.addEventListener('click', ()=> showStep(8));
-      btn9Next.addEventListener('click', ()=> {
-        if(!state.chosenActivity){ 
-          showToast(state.lang === 'fi' ? 'Valitse aktiviteetti listasta ennen jatkamista.' : 'Select an activity from the list before continuing.'); 
-          return; 
-        }
-        const methodText = state.lang === 'fi' ? '(käyttäjän valinta)' : '(user selection)';
-        document.getElementById('result-activity').textContent = ACTIVITIES[state.chosenActivity].label + ' ' + methodText;
-        showStep(10);
       });
 
       // Result step
