@@ -30,7 +30,7 @@
     .toast{ display:none; padding:10px 12px; background:#111; color:#fff; border-radius:8px; position:fixed; right:20px; bottom:20px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); z-index:999; opacity:0; transition:opacity 300ms ease; }
     .toast.show{ display:block; opacity:1; }
     .choice-grid{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-    .choice-btn { background:#eee; color:#111; border:none; padding:12px 14px; border-radius:10px; cursor:pointer; font-weight:600; }
+    .choice-btn { background:#eee; color:#000; border:none; padding:12px 14px; border-radius:10px; cursor:pointer; font-weight:600; }
     .polite-box { padding:12px; background:#fff4e6; border-radius:8px; border:1px solid #ffe6c2; margin-top:12px; }
 
     .cv-row { display:flex; gap:18px; align-items:flex-start; margin-top:12px; flex-wrap:wrap; }
@@ -38,14 +38,14 @@
     .cv-info { flex:1; min-width:260px; }
     .facts-title { margin-top:18px; font-size:18px; font-weight:700; }
     .facts-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:10px; }
-    .fact-btn { background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); padding:12px; border-radius:10px; cursor:pointer; font-weight:700; color:#111; text-align:center; }
+    .fact-btn { background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); padding:12px; border-radius:10px; cursor:pointer; font-weight:700; color:#000; text-align:center; }
     .fact-btn.clicked { background:#ff6b6b; color:#fff; border-color:rgba(0,0,0,0.06); cursor:default; opacity:0.98; }
     .fact-msg { font-size:14px; color:#c62828; margin-top:6px; min-height:18px; }
     .game-success { margin-top:12px; padding:12px; background:#e6fff1; border:1px solid #b6f0d3; border-radius:10px; color:#066; font-weight:700; }
 
     .question-box { padding:18px; border-radius:12px; background:rgba(255,255,255,0.6); border:1px solid rgba(0,0,0,0.04); margin-top:12px; }
     .yesno { display:flex; gap:12px; margin-top:12px; }
-    .yesno button { min-width:120px; padding:12px; border-radius:10px; background:#eee; color:#111; border:1px solid rgba(0,0,0,0.06); }
+    .yesno button { min-width:120px; padding:12px; border-radius:10px; background:#eee; color:#000; border:1px solid rgba(0,0,0,0.06); }
     .yesno button.selected { background:var(--accent); color:white; }
 
     .wheel-wrap { display:flex; gap:18px; align-items:center; margin-top:14px; flex-wrap:wrap; }
@@ -55,12 +55,12 @@
     .spin-controls { display:flex; gap:8px; flex-direction:column; }
 
     .contact-grid { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
-    .contact-btn { padding:10px 12px; border-radius:10px; background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); cursor:pointer; font-weight:700; }
+    .contact-btn { padding:10px 12px; border-radius:10px; background:#f0f0f0; border:1px solid rgba(0,0,0,0.06); cursor:pointer; font-weight:700; color:#000; }
     .smoke { animation: smoke 900ms forwards; }
     @keyframes smoke { 0%{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); } 100%{ opacity:0; transform:translateY(-30px) scale(1.6); filter:blur(6px); } }
 
     .activity-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:12px; }
-    .activity-btn { padding:12px; border-radius:10px; background:#f7f7f7; border:1px solid rgba(0,0,0,0.06); cursor:pointer; font-weight:700; text-align:left; }
+    .activity-btn { padding:12px; border-radius:10px; background:#f7f7f7; border:1px solid rgba(0,0,0,0.06); cursor:pointer; font-weight:700; text-align:left; color:#000; }
     .activity-btn.selected { background:var(--accent); color:white; }
 
     .result-activity { margin-top:12px; padding:14px; background:#fff7e6; border-radius:10px; border:1px solid #ffe6c2; font-weight:700; }
@@ -129,9 +129,9 @@
 
       <!-- Step 7: CV + game -->
       <section class="step" data-step="7" id="step-7">
-        <h2>CV</h2>
+        <h2 data-i18n-h2="cvTitle">CV</h2>
         <div class="cv-row"><div class="cv-photo" aria-hidden="true">TEEMU</div><div class="cv-info"><div><strong>Nimi:</strong> Teemu</div><div><strong>Ikä:</strong> Cheekin Jippikayjei oli hitti, kun olin peruskoulussa</div><div><strong>Ammatti:</strong> korkeasti koulutettu erikoismies</div><div><strong>Luonne:</strong> looginen mutta aina pilke silmäkulmassa</div><div style="margin-top:8px;" class="small">Seuraavaksi pelataan "3 totuutta ja 1 valhe" — tai no, melkein. Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.</div></div></div>
-        <div class="facts-title">3 totuutta ja 1 valhe… tai no, melkein</div>
+        <div class="facts-title" data-i18n-h2="factsTitle">3 totuutta ja 1 valhe… tai no, melkein</div>
         <div class="facts-grid" id="facts-grid" aria-live="polite"></div>
         <div class="fact-msg" id="fact-msg"></div>
         <div id="game-success" class="game-success" style="display:none;">Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.</div>
@@ -140,8 +140,8 @@
 
       <!-- Step 8: choose route -->
       <section class="step" data-step="8" id="step-8">
-        <h2>Aktiviteetin valinta</h2>
-        <p>Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit, 2) pyöräyttää onnenpyörää tai 3) valita suoraan listasta.</p>
+        <h2 data-i18n-h2="activitiesTitle">Aktiviteetin valinta</h2>
+        <p data-i18n-p="routeText">Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit, 2) pyöräyttää onnenpyörää tai 3) valita suoraan listasta.</p>
         <div class="choice-grid">
           <button id="btn-route-questions" class="choice-btn">Vastaan kysymyksiin</button>
           <button id="btn-route-wheel" class="choice-btn">Pyöräytän onnenpyörää</button>
@@ -153,7 +153,7 @@
       <!-- Step 9: Direct activity list (user can pick) -->
       <section class="step" data-step="9" id="step-9" aria-hidden="true">
         <h2>Valitse aktiviteetti</h2>
-        <p>Valitse listasta suoraan se aktiviteetti, joka kiinnostaa eniten (voit itse vaikuttaa lopputulokseen).</p>
+        <p data-i18n-p="activitySelectText">Valitse listasta suoraan se aktiviteetti, joka kiinnostaa eniten (voit itse vaikuttaa lopputulokseen).</p>
         <div class="activity-grid" id="activity-grid">
           <!-- populated by JS -->
         </div>
@@ -168,8 +168,8 @@
 
       <!-- Wheel step (99) -->
       <section class="step" data-step="99" id="step-wheel" aria-hidden="true">
-        <h2>Onnenpyörä</h2>
-        <p>Pyöräytä ja katso mihin kohtalosi sinut johdattaa. Saat 3 pyöräytystä.</p>
+        <h2 data-i18n-h2="activitiesTitle">Onnenpyörä</h2>
+        <p data-i18n-p="wheelText">Pyöräytä ja katso mihin kohtalosi sinut johdattaa. Saat 3 pyöräytystä.</p>
         <div class="wheel-wrap">
           <div style="position:relative;">
             <div class="wheel" id="wheel"></div>
@@ -196,15 +196,15 @@
 
       <!-- Step 11..14 contact and end (same as before) -->
       <section class="step" data-step="11" id="step-11">
-        <h2>Treffien aikataulu ja tiedonkulku</h2>
-        <p>Valitse miten haluatte olla yhteydessä:</p>
+        <h2 data-i18n-h2="contactTitle">Treffien aikataulu ja tiedonkulku</h2>
+        <p data-i18n-p="contactText">Valitse miten haluatte olla yhteydessä:</p>
         <div class="contact-grid" id="contact-grid">
-          <button class="contact-btn" data-method="instagram">Instagram DM</button>
-          <button class="contact-btn" data-method="whatsapp">WhatsApp</button>
-          <button class="contact-btn" data-method="phone">Puhelinnumero</button>
-          <button class="contact-btn" data-method="smoke">Savumerkit</button>
-          <button class="contact-btn" data-method="email">Sähköposti</button>
-          <button class="contact-btn" data-method="snapchat">Snapchat</button>
+          <button class="contact-btn" data-method="instagram" data-label-fi="Instagram DM" data-label-en="Instagram DM">Instagram DM</button>
+          <button class="contact-btn" data-method="whatsapp" data-label-fi="WhatsApp" data-label-en="WhatsApp">WhatsApp</button>
+          <button class="contact-btn" data-method="phone" data-label-fi="Puhelinnumero" data-label-en="Phone">Puhelinnumero</button>
+          <button class="contact-btn" data-method="smoke" data-label-fi="Savumerkit" data-label-en="Smoke Signals">Savumerkit</button>
+          <button class="contact-btn" data-method="email" data-label-fi="Sähköposti" data-label-en="Email">Sähköposti</button>
+          <button class="contact-btn" data-method="snapchat" data-label-fi="Snapchat" data-label-en="Snapchat">Snapchat</button>
         </div>
         <div id="contact-selected" class="hint" style="margin-top:12px;"></div>
         <div id="contact-input" style="margin-top:12px; display:none;">
@@ -243,7 +243,19 @@
   (function(){
     const T = { fi: { continue:"Jatka", back:"Takaisin", toastLangChange:"Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.", nameReq:"Kirjoita nimesi ennen jatkamista.", chooseYesNo:"Valitse kyllä tai ei ennen jatkamista." }, en:{ continue:"Continue", back:"Back", toastLangChange:"Haha let's stick to English for this.", nameReq:"Please enter your name before continuing.", chooseYesNo:"Choose yes or no before continuing." } };
 
-    const FUNFACTS = { "Arial":"Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.", "Times New Roman":"Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.", "Calibri":"Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.", "Aptos":"Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa." };
+    const FUNFACTS = { 
+      "Arial":"Tiesitkö! Henkilö, joka valitsee Arialin, on yleensä suoraviivainen, vähäeleinen ja todennäköisesti green flag.", 
+      "Times New Roman":"Tiesitkö! Henkilö, joka valitsee Times New Romanin, on yleensä hieman old school, hieman intensiivinen, mutta kiistatta luotettava valinta.", 
+      "Calibri":"Tiesitkö! Henkilö, joka valitsee Calibrin, on yleensä mukava, hurmaava ja vaarallisen helppo tykätä.", 
+      "Aptos":"Tiesitkö! Henkilö, joka valitsee Aptosin, on yleensä moderni, sulava ja vaivattoman viehättävä ilman että yrittää liikaa." 
+    };
+    
+    const FUNFACTS_EN = { 
+      "Arial":"Did you know! A person who chooses Arial is usually straightforward, understated and probably a green flag.", 
+      "Times New Roman":"Did you know! A person who chooses Times New Roman is usually a bit old school, somewhat intense, but undeniably reliable choice.", 
+      "Calibri":"Did you know! A person who chooses Calibri is usually nice, charming and dangerously easy to like.", 
+      "Aptos":"Did you know! A person who chooses Aptos is usually modern, smooth and effortlessly charming without trying too hard." 
+    };
 
     const COLOR_MAP = { white:['#ffffff','#ffffff'], pink:['#ffd1e8','#ffe6f5'], red:['#ffd6d6','#ffb3b3'], orange:['#fff0d1','#ffdbae'], yellow:['#fff9d6','#fff0a8'], green:['#e6fde6','#d2f7d2'], teal:['#dff7f5','#c9f0ec'], blue:['#e6f0ff','#d7e8ff'], purple:['#f3e6ff','#e9ddff'], 'grad-sunset':['#ff9a9e','#fecfef'], 'grad-teal':['#a8edea','#fed6e3'] };
 
@@ -303,7 +315,37 @@
         btnNo: 'Kiitos mutta ei kiitos',
         btnYes: 'No miksipäs ei',
         cvIntroTitle: 'Intro CV',
-        activitiesTitle: 'Aktiviteetin valinta'
+        activitiesTitle: 'Aktiviteetin valinta',
+        title: 'Mitä tehdä ensitreffeillä?',
+        back: 'Takaisin',
+        continue: 'Jatka',
+        contactTitle: 'Treffien aikataulu ja tiedonkulku',
+        contactText: 'Valitse miten haluatte olla yhteydessä:',
+        cvTitle: 'CV',
+        factsTitle: '4 totuutta ja 1 valhe… tai no, melkein',
+        gameSuccess: 'Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.',
+        routeText: 'Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit, 2) pyöräyttää onnenpyörää tai 3) valita suoraan listasta.',
+        activitySelectText: 'Valitse listasta suoraaan se aktiviteetti, joka kiinnostaa eniten (voit itse vaikuttaa lopputulokseen).',
+        wheelText: 'Pyöräytä ja katso mihin kohtalosi sinut johdattaa. Saat 3 pyöräytystä.',
+        selectedActivity: 'Valittu aktiviteetti',
+        contactLabel: 'Anna yhteystieto',
+        contactConfirm: 'Valitsit yhteydenpitotavaksi:',
+        contactInput: 'Kirjoita yhteystieto',
+        lastPage: 'Viimeinen sivu',
+        lastPageText: 'Tämä on viimeinen sivu, kiva kun pääsit tänne asti! Voit odottaa yhteydenottoa minulta muutaman arkipäivän kuluessa.',
+        psText: 'P.s. tiedän tiedän, sanoin että äskeinen sivu oli viimeinen, mutta ei ollut. Halusin vain sanoa että odotan innolla tällejämme {activity} merkeissä, joten valmistaudu, siitä tulee kivaa!!',
+        contactMethodInstagram: 'Instagram DM',
+        contactMethodWhatsapp: 'WhatsApp',
+        contactMethodPhone: 'Puhelinnumero',
+        contactMethodSmoke: 'Savumerkit',
+        contactMethodEmail: 'Sähköposti',
+        contactMethodSnapchat: 'Snapchat',
+        inputPhoneNumber: 'puhelinnumero',
+        inputEmail: 'sähköpostiosoite',
+        inputUsername: 'käyttäjänimi / tunnus',
+        selectedPrefix: 'Valitsit:',
+        yesLabel: 'Kyllä',
+        noLabel: 'Ei'
       },
       en: {
         labelLanguage: 'Select language / Choose language',
@@ -317,7 +359,37 @@
         btnNo: 'Thanks but no thanks',
         btnYes: 'Why not',
         cvIntroTitle: 'Intro CV',
-        activitiesTitle: 'Activity selection'
+        activitiesTitle: 'Activity selection',
+        title: 'What do we do on a first date?',
+        back: 'Back',
+        continue: 'Continue',
+        contactTitle: 'Schedule and communication',
+        contactText: 'Choose how you want to stay in touch:',
+        cvTitle: 'CV',
+        factsTitle: '4 truths and 1 lie… or well, almost',
+        gameSuccess: 'Oops, that\'s also true. I apparently don\'t know the rules of this game… but now you know a few interesting facts about me.',
+        routeText: 'Choose whether you want to 1) answer questions that narrow down the activities, 2) spin a wheel of fortune or 3) select directly from a list.',
+        activitySelectText: 'Choose from the list the activity that interests you most (you can influence the outcome yourself).',
+        wheelText: 'Spin and see where your fate takes you. You get 3 spins.',
+        selectedActivity: 'Selected activity',
+        contactLabel: 'Enter contact information',
+        contactConfirm: 'You selected as contact method:',
+        contactInput: 'Enter your contact information',
+        lastPage: 'Last page',
+        lastPageText: 'This is the last page, nice that you made it this far! You can expect to hear from me in a few business days.',
+        psText: 'P.s. I know, I know, I said the last page was the last one, but it wasn\'t. I just wanted to say that I\'m looking forward to our {activity} together, so get ready, it\'s going to be fun!!',
+        contactMethodInstagram: 'Instagram DM',
+        contactMethodWhatsapp: 'WhatsApp',
+        contactMethodPhone: 'Phone',
+        contactMethodSmoke: 'Smoke Signals',
+        contactMethodEmail: 'Email',
+        contactMethodSnapchat: 'Snapchat',
+        inputPhoneNumber: 'phone number',
+        inputEmail: 'email address',
+        inputUsername: 'username / handle',
+        selectedPrefix: 'You selected:',
+        yesLabel: 'Yes',
+        noLabel: 'No'
       }
     };
 
@@ -325,6 +397,7 @@
       const lang = state.lang;
       const tc = TEXT_CONTENT[lang];
       
+      document.getElementById('title').textContent = tc.title;
       document.getElementById('label-language').textContent = tc.labelLanguage;
       document.getElementById('label-name').textContent = tc.labelName;
       document.getElementById('hint-name').textContent = tc.hintName;
@@ -336,6 +409,33 @@
       document.getElementById('btn-no').textContent = tc.btnNo;
       document.getElementById('btn-yes').textContent = tc.btnYes;
       document.getElementById('cv-intro-title').textContent = tc.cvIntroTitle;
+      
+      const cvIntroText = document.getElementById('cv-intro-text');
+      const name = state.name || '';
+      if(cvIntroText && name) {
+        if(lang === 'fi') {
+          cvIntroText.textContent = `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.`;
+        } else {
+          cvIntroText.textContent = `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. Choose how you'd like to proceed.`;
+        }
+      }
+      
+      document.querySelectorAll('[data-i18n-h2]').forEach(el => {
+        const key = el.dataset.i18nH2;
+        if(tc[key]) el.textContent = tc[key];
+      });
+      
+      document.querySelectorAll('[data-i18n-p]').forEach(el => {
+        const key = el.dataset.i18nP;
+        if(tc[key]) el.textContent = tc[key];
+      });
+      
+      document.querySelectorAll('.contact-btn').forEach(btn => {
+        const labelKey = `data-label-${lang}`;
+        const labelFallback = `data-label-${lang === 'fi' ? 'fi' : 'en'}`;
+        const newText = btn.getAttribute(labelKey) || btn.getAttribute(labelFallback);
+        if(newText) btn.textContent = newText;
+      });
       
       buildQuestionSteps();
     }
@@ -363,7 +463,7 @@
     function applyFont(){ let fam='Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; if(state.font==='Times New Roman') fam='"Times New Roman", Times, serif'; if(state.font==='Calibri') fam='Calibri, Candara, Segoe, "Segoe UI", sans-serif'; if(state.font==='Aptos') fam='Aptos, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; document.body.style.fontFamily=fam; }
     function applyAll(){ applyTheme(); applyFont(); const name = state.name || ''; if(name){ const cvIntro = document.getElementById('cv-intro-text'); if(cvIntro) cvIntro.textContent = (state.lang==='fi' ? `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.` : `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. Choose how you'd like to proceed.`); } }
 
-    function buildQuestionSteps(){ const container = document.getElementById('questions-container'); container.innerHTML=''; QUESTIONS.forEach((q,idx)=>{ const stepNum = 100+idx+1; const sec = document.createElement('section'); sec.setAttribute('data-step-dynamic', stepNum); sec.dataset.stepDynamic = stepNum; sec.className='step'; const qText = state.lang === 'fi' ? q.text : (QUESTIONS_EN[idx]?.text || q.text); const continueText = T[state.lang]?.continue || 'Jatka'; const backText = T[state.lang]?.back || 'Takaisin'; const answerText = T[state.lang]?.chooseYesNo || 'Valitse kyllä tai ei ennen jatkamista.'; const questionText = state.lang === 'fi' ? `Kysymys ${idx+1} / ${QUESTIONS.length}` : `Question ${idx+1} / ${QUESTIONS.length}`; sec.innerHTML = `<div class="question-box"><h2>${questionText}</h2><p>${qText}</p><div class="yesno" data-qid="${q.id}"><button type="button" class="yesno-yes">${state.lang === 'fi' ? 'Kyllä' : 'Yes'}</button><button type="button" class="yesno-no">${state.lang === 'fi' ? 'Ei' : 'No'}</button></div><div class="hint small" style="margin-top:10px;">${answerText}</div><div class="controls" style="margin-top:12px;"><button class="secondary btn-ques-prev">${backText}</button><button class="btn-ques-next">${continueText}</button></div></div>`; container.appendChild(sec); }); }
+    function buildQuestionSteps(){ const container = document.getElementById('questions-container'); container.innerHTML=''; const tc = TEXT_CONTENT[state.lang]; QUESTIONS.forEach((q,idx)=>{ const stepNum = 100+idx+1; const sec = document.createElement('section'); sec.setAttribute('data-step-dynamic', stepNum); sec.dataset.stepDynamic = stepNum; sec.className='step'; const qText = state.lang === 'fi' ? q.text : (QUESTIONS_EN[idx]?.text || q.text); const continueText = tc.continue; const backText = tc.back; const yesLabel = tc.yesLabel; const noLabel = tc.noLabel; const questionText = state.lang === 'fi' ? `Kysymys ${idx+1} / ${QUESTIONS.length}` : `Question ${idx+1} / ${QUESTIONS.length}`; const answerText = state.lang === 'fi' ? 'Valitse kyllä tai ei ennen jatkamista.' : 'Choose yes or no before proceeding.'; sec.innerHTML = `<div class="question-box"><h2>${questionText}</h2><p>${qText}</p><div class="yesno" data-qid="${q.id}"><button type="button" class="yesno-yes">${yesLabel}</button><button type="button" class="yesno-no">${noLabel}</button></div><div class="hint small" style="margin-top:10px;">${answerText}</div><div class="controls" style="margin-top:12px;"><button class="secondary btn-ques-prev">${backText}</button><button class="btn-ques-next">${continueText}</button></div></div>`; container.appendChild(sec); }); }
 
     function computeActivityScores(){ const totals={}; Object.keys(ACTIVITIES).forEach(k=>totals[k]=0); for(const e of SCORE_TABLE){ const ans = state.answers[e.q]; if(!ans) continue; if(ans===e.ans) totals[e.a]+=e.s; } return totals; }
     function decideBestActivity(){ const totals=computeActivityScores(); let best=null,bestScore=-Infinity; for(const k in totals){ if(totals[k]>bestScore){ bestScore=totals[k]; best=[k]; } else if(totals[k]===bestScore){ best.push(k); } } if(Array.isArray(best)) best=best[Math.floor(Math.random()*best.length)]; return { id:best, score:totals[best] }; }
@@ -373,7 +473,6 @@
     function spinWheel(){ const wheel=document.getElementById('wheel'); const keys=JSON.parse(wheel.dataset.items); const seg=keys.length; const pickIndex=Math.floor(Math.random()*seg); const degreesPerSeg=360/seg; const randomOffset=(Math.random()*(degreesPerSeg-10))-(degreesPerSeg/2); const target=360*4+(360-(pickIndex*degreesPerSeg+degreesPerSeg/2))+randomOffset; wheel.style.transition='transform 4s cubic-bezier(.17,.67,.03,.98)'; wheel.style.transform=`rotate(${target}deg)`; return { pickIndex, target }; }
     function resetWheel(){ const wheel=document.getElementById('wheel'); wheel.style.transition='none'; wheel.style.transform='rotate(0deg)'; void wheel.offsetWidth; }
 
-    loadState();
     document.addEventListener('DOMContentLoaded', ()=> {
       const selectLang=document.getElementById('select-language'), btnLangNext=document.getElementById('btn-lang-next');
       const inputName=document.getElementById('input-name'), btnNameNext=document.getElementById('btn-name-next'), btnNamePrev=document.getElementById('btn-name-prev');
@@ -419,13 +518,15 @@
         let chosen = selectLang.value;
         if(chosen === 'fi'){ state.lang='fi'; } 
         else if(chosen === 'en'){ state.lang='en'; } 
-        else { state.lang='en'; showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 3500); }
+        else { state.lang='en'; const tc = TEXT_CONTENT['en']; showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 3500); }
         saveState(); updateUILanguage(); applyAll(); showStep(2);
       });
 
       // name
       btnNameNext.addEventListener('click', ()=> {
-        const name = inputName.value.trim(); if(!name){ showToast(T[state.lang].nameReq); return; }
+        const tc = TEXT_CONTENT[state.lang];
+        const name = inputName.value.trim(); 
+        if(!name){ showToast(state.lang === 'fi' ? 'Kirjoita nimesi.' : 'Please enter your name.'); return; }
         state.name = name; saveState(); applyAll(); showStep(3);
       });
       btnNamePrev.addEventListener('click', ()=> showStep(1));
@@ -436,15 +537,21 @@
       btnColorPrev.addEventListener('click', ()=> showStep(2));
 
       // font
-      selectFont.addEventListener('change', ()=> { state.font = selectFont.value; applyFont(); funfact.style.display='block'; funfact.textContent = FUNFACTS[state.font]||''; saveState(); });
-      if(state.font){ funfact.style.display='block'; funfact.textContent = FUNFACTS[state.font]||''; }
+      selectFont.addEventListener('change', ()=> { state.font = selectFont.value; applyFont(); funfact.style.display='block'; const ff = state.lang === 'en' ? FUNFACTS_EN : FUNFACTS; funfact.textContent = ff[state.font]||''; saveState(); });
+      if(state.font){ funfact.style.display='block'; const ff = state.lang === 'en' ? FUNFACTS_EN : FUNFACTS; funfact.textContent = ff[state.font]||''; }
       btnFontNext.addEventListener('click', ()=> { state.font = selectFont.value; saveState(); applyFont(); showStep(5); });
       btnFontPrev.addEventListener('click', ()=> showStep(3));
 
       // interest (force yes)
       btnNo.addEventListener('click', ()=> { noResponse.style.display='block'; noResponse.textContent = state.lang==='fi' ? 'Tekninen virhe ilmenee — valitse toinen vaihtoehto.' : 'A technical error occurred — please choose the other option.'; state.interested=false; btnInterestNext.style.display='none'; saveState(); });
       btnYes.addEventListener('click', ()=> { noResponse.style.display='none'; state.interested=true; btnInterestNext.style.display='inline-block'; saveState(); });
-      btnInterestNext.addEventListener('click', ()=> { if(state.interested !== true){ showToast(T[state.lang].chooseYesNo); return; } showStep(6); });
+      btnInterestNext.addEventListener('click', ()=> { 
+        if(state.interested !== true){ 
+          showToast(state.lang === 'fi' ? 'Valitse kyllä tai ei ennen jatkamista.' : 'Choose yes or no before proceeding.'); 
+          return; 
+        } 
+        showStep(6); 
+      });
       btnInterestPrev.addEventListener('click', ()=> showStep(4));
 
       // CV intro
@@ -454,7 +561,23 @@
       // CV game
       function renderFacts(){ factsGrid.innerHTML=''; FACTS.forEach(f=>{ const b=document.createElement('button'); b.className='fact-btn'; b.id=f.id; b.textContent=f.text; b.type='button'; b.addEventListener('click', ()=> onFactClick(f.id)); factsGrid.appendChild(b); }); }
       let clicked = new Set();
-      function onFactClick(id){ if(clicked.has(id)) return; const btn=document.getElementById(id); btn.classList.add('clicked'); btn.disabled=true; clicked.add(id); factMsg.textContent = state.lang==='fi' ? 'Tämä vaihtoehto on totta, yritä uudelleen.' : 'This option is true, try again.'; if(clicked.size === FACTS.length){ factMsg.textContent=''; gameSuccess.style.display='block'; btn7Continue.style.display='inline-block'; state.cvGameDone=true; saveState(); } }
+      function onFactClick(id){ 
+        if(clicked.has(id)) return; 
+        const btn=document.getElementById(id); 
+        btn.classList.add('clicked'); 
+        btn.disabled=true; 
+        clicked.add(id); 
+        factMsg.textContent = state.lang==='fi' ? 'Tämä vaihtoehto on totta, yritä uudelleen.' : 'This option is true, try again.'; 
+        if(clicked.size === FACTS.length){ 
+          factMsg.textContent=''; 
+          const tc = TEXT_CONTENT[state.lang];
+          gameSuccess.textContent = tc.gameSuccess;
+          gameSuccess.style.display='block'; 
+          btn7Continue.style.display='inline-block'; 
+          state.cvGameDone=true; 
+          saveState(); 
+        } 
+      }
       btn7Back.addEventListener('click', ()=> showStep(6));
       btn7Continue.addEventListener('click', ()=> showStep(8));
       renderFacts();
@@ -462,7 +585,16 @@
 
       // activity route
       btnRouteQuestions.addEventListener('click', ()=> { showQuestionStep(0); });
-      btnRouteWheel.addEventListener('click', ()=> { renderWheel(); resetWheel(); state.wheelSpins=3; document.getElementById('spins-left').textContent = state.wheelSpins; wheelRes.textContent='Ei valintaa vielä'; wheelReSpin.style.display='none'; wheelContinue.style.display='none'; showStep(99); });
+      btnRouteWheel.addEventListener('click', ()=> { 
+        renderWheel(); 
+        resetWheel(); 
+        state.wheelSpins=3; 
+        document.getElementById('spins-left').textContent = state.wheelSpins; 
+        wheelRes.textContent = state.lang==='fi' ? 'Ei valintaa vielä' : 'No selection yet'; 
+        wheelReSpin.style.display='none'; 
+        wheelContinue.style.display='none'; 
+        showStep(99); 
+      });
       btnRouteList.addEventListener('click', ()=> { // direct list
         // reset selection ui
         activityGrid.querySelectorAll('.activity-btn').forEach(x=>x.classList.remove('selected'));
@@ -495,9 +627,19 @@
 
         prevBtn.onclick = ()=> { if(index===0) showStep(8); else showQuestionStep(index-1); };
         nextBtn.onclick = ()=> {
-          if(!state.answers[qid]){ showToast(T[state.lang].chooseYesNo); return; }
+          if(!state.answers[qid]){ 
+            showToast(state.lang === 'fi' ? 'Valitse kyllä tai ei ennen jatkamista.' : 'Choose yes or no before proceeding.'); 
+            return; 
+          }
           if(index+1 < QUESTIONS.length) showQuestionStep(index+1);
-          else { const best = decideBestActivity(); state.chosenActivity = best.id; saveState(); document.getElementById('result-activity').textContent = ACTIVITIES[best.id].label + ' (pisteet: ' + (best.score||0) + ')'; showStep(10); }
+          else { 
+            const best = decideBestActivity(); 
+            state.chosenActivity = best.id; 
+            saveState(); 
+            const scoreText = state.lang === 'fi' ? `(pisteet: ${best.score||0})` : `(score: ${best.score||0})`;
+            document.getElementById('result-activity').textContent = ACTIVITIES[best.id].label + ' ' + scoreText; 
+            showStep(10); 
+          }
         };
       }
 
@@ -523,41 +665,100 @@
         }, 4100);
       });
       wheelReSpin.addEventListener('click', ()=> { resetWheel(); setTimeout(()=> spinBtnEl.click(), 50); });
-      wheelContinue.addEventListener('click', ()=> { if(!state.chosenActivity){ showToast('Valitse ensin aktiviteetti pyöräyttämällä.'); return; } document.getElementById('result-activity').textContent = ACTIVITIES[state.chosenActivity].label + ' (onnenpyörä valinta)'; showStep(10); });
+      wheelContinue.addEventListener('click', ()=> { 
+        if(!state.chosenActivity){ 
+          showToast(state.lang === 'fi' ? 'Valitse ensin aktiviteetti pyöräyttämällä.' : 'Select an activity by spinning first.'); 
+          return; 
+        } 
+        const methodText = state.lang === 'fi' ? '(onnenpyörä valinta)' : '(wheel selection)';
+        document.getElementById('result-activity').textContent = ACTIVITIES[state.chosenActivity].label + ' ' + methodText; 
+        showStep(10); 
+      });
 
       // Direct list handlers
       btn9Back.addEventListener('click', ()=> showStep(8));
       btn9Next.addEventListener('click', ()=> {
-        if(!state.chosenActivity){ showToast('Valitse aktiviteetti listasta ennen jatkamista.'); return; }
-        document.getElementById('result-activity').textContent = ACTIVITIES[state.chosenActivity].label + ' (käyttäjän valinta)';
+        if(!state.chosenActivity){ 
+          showToast(state.lang === 'fi' ? 'Valitse aktiviteetti listasta ennen jatkamista.' : 'Select an activity from the list before continuing.'); 
+          return; 
+        }
+        const methodText = state.lang === 'fi' ? '(käyttäjän valinta)' : '(user selection)';
+        document.getElementById('result-activity').textContent = ACTIVITIES[state.chosenActivity].label + ' ' + methodText;
         showStep(10);
       });
 
       // Result step
       btn10Back.addEventListener('click', ()=> showStep(8));
-      btn10Next.addEventListener('click', ()=> { if(!state.chosenActivity){ showToast('Valitse aktiviteetti ensin.'); return; } psActivity.textContent = ACTIVITIES[state.chosenActivity].label; showStep(11); });
+      btn10Next.addEventListener('click', ()=> { 
+        if(!state.chosenActivity){ 
+          showToast(state.lang === 'fi' ? 'Valitse aktiviteetti ensin.' : 'Select an activity first.'); 
+          return; 
+        } 
+        psActivity.textContent = ACTIVITIES[state.chosenActivity].label; 
+        showStep(11); 
+      });
 
       // Contact
       contactGrid.querySelectorAll('.contact-btn').forEach(b=>{
         b.addEventListener('click', ()=> {
           const method = b.dataset.method;
+          const lang = state.lang;
+          const tc = TEXT_CONTENT[lang];
           if(method==='smoke'){ b.classList.add('smoke'); setTimeout(()=> b.style.display='none',900); return; }
           state.contactMethod = method;
-          contactSelected.textContent = 'Valitsit: ' + (method==='instagram'?'Instagram DM': method==='whatsapp'?'WhatsApp': method==='phone'?'Puhelinnumero': method==='email'?'Sähköposti':'Snapchat');
+          const methodLabels = {
+            'instagram': tc.contactMethodInstagram,
+            'whatsapp': tc.contactMethodWhatsapp,
+            'phone': tc.contactMethodPhone,
+            'email': tc.contactMethodEmail,
+            'snapchat': tc.contactMethodSnapchat
+          };
+          const methodLabel = methodLabels[method] || method;
+          contactSelected.textContent = tc.selectedPrefix + ' ' + methodLabel;
           contactInput.style.display='block';
-          contactLabel.textContent = 'Anna ' + (method==='phone'?'puhelinnumero' : method==='email'?'sähköpostiosoite' : 'käyttäjänimi / tunnus');
+          const inputTypeMap = {
+            'phone': tc.inputPhoneNumber,
+            'email': tc.inputEmail
+          };
+          const inputType = inputTypeMap[method] || tc.inputUsername;
+          contactLabel.textContent = (lang==='fi' ? 'Anna ' : 'Enter ') + inputType;
           btn11Next.style.display='inline-block';
           saveState();
         });
       });
       btn11Back.addEventListener('click', ()=> showStep(10));
-      btn11Next.addEventListener('click', ()=> { const v = contactValue.value.trim(); if(!v){ showToast('Anna yhteystieto ennen jatkamista.'); return; } state.contactValue=v; saveState(); document.getElementById('confirm-method-val').textContent = contactSelected.textContent.replace('Valitsit: ',''); finalContact.value = v; showStep(12); });
+      btn11Next.addEventListener('click', ()=> { 
+        const tc = TEXT_CONTENT[state.lang];
+        const v = contactValue.value.trim(); 
+        if(!v){ 
+          showToast(state.lang === 'fi' ? 'Anna yhteystieto ennen jatkamista.' : 'Enter contact information before continuing.'); 
+          return; 
+        } 
+        state.contactValue=v; 
+        saveState(); 
+        const prefix = tc.selectedPrefix;
+        document.getElementById('confirm-method-val').textContent = contactSelected.textContent.replace(prefix + ' ',''); 
+        finalContact.value = v; 
+        showStep(12); 
+      });
 
       btn12Back.addEventListener('click', ()=> showStep(11));
-      btn12Next.addEventListener('click', ()=> { const v = finalContact.value.trim(); if(!v){ showToast('Anna yhteystieto.'); return; } state.contactValue=v; saveState(); showStep(13); });
+      btn12Next.addEventListener('click', ()=> { 
+        const v = finalContact.value.trim(); 
+        if(!v){ 
+          showToast(state.lang === 'fi' ? 'Anna yhteystieto.' : 'Enter contact information.'); 
+          return; 
+        } 
+        state.contactValue=v; 
+        saveState(); 
+        showStep(13); 
+      });
 
       btn13Next.addEventListener('click', ()=> showStep(14));
-      btn14End.addEventListener('click', ()=> { showToast('Kiitos — täysi lopetus. Nähdään seuraavassa iteraatiossa!',3000); });
+      btn14End.addEventListener('click', ()=> { 
+        const tc = TEXT_CONTENT[state.lang];
+        showToast(state.lang === 'fi' ? 'Kiitos — täysi lopetus. Nähdään seuraavassa iteraatiossa!' : 'Thank you — all done. See you next time!', 3000); 
+      });
 
       inputName.addEventListener('input', (e)=> { state.name = e.target.value; saveState(); applyAll(); });
 
