@@ -519,7 +519,7 @@
         if(chosen === 'fi'){ state.lang='fi'; } 
         else if(chosen === 'en'){ state.lang='en'; } 
         else { state.lang='en'; const tc = TEXT_CONTENT['en']; showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 3500); }
-        updateUILanguage(); applyAll(); showStep(2);
+        saveState(); updateUILanguage(); applyAll(); showStep(2);
       });
 
       // name
