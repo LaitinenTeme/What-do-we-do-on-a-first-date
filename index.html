@@ -130,7 +130,7 @@
       <!-- Step 7: CV + game -->
       <section class="step" data-step="7" id="step-7">
         <h2 data-i18n-h2="cvTitle">CV</h2>
-        <div class="cv-row"><div class="cv-photo" aria-hidden="true">TEEMU</div><div class="cv-info"><div><strong>Nimi:</strong> Teemu</div><div><strong>Ikä:</strong> Cheekin Jippikayjei oli hitti, kun olin peruskoulussa</div><div><strong>Ammatti:</strong> korkeasti koulutettu erikoismies</div><div><strong>Luonne:</strong> looginen mutta aina pilke silmäkulmassa</div><div style="margin-top:8px;" class="small">Seuraavaksi pelataan "3 totuutta ja 1 valhe" — tai no, melkein. Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.</div></div></div>
+        <div class="cv-row"><div class="cv-photo" aria-hidden="true">TEEMU</div><div class="cv-info"><div><strong id="cv-name-label">Nimi:</strong> <span id="cv-name">Teemu</span></div><div><strong id="cv-age-label">Ikä:</strong> <span id="cv-age-text">Cheekin Jippikayjei oli hitti, kun olin peruskoulussa</span></div><div><strong id="cv-job-label">Ammatti:</strong> <span id="cv-job-text">korkeasti koulutettu erikoismies</span></div><div><strong id="cv-personality-label">Luonne:</strong> <span id="cv-personality-text">looginen mutta aina pilke silmäkulmassa</span></div><div style="margin-top:8px;" class="small" id="cv-game-intro">Seuraavaksi pelataan "3 totuutta ja 1 valhe" — tai no, melkein. Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.</div></div></div>
         <div class="facts-title" data-i18n-h2="factsTitle">3 totuutta ja 1 valhe… tai no, melkein</div>
         <div class="facts-grid" id="facts-grid" aria-live="polite"></div>
         <div class="fact-msg" id="fact-msg"></div>
@@ -245,7 +245,24 @@
 
     const COLOR_MAP = { white:['#ffffff','#ffffff'], pink:['#ffd1e8','#ffe6f5'], red:['#ffd6d6','#ffb3b3'], orange:['#fff0d1','#ffdbae'], yellow:['#fff9d6','#fff0a8'], green:['#e6fde6','#d2f7d2'], teal:['#dff7f5','#c9f0ec'], blue:['#e6f0ff','#d7e8ff'], purple:['#f3e6ff','#e9ddff'], 'grad-sunset':['#ff9a9e','#fecfef'], 'grad-teal':['#a8edea','#fed6e3'] };
 
-    const ACTIVITIES = { sports:{id:'sports',label:'Urheilua (laskettelu, hiihto, kuntosali)'}, restaurantLunch:{id:'restaurantLunch',label:'Lounas / illallinen ravintolassa'}, cookDinner:{id:'cookDinner',label:'Lounas / illallinen itse kokaten'}, winePaint:{id:'winePaint',label:'Wine & paint'}, standup:{id:'standup',label:'Stand up show'}, theatre:{id:'theatre',label:'Teatteri / musikaali'}, studentEvent:{id:'studentEvent',label:'Opiskelijatapahtuma'}, bakeCake:{id:'bakeCake',label:'Leivotaan kakku'}, roadTrip:{id:'roadTrip',label:'Road trip'}, dance:{id:'dance',label:'Paritanssitunti / lavatanssit'}, pubQuiz:{id:'pubQuiz',label:'Pubivisa'}, arcticSwim:{id:'arcticSwim',label:'Uintireissu Jäämerelle'}, halti:{id:'halti',label:'Vaellus Haltille'}, games:{id:'games',label:'Keilaus / minigolf / biljardi'}, movieNight:{id:'movieNight',label:'Leffailta kotona'} };
+    const ACTIVITIES = { 
+      sports:{id:'sports',label:'Urheilua (laskettelu, hiihto, kuntosali)', labelEn:'Sports (skiing, downhill skiing, gym)'}, 
+      restaurantLunch:{id:'restaurantLunch',label:'Lounas / illallinen ravintolassa', labelEn:'Lunch / dinner at a restaurant'}, 
+      cookDinner:{id:'cookDinner',label:'Lounas / illallinen itse kokaten', labelEn:'Lunch / dinner cooking together'}, 
+      winePaint:{id:'winePaint',label:'Wine & paint', labelEn:'Wine & paint'}, 
+      standup:{id:'standup',label:'Stand up show', labelEn:'Stand up show'}, 
+      theatre:{id:'theatre',label:'Teatteri / musikaali', labelEn:'Theatre / musical'}, 
+      studentEvent:{id:'studentEvent',label:'Opiskelijatapahtuma', labelEn:'Student event'}, 
+      bakeCake:{id:'bakeCake',label:'Leivotaan kakku', labelEn:'Bake a cake'}, 
+      roadTrip:{id:'roadTrip',label:'Road trip', labelEn:'Road trip'}, 
+      dance:{id:'dance',label:'Paritanssitunti / lavatanssit', labelEn:'Partner dance class / dance hall'}, 
+      pubQuiz:{id:'pubQuiz',label:'Pubivisa', labelEn:'Pub quiz'}, 
+      arcticSwim:{id:'arcticSwim',label:'Uintireissu Jäämerelle', labelEn:'Swimming trip to the Arctic Ocean'}, 
+      halti:{id:'halti',label:'Vaellus Haltille', labelEn:'Hiking trip to Halti'}, 
+      games:{id:'games',label:'Keilaus / minigolf / biljardi', labelEn:'Bowling / mini golf / pool'}, 
+      movieNight:{id:'movieNight',label:'Leffailta kotona', labelEn:'Movie night at home'} 
+    };
+    function activityLabel(key){ const a = ACTIVITIES[key]; if(!a) return ''; return state.lang === 'en' ? (a.labelEn || a.label) : a.label; }
 
     const SCORE_TABLE = [ /* sama taulukko kuin aiemmin — jätetty paikalle (tai voit lisätä muutoksia täällä) */ 
       { q:'gettingWetBothers', ans:'yes', a:'arcticSwim', s:-4 },{ q:'gettingWetBothers', ans:'yes', a:'halti', s:-1 },{ q:'gettingWetBothers', ans:'yes', a:'restaurantLunch', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'cookDinner', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'winePaint', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'standup', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'theatre', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'bakeCake', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'games', s:1 },{ q:'gettingWetBothers', ans:'yes', a:'movieNight', s:1 },{ q:'gettingWetBothers', ans:'no', a:'arcticSwim', s:4 },{ q:'gettingWetBothers', ans:'no', a:'halti', s:1 },{ q:'gettingWetBothers', ans:'no', a:'roadTrip', s:1 },
@@ -343,7 +360,16 @@
         end: 'Lopeta',
         reallyEnd: 'Oikeasti lopeta',
         reallyLastPage: 'Oikeasti viimeinen sivu',
-        noSelectionYet: 'Ei valintaa vielä'
+        noSelectionYet: 'Ei valintaa vielä',
+        cvNameLabel: 'Nimi:',
+        cvName: 'Teemu',
+        cvAgeLabel: 'Ikä:',
+        cvAgeText: 'Cheekin Jippikayjei oli hitti, kun olin peruskoulussa',
+        cvJobLabel: 'Ammatti:',
+        cvJobText: 'korkeasti koulutettu erikoismies',
+        cvPersonalityLabel: 'Luonne:',
+        cvPersonalityText: 'looginen mutta aina pilke silmäkulmassa',
+        cvGameIntro: 'Seuraavaksi pelataan "3 totuutta ja 1 valhe" — tai no, melkein. Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.'
       },
       en: {
         labelLanguage: 'Select language / Choose language',
@@ -399,7 +425,16 @@
         end: 'End',
         reallyEnd: 'Really end',
         reallyLastPage: 'Really the last page',
-        noSelectionYet: 'No selection yet'
+        noSelectionYet: 'No selection yet',
+        cvNameLabel: 'Name:',
+        cvName: 'Teemu',
+        cvAgeLabel: 'Age:',
+        cvAgeText: 'Cheek\'s "Jippikayjei" was a hit when I was in elementary school',
+        cvJobLabel: 'Profession:',
+        cvJobText: 'highly educated specialist',
+        cvPersonalityLabel: 'Personality:',
+        cvPersonalityText: 'logical but always with a twinkle in the eye',
+        cvGameIntro: 'Next up we play "3 truths and 1 lie" — or well, almost. Click the statements to find out which ones are true.'
       }
     };
 
@@ -460,6 +495,50 @@
       const wheelSelectedEl = document.getElementById('wheel-selected');
       if(wheelSelectedEl && !state.chosenActivity) wheelSelectedEl.textContent = tc.noSelectionYet;
       
+      if(document.getElementById('wheel')) renderWheel();
+      
+      // CV info block
+      const cvNameLabel = document.getElementById('cv-name-label');
+      if(cvNameLabel) cvNameLabel.textContent = tc.cvNameLabel;
+      const cvName = document.getElementById('cv-name');
+      if(cvName) cvName.textContent = tc.cvName;
+      const cvAgeLabel = document.getElementById('cv-age-label');
+      if(cvAgeLabel) cvAgeLabel.textContent = tc.cvAgeLabel;
+      const cvAgeText = document.getElementById('cv-age-text');
+      if(cvAgeText) cvAgeText.textContent = tc.cvAgeText;
+      const cvJobLabel = document.getElementById('cv-job-label');
+      if(cvJobLabel) cvJobLabel.textContent = tc.cvJobLabel;
+      const cvJobText = document.getElementById('cv-job-text');
+      if(cvJobText) cvJobText.textContent = tc.cvJobText;
+      const cvPersonalityLabel = document.getElementById('cv-personality-label');
+      if(cvPersonalityLabel) cvPersonalityLabel.textContent = tc.cvPersonalityLabel;
+      const cvPersonalityText = document.getElementById('cv-personality-text');
+      if(cvPersonalityText) cvPersonalityText.textContent = tc.cvPersonalityText;
+      const cvGameIntro = document.getElementById('cv-game-intro');
+      if(cvGameIntro) cvGameIntro.textContent = tc.cvGameIntro;
+      
+      // Font fun-fact — re-apply in current language if a font was already selected
+      const funfactEl = document.getElementById('funfact');
+      if(funfactEl && state.font){
+        const ff = lang === 'en' ? FUNFACTS_EN : FUNFACTS;
+        funfactEl.textContent = ff[state.font] || '';
+      }
+      
+      // P.s. text on final page — rebuild around the activity span, preserving the existing span node
+      const psTextEl = document.getElementById('ps-text');
+      if(psTextEl){
+        const parts = tc.psText.split('{activity}');
+        let activitySpan = document.getElementById('ps-activity');
+        const currentActivityText = activitySpan ? activitySpan.textContent : '';
+        psTextEl.innerHTML = '';
+        psTextEl.appendChild(document.createTextNode(parts[0]));
+        activitySpan = document.createElement('span');
+        activitySpan.id = 'ps-activity';
+        activitySpan.textContent = state.chosenActivity ? activityLabel(state.chosenActivity) : currentActivityText;
+        psTextEl.appendChild(activitySpan);
+        psTextEl.appendChild(document.createTextNode(parts[1] || ''));
+      }
+      
       buildQuestionSteps();
     }
 
@@ -491,7 +570,7 @@
     function computeActivityScores(){ const totals={}; Object.keys(ACTIVITIES).forEach(k=>totals[k]=0); for(const e of SCORE_TABLE){ const ans = state.answers[e.q]; if(!ans) continue; if(ans===e.ans) totals[e.a]+=e.s; } return totals; }
     function decideBestActivity(){ const totals=computeActivityScores(); let best=null,bestScore=-Infinity; for(const k in totals){ if(totals[k]>bestScore){ bestScore=totals[k]; best=[k]; } else if(totals[k]===bestScore){ best.push(k); } } if(Array.isArray(best)) best=best[Math.floor(Math.random()*best.length)]; return { id:best, score:totals[best] }; }
 
-    function renderWheel(){ const wheel=document.getElementById('wheel'); const keys=Object.keys(ACTIVITIES); const colors=['#ffd6d6','#ffdbae','#fff9d6','#e6fde6','#dff7f5','#e6f0ff','#f3e6ff','#ffd1e8','#fef0e6','#e9f7f0','#ffe6f2','#fff3d9','#dfe7ff','#f0f0f0']; const segCount=keys.length; const step=100/segCount; let grad=[]; for(let i=0;i<segCount;i++) grad.push(`${colors[i%colors.length]} ${i*step}% ${(i+1)*step}%`); wheel.style.background=`conic-gradient(${grad.join(',')})`; wheel.querySelectorAll('.label').forEach(n=>n.remove()); for(let i=0;i<segCount;i++){ const el=document.createElement('div'); el.className='label'; const angle=(i*(360/segCount))+(360/(segCount*2)); const radius=(wheel.clientWidth/2)-40; el.style.transform=`translate(-50%,-50%) rotate(${angle}deg) translate(${radius}px) rotate(${-angle}deg)`; el.innerText=ACTIVITIES[keys[i]].label.split(' ')[0]; wheel.appendChild(el); } wheel.dataset.items=JSON.stringify(Object.keys(ACTIVITIES)); }
+    function renderWheel(){ const wheel=document.getElementById('wheel'); const keys=Object.keys(ACTIVITIES); const colors=['#ffd6d6','#ffdbae','#fff9d6','#e6fde6','#dff7f5','#e6f0ff','#f3e6ff','#ffd1e8','#fef0e6','#e9f7f0','#ffe6f2','#fff3d9','#dfe7ff','#f0f0f0']; const segCount=keys.length; const step=100/segCount; let grad=[]; for(let i=0;i<segCount;i++) grad.push(`${colors[i%colors.length]} ${i*step}% ${(i+1)*step}%`); wheel.style.background=`conic-gradient(${grad.join(',')})`; wheel.querySelectorAll('.label').forEach(n=>n.remove()); for(let i=0;i<segCount;i++){ const el=document.createElement('div'); el.className='label'; const angle=(i*(360/segCount))+(360/(segCount*2)); const radius=(wheel.clientWidth/2)-40; el.style.transform=`translate(-50%,-50%) rotate(${angle}deg) translate(${radius}px) rotate(${-angle}deg)`; el.innerText=activityLabel(keys[i]).split(' ')[0]; wheel.appendChild(el); } wheel.dataset.items=JSON.stringify(Object.keys(ACTIVITIES)); }
 
     function spinWheel(){ const wheel=document.getElementById('wheel'); const keys=JSON.parse(wheel.dataset.items); const seg=keys.length; const pickIndex=Math.floor(Math.random()*seg); const degreesPerSeg=360/seg; const randomOffset=(Math.random()*(degreesPerSeg-10))-(degreesPerSeg/2); const target=360*4+(360-(pickIndex*degreesPerSeg+degreesPerSeg/2))+randomOffset; wheel.style.transition='transform 4s cubic-bezier(.17,.67,.03,.98)'; wheel.style.transform=`rotate(${target}deg)`; return { pickIndex, target }; }
     function resetWheel(){ const wheel=document.getElementById('wheel'); wheel.style.transition='none'; wheel.style.transform='rotate(0deg)'; void wheel.offsetWidth; }
@@ -632,7 +711,7 @@
             state.chosenActivity = best.id; 
             saveState(); 
             const scoreText = state.lang === 'fi' ? `(pisteet: ${best.score||0})` : `(score: ${best.score||0})`;
-            document.getElementById('result-activity').textContent = ACTIVITIES[best.id].label + ' ' + scoreText; 
+            document.getElementById('result-activity').textContent = activityLabel(best.id) + ' ' + scoreText; 
             showStep(10); 
           }
         };
@@ -650,7 +729,7 @@
           const keys = JSON.parse(wheel.dataset.items);
           const chosen = keys[pickIndex];
           state.chosenActivity = chosen;
-          wheelRes.textContent = ACTIVITIES[chosen].label;
+          wheelRes.textContent = activityLabel(chosen);
           wheelCurrentPick = chosen;
           state.wheelSpins -= 1;
           document.getElementById('spins-left').textContent = state.wheelSpins;
@@ -666,7 +745,7 @@
           return; 
         } 
         const methodText = state.lang === 'fi' ? '(onnenpyörä valinta)' : '(wheel selection)';
-        document.getElementById('result-activity').textContent = ACTIVITIES[state.chosenActivity].label + ' ' + methodText; 
+        document.getElementById('result-activity').textContent = activityLabel(state.chosenActivity) + ' ' + methodText; 
         showStep(10); 
       });
 
@@ -677,7 +756,7 @@
           showToast(state.lang === 'fi' ? 'Valitse aktiviteetti ensin.' : 'Select an activity first.'); 
           return; 
         } 
-        psActivity.textContent = ACTIVITIES[state.chosenActivity].label; 
+        document.getElementById('ps-activity').textContent = activityLabel(state.chosenActivity); 
         showStep(11); 
       });
 
@@ -745,7 +824,7 @@
 
       inputName.addEventListener('input', (e)=> { state.name = e.target.value; saveState(); applyAll(); });
 
-      if(state.chosenActivity){ document.getElementById('result-activity').textContent = ACTIVITIES[state.chosenActivity].label; psActivity.textContent = ACTIVITIES[state.chosenActivity].label; }
+      if(state.chosenActivity){ document.getElementById('result-activity').textContent = activityLabel(state.chosenActivity); const psActivityEl = document.getElementById('ps-activity'); if(psActivityEl) psActivityEl.textContent = activityLabel(state.chosenActivity); }
 
       applyTheme(); applyFont(); applyAll(); renderWheel(); resetWheel();
     });
