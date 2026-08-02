@@ -34,7 +34,8 @@
     .polite-box { padding:12px; background:#fff4e6; border-radius:8px; border:1px solid #ffe6c2; margin-top:12px; }
 
     .cv-row { display:flex; gap:18px; align-items:flex-start; margin-top:12px; flex-wrap:wrap; }
-    .cv-photo { width:160px; height:160px; background:linear-gradient(180deg,#f3f3f3,#fff); border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:700; color:#666; border:1px solid rgba(0,0,0,0.06); }
+    .cv-photo { width:160px; height:160px; background:linear-gradient(180deg,#f3f3f3,#fff); border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:700; color:#666; border:1px solid rgba(0,0,0,0.06); overflow:hidden; flex-shrink:0; }
+    .cv-photo img { width:100%; height:100%; object-fit:cover; border-radius:12px; }
     .cv-info { flex:1; min-width:260px; }
     .facts-title { margin-top:18px; font-size:18px; font-weight:700; }
     .facts-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:10px; }
@@ -130,8 +131,8 @@
       <!-- Step 7: CV + game -->
       <section class="step" data-step="7" id="step-7">
         <h2 data-i18n-h2="cvTitle">CV</h2>
-        <div class="cv-row"><div class="cv-photo" aria-hidden="true">TEEMU</div><div class="cv-info"><div><strong id="cv-name-label">Nimi:</strong> <span id="cv-name">Teemu</span></div><div><strong id="cv-age-label">Ikä:</strong> <span id="cv-age-text">Cheekin Jippikayjei oli hitti, kun olin peruskoulussa</span></div><div><strong id="cv-job-label">Ammatti:</strong> <span id="cv-job-text">korkeasti koulutettu erikoismies</span></div><div><strong id="cv-personality-label">Luonne:</strong> <span id="cv-personality-text">looginen mutta aina pilke silmäkulmassa</span></div><div style="margin-top:8px;" class="small" id="cv-game-intro">Seuraavaksi pelataan "3 totuutta ja 1 valhe" — tai no, melkein. Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.</div></div></div>
-        <div class="facts-title" data-i18n-h2="factsTitle">3 totuutta ja 1 valhe… tai no, melkein</div>
+        <div class="cv-row"><div class="cv-photo"><img src="teemu.jpg" alt="Teemu" /></div><div class="cv-info"><div><strong id="cv-name-label">Nimi:</strong> <span id="cv-name">Teemu</span></div><div><strong id="cv-age-label">Ikä:</strong> <span id="cv-age-text">Cheekin Jippikayjei oli hitti, kun olin peruskoulussa</span></div><div><strong id="cv-job-label">Ammatti:</strong> <span id="cv-job-text">korkeasti koulutettu erikoismies</span></div><div><strong id="cv-personality-label">Luonne:</strong> <span id="cv-personality-text">looginen mutta aina pilke silmäkulmassa</span></div><div style="margin-top:8px;" class="small" id="cv-game-intro">Seuraavaksi pelataan "3 totuutta ja 1 valhe". Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.</div></div></div>
+        <div class="facts-title" data-i18n-h2="factsTitle">3 totuutta ja 1 valhe</div>
         <div class="facts-grid" id="facts-grid" aria-live="polite"></div>
         <div class="fact-msg" id="fact-msg"></div>
         <div id="game-success" class="game-success" style="display:none;">Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.</div>
@@ -165,7 +166,6 @@
             <div id="wheel-selected" class="small">Ei valintaa vielä</div>
             <div style="display:flex; gap:8px; margin-top:8px;">
               <button id="spin-btn" data-i18n-btn="spin">Pyöräytä</button>
-              <button id="wheel-respin" style="display:none;" class="secondary" data-i18n-btn="respin">Pyöräytä uudelleen</button>
               <button id="wheel-continue" style="display:none;" data-i18n-btn="continueToNext">Jatka seuraavalle sivulle</button>
             </div>
             <div class="small" style="margin-top:6px;"><span data-i18n-inline="spinsLeftLabel">Jäljellä olevat pyöräytykset:</span> <span id="spins-left">3</span></div>
@@ -327,7 +327,7 @@
         contactTitle: 'Treffien aikataulu ja tiedonkulku',
         contactText: 'Valitse miten haluatte olla yhteydessä:',
         cvTitle: 'CV',
-        factsTitle: '4 totuutta ja 1 valhe… tai no, melkein',
+        factsTitle: '4 totuutta ja 1 valhe',
         gameSuccess: 'Oho, tämäkin on totta. En näemmä osaa tämän pelin sääntöjä… mutta nyt ainakin tiedät muutaman mielenkiintoisen faktan minusta.',
         routeText: 'Valitse haluatko 1) vastata kysymyksiin, jotka rajaavat aktiviteetit tai 2) pyöräyttää onnenpyörää.',
         activitySelectText: 'Valitse listasta suoraaan se aktiviteetti, joka kiinnostaa eniten (voit itse vaikuttaa lopputulokseen).',
@@ -356,7 +356,6 @@
         continueToCv: 'Jatka CV:hen',
         continueToNext: 'Jatka seuraavalle sivulle',
         spin: 'Pyöräytä',
-        respin: 'Pyöräytä uudelleen',
         spinsLeftLabel: 'Jäljellä olevat pyöräytykset:',
         sendSimulation: 'Lähetä (vain simulaatio)',
         end: 'Lopeta',
@@ -371,7 +370,7 @@
         cvJobText: 'korkeasti koulutettu erikoismies',
         cvPersonalityLabel: 'Luonne:',
         cvPersonalityText: 'looginen mutta aina pilke silmäkulmassa',
-        cvGameIntro: 'Seuraavaksi pelataan "3 totuutta ja 1 valhe" — tai no, melkein. Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.'
+        cvGameIntro: 'Seuraavaksi pelataan "3 totuutta ja 1 valhe". Klikkaa väitteitä selvittääksesi, mitkä ovat tosia.'
       },
       en: {
         labelLanguage: 'Select language / Choose language',
@@ -392,7 +391,7 @@
         contactTitle: 'Schedule and communication',
         contactText: 'Choose how you want to stay in touch:',
         cvTitle: 'CV',
-        factsTitle: '4 truths and 1 lie… or well, almost',
+        factsTitle: '4 truths and 1 lie',
         gameSuccess: 'Oops, that\'s also true. I apparently don\'t know the rules of this game… but now you know a few interesting facts about me.',
         routeText: 'Choose whether you want to 1) answer questions that narrow down the activities or 2) spin a wheel of fortune.',
         activitySelectText: 'Choose from the list the activity that interests you most (you can influence the outcome yourself).',
@@ -421,7 +420,6 @@
         continueToCv: 'Continue to CV',
         continueToNext: 'Continue to next page',
         spin: 'Spin',
-        respin: 'Spin again',
         spinsLeftLabel: 'Spins remaining:',
         sendSimulation: 'Send (simulation only)',
         end: 'End',
@@ -436,7 +434,7 @@
         cvJobText: 'highly educated specialist',
         cvPersonalityLabel: 'Personality:',
         cvPersonalityText: 'logical but always with a twinkle in the eye',
-        cvGameIntro: 'Next up we play "3 truths and 1 lie" — or well, almost. Click the statements to find out which ones are true.'
+        cvGameIntro: 'Next up we play "3 truths and 1 lie". Click the statements to find out which ones are true.'
       }
     };
 
@@ -586,7 +584,7 @@
       const btnCvPrev=document.getElementById('btn-cv-prev'), btnCvNext=document.getElementById('btn-cv-next');
       const factsGrid=document.getElementById('facts-grid'), factMsg=document.getElementById('fact-msg'), gameSuccess=document.getElementById('game-success'), btn7Back=document.getElementById('btn-7-back'), btn7Continue=document.getElementById('btn-7-continue');
       const btnRouteQuestions=document.getElementById('btn-route-questions'), btnRouteWheel=document.getElementById('btn-route-wheel'), btn8Back=document.getElementById('btn-8-back');
-      const wheelEl=document.getElementById('wheel'), spinBtn=document.getElementById('spin-btn'), wheelRes=document.getElementById('wheel-selected'), wheelReSpin=document.getElementById('wheel-respin'), wheelContinue=document.getElementById('wheel-continue'), spinsLeftEl=document.getElementById('spins-left');
+      const wheelEl=document.getElementById('wheel'), spinBtn=document.getElementById('spin-btn'), wheelRes=document.getElementById('wheel-selected'), wheelContinue=document.getElementById('wheel-continue'), spinsLeftEl=document.getElementById('spins-left');
       const resultActivityEl=document.getElementById('result-activity'), btn10Back=document.getElementById('btn-10-back'), btn10Next=document.getElementById('btn-10-next');
 
       const contactGrid=document.getElementById('contact-grid'), contactSelected=document.getElementById('contact-selected'), contactInput=document.getElementById('contact-input'), contactLabel=document.getElementById('contact-label'), contactValue=document.getElementById('contact-value'), btn11Back=document.getElementById('btn-11-back'), btn11Next=document.getElementById('btn-11-next');
@@ -678,8 +676,8 @@
         state.wheelSpins=3; 
         document.getElementById('spins-left').textContent = state.wheelSpins; 
         wheelRes.textContent = TEXT_CONTENT[state.lang].noSelectionYet; 
-        wheelReSpin.style.display='none'; 
         wheelContinue.style.display='none'; 
+        spinBtn.disabled = false;
         showStep(99); 
       });
 
@@ -728,6 +726,7 @@
       spinBtnEl.addEventListener('click', ()=> {
         if(state.wheelSpins <= 0) return;
         spinBtnEl.disabled = true;
+        resetWheel();
         const { pickIndex } = spinWheel();
         setTimeout(()=> {
           const wheel = document.getElementById('wheel');
@@ -739,11 +738,10 @@
           state.wheelSpins -= 1;
           document.getElementById('spins-left').textContent = state.wheelSpins;
           saveState();
-          spinBtnEl.disabled = false;
-          if(state.wheelSpins > 0){ wheelReSpin.style.display='inline-block'; wheelContinue.style.display='inline-block'; } else { wheelReSpin.style.display='none'; wheelContinue.style.display='inline-block'; }
+          spinBtnEl.disabled = state.wheelSpins <= 0;
+          wheelContinue.style.display='inline-block';
         }, 4100);
       });
-      wheelReSpin.addEventListener('click', ()=> { resetWheel(); setTimeout(()=> spinBtnEl.click(), 50); });
       wheelContinue.addEventListener('click', ()=> { 
         if(!state.chosenActivity){ 
           showToast(state.lang === 'fi' ? 'Valitse ensin aktiviteetti pyöräyttämällä.' : 'Select an activity by spinning first.'); 
