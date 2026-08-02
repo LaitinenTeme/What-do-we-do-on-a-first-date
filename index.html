@@ -205,7 +205,7 @@
         <p id="confirm-method"><span data-i18n-inline="selectedPrefix">Valitsit:</span> <strong id="confirm-method-val"></strong></p>
         <label id="label-contact-detail" data-i18n-inline="contactInput">Kirjoita yhteystieto</label>
         <input id="final-contact" type="text" placeholder="Anna esim. numero, @username tai sähköposti" />
-        <div class="controls" style="margin-top:14px;"><button id="btn-12-back" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-12-next" data-i18n-btn="sendSimulation">Lähetä (vain simulaatio)</button></div>
+        <div class="controls" style="margin-top:14px;"><button id="btn-12-back" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-12-next" data-i18n-btn="sendSimulation">Lähetä</button></div>
       </section>
 
       <section class="step" data-step="13" id="step-13">
@@ -357,7 +357,7 @@
         continueToNext: 'Jatka seuraavalle sivulle',
         spin: 'Pyöräytä',
         spinsLeftLabel: 'Jäljellä olevat pyöräytykset:',
-        sendSimulation: 'Lähetä (vain simulaatio)',
+        sendSimulation: 'Lähetä',
         end: 'Lopeta',
         reallyEnd: 'Oikeasti lopeta',
         reallyLastPage: 'Oikeasti viimeinen sivu',
@@ -421,7 +421,7 @@
         continueToNext: 'Continue to next page',
         spin: 'Spin',
         spinsLeftLabel: 'Spins remaining:',
-        sendSimulation: 'Send (simulation only)',
+        sendSimulation: 'Send',
         end: 'End',
         reallyEnd: 'Really end',
         reallyLastPage: 'Really the last page',
@@ -807,6 +807,7 @@
         showStep(12); 
       });
 
+      const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mrenwnaa';
       btn12Back.addEventListener('click', ()=> showStep(11));
       btn12Next.addEventListener('click', ()=> { 
         const v = finalContact.value.trim(); 
@@ -816,7 +817,33 @@
         } 
         state.contactValue=v; 
         saveState(); 
-        showStep(13); 
+        btn12Next.disabled = true;
+        const tc12 = TEXT_CONTENT[state.lang];
+        const methodLabels12 = {
+          instagram: tc12.contactMethodInstagram,
+          whatsapp: tc12.contactMethodWhatsapp,
+          phone: tc12.contactMethodPhone,
+          smoke: tc12.contactMethodSmoke,
+          email: tc12.contactMethodEmail,
+          snapchat: tc12.contactMethodSnapchat
+        };
+        const payload = {
+          name: state.name || '',
+          language: state.lang,
+          contactMethod: methodLabels12[state.contactMethod] || state.contactMethod || '',
+          contactValue: v,
+          chosenActivity: state.chosenActivity ? activityLabel(state.chosenActivity) : '',
+          _subject: 'Uusi treffi-ilmoittautuminen / New date signup'
+        };
+        fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(()=> {
+          showStep(13);
+        }).catch(()=> {
+          showToast(state.lang === 'fi' ? 'Lähetys epäonnistui, yritä uudelleen.' : 'Sending failed, please try again.');
+        }).finally(()=> { btn12Next.disabled = false; });
       });
 
       btn13Next.addEventListener('click', ()=> showStep(14));
