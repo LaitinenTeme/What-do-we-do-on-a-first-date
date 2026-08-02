@@ -216,7 +216,7 @@
 
       <section class="step" data-step="14" id="step-14">
         <h2 data-i18n-h2="reallyLastPage">Oikeasti viimeinen sivu</h2>
-        <p id="ps-text">P.s. tiedän tiedän, sanoin että äskeinen sivu oli viimeinen, mutta ei ollut. Halusin vain sanoa että odotan innolla tällejämme <span id="ps-activity"></span> merkeissä, joten valmistaudu, siitä tulee kivaa!!</p>
+        <p id="ps-text">P.s. tiedän tiedän, sanoin että äskeinen sivu oli viimeinen, mutta ei ollut. Halusin vain sanoa että odotan innolla treffeihimme <span id="ps-activity"></span> merkeissä, joten valmistaudu, siitä tulee kivaa!!</p>
         <div class="controls" style="margin-top:14px;"><button id="btn-14-end" data-i18n-btn="reallyEnd">Oikeasti lopeta</button></div>
       </section>
 
@@ -338,7 +338,7 @@
         contactInput: 'Kirjoita yhteystieto',
         lastPage: 'Viimeinen sivu',
         lastPageText: 'Tämä on viimeinen sivu, kiva kun pääsit tänne asti! Voit odottaa yhteydenottoa minulta muutaman arkipäivän kuluessa.',
-        psText: 'P.s. tiedän tiedän, sanoin että äskeinen sivu oli viimeinen, mutta ei ollut. Halusin vain sanoa että odotan innolla tällejämme {activity} merkeissä, joten valmistaudu, siitä tulee kivaa!!',
+        psText: 'P.s. tiedän tiedän, sanoin että äskeinen sivu oli viimeinen, mutta ei ollut. Halusin vain sanoa että odotan innolla treffeihimme {activity} merkeissä, joten valmistaudu, siitä tulee kivaa!!',
         contactMethodInstagram: 'Instagram DM',
         contactMethodWhatsapp: 'WhatsApp',
         contactMethodPhone: 'Puhelinnumero',
@@ -848,8 +848,8 @@
 
       btn13Next.addEventListener('click', ()=> showStep(14));
       btn14End.addEventListener('click', ()=> { 
-        const tc = TEXT_CONTENT[state.lang];
-        showToast(state.lang === 'fi' ? 'Loppu.' : 'The end.', 3000); 
+        document.body.style.background = '#ffffff';
+        document.body.innerHTML = '';
       });
 
       inputName.addEventListener('input', (e)=> { state.name = e.target.value; saveState(); applyAll(); });
