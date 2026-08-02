@@ -304,6 +304,8 @@
     ];
 
     const FACTS = [ { id:'f1', text:'Olen asunut Kanadassa yli 2 vuotta.' }, { id:'f2', text:'Olen käynyt Euroopan suurimmalla kultakaivoksella.' }, { id:'f3', text:'Puhun ranskaa paremmin kuin ruotsia.' }, { id:'f4', text:'Olen ollut osa SM-pikaviestijoukkuetta.' } ];
+    const FACTS_EN = { f1:'I have lived in Canada for over 2 years.', f2:'I have visited the largest gold mine in Europe.', f3:'I speak French better than Swedish.', f4:'I have been part of a national relay team.' };
+    function factText(f){ return state.lang === 'en' ? (FACTS_EN[f.id] || f.text) : f.text; }
 
     const TEXT_CONTENT = {
       fi: {
@@ -459,9 +461,9 @@
       const name = state.name || '';
       if(cvIntroText && name) {
         if(lang === 'fi') {
-          cvIntroText.textContent = `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.`;
+          cvIntroText.textContent = `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Seuraavalla sivulla on vähän tietoa minusta.`;
         } else {
-          cvIntroText.textContent = `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. Choose how you'd like to proceed.`;
+          cvIntroText.textContent = `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. On the next page there's a bit of info about me.`;
         }
       }
       
@@ -563,7 +565,7 @@
 
     function applyTheme(){ const pair = COLOR_MAP[state.color] || COLOR_MAP.blue; document.documentElement.style.setProperty('--bg-start', pair[0]); document.documentElement.style.setProperty('--bg-end', pair[1] || pair[0]); document.documentElement.style.setProperty('--accent', state.color === 'yellow' ? '#ffb703' : '#ff6b6b'); }
     function applyFont(){ let fam='Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; if(state.font==='Times New Roman') fam='"Times New Roman", Times, serif'; if(state.font==='Calibri') fam='Calibri, Candara, Segoe, "Segoe UI", sans-serif'; if(state.font==='Aptos') fam='Aptos, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; document.body.style.fontFamily=fam; }
-    function applyAll(){ applyTheme(); applyFont(); const name = state.name || ''; if(name){ const cvIntro = document.getElementById('cv-intro-text'); if(cvIntro) cvIntro.textContent = (state.lang==='fi' ? `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Valitkaa seuraavaksi, miten haluatte edetä.` : `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. Choose how you'd like to proceed.`); } }
+    function applyAll(){ applyTheme(); applyFont(); const name = state.name || ''; if(name){ const cvIntro = document.getElementById('cv-intro-text'); if(cvIntro) cvIntro.textContent = (state.lang==='fi' ? `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Seuraavalla sivulla on vähän tietoa minusta.` : `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. On the next page there's a bit of info about me.`); } }
 
     function buildQuestionSteps(){ const container = document.getElementById('questions-container'); container.innerHTML=''; const tc = TEXT_CONTENT[state.lang]; QUESTIONS.forEach((q,idx)=>{ const stepNum = 100+idx+1; const sec = document.createElement('section'); sec.setAttribute('data-step-dynamic', stepNum); sec.dataset.stepDynamic = stepNum; sec.className='step'; const qText = state.lang === 'fi' ? q.text : (QUESTIONS_EN[idx]?.text || q.text); const continueText = tc.continue; const backText = tc.back; const yesLabel = tc.yesLabel; const noLabel = tc.noLabel; const questionText = state.lang === 'fi' ? `Kysymys ${idx+1} / ${QUESTIONS.length}` : `Question ${idx+1} / ${QUESTIONS.length}`; const answerText = state.lang === 'fi' ? 'Valitse kyllä tai ei ennen jatkamista.' : 'Choose yes or no before proceeding.'; sec.innerHTML = `<div class="question-box"><h2>${questionText}</h2><p>${qText}</p><div class="yesno" data-qid="${q.id}"><button type="button" class="yesno-yes">${yesLabel}</button><button type="button" class="yesno-no">${noLabel}</button></div><div class="hint small" style="margin-top:10px;">${answerText}</div><div class="controls" style="margin-top:12px;"><button class="secondary btn-ques-prev">${backText}</button><button class="btn-ques-next">${continueText}</button></div></div>`; container.appendChild(sec); }); }
 
@@ -601,7 +603,7 @@
         if(chosen === 'fi'){ state.lang='fi'; } 
         else if(chosen === 'en'){ state.lang='en'; } 
         else { state.lang='en'; showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 3500); }
-        saveState(); updateUILanguage(); applyAll(); showStep(2);
+        saveState(); updateUILanguage(); applyAll(); renderFacts(); showStep(2);
       });
 
       // name
@@ -641,7 +643,7 @@
       btnCvNext.addEventListener('click', ()=> showStep(7));
 
       // CV game
-      function renderFacts(){ factsGrid.innerHTML=''; FACTS.forEach(f=>{ const b=document.createElement('button'); b.className='fact-btn'; b.id=f.id; b.textContent=f.text; b.type='button'; b.addEventListener('click', ()=> onFactClick(f.id)); factsGrid.appendChild(b); }); }
+      function renderFacts(){ factsGrid.innerHTML=''; FACTS.forEach(f=>{ const b=document.createElement('button'); b.className='fact-btn'; b.id=f.id; b.textContent=factText(f); b.type='button'; b.addEventListener('click', ()=> onFactClick(f.id)); factsGrid.appendChild(b); }); }
       let clicked = new Set();
       function onFactClick(id){ 
         if(clicked.has(id)) return; 
@@ -819,7 +821,7 @@
       btn13Next.addEventListener('click', ()=> showStep(14));
       btn14End.addEventListener('click', ()=> { 
         const tc = TEXT_CONTENT[state.lang];
-        showToast(state.lang === 'fi' ? 'Kiitos — täysi lopetus. Nähdään seuraavassa iteraatiossa!' : 'Thank you — all done. See you next time!', 3000); 
+        showToast(state.lang === 'fi' ? 'Loppu.' : 'The end.', 3000); 
       });
 
       inputName.addEventListener('input', (e)=> { state.name = e.target.value; saveState(); applyAll(); });
