@@ -108,7 +108,7 @@
 
       <section class="step" data-step="4" id="step-4">
         <label id="label-font">Mikä on lempi fonttisi, harkitse tarkkaan?</label>
-        <select id="select-font" aria-label="Fontti"><option value="Arial">Arial</option><option value="Times New Roman">Times New Roman</option><option value="Calibri">Calibri</option><option value="Aptos">Aptos</option></select>
+        <select id="select-font" aria-label="Fontti"><option value="" disabled selected>-- Valitse / Select --</option><option value="Arial">Arial</option><option value="Times New Roman">Times New Roman</option><option value="Calibri">Calibri</option><option value="Aptos">Aptos</option></select>
         <div id="funfact" class="funfact" style="display:none;"></div>
         <div class="controls"><button id="btn-font-prev" class="secondary" data-i18n-btn="back">Takaisin</button><button id="btn-font-next" data-i18n-btn="continue">Jatka</button></div>
       </section>
@@ -461,9 +461,9 @@
       const name = state.name || '';
       if(cvIntroText && name) {
         if(lang === 'fi') {
-          cvIntroText.textContent = `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Seuraavalla sivulla on vähän tietoa minusta.`;
+          cvIntroText.textContent = `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Seuraavalla sivulla on tietoa minusta, jotta huomaisit valloittavan persoonani.`;
         } else {
-          cvIntroText.textContent = `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. On the next page there's a bit of info about me.`;
+          cvIntroText.textContent = `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. On the next page there's some info about me, so you can see just how irresistible I am.`;
         }
       }
       
@@ -544,12 +544,12 @@
       buildQuestionSteps();
     }
 
-    let state = { lang:'fi', name:'', color:'white', font:'Arial', interested:null, cvGameDone:false, answers:{}, chosenActivity:null, wheelSpins:3, contactMethod:null, contactValue:null };
+    let state = { lang:'fi', name:'', color:'white', font:'', interested:null, cvGameDone:false, answers:{}, chosenActivity:null, wheelSpins:3, contactMethod:null, contactValue:null };
 
     const LS_KEY = 'datingAppState_v3';
     function loadState(){ try{ const r = localStorage.getItem(LS_KEY); if(r) Object.assign(state, JSON.parse(r)); }catch(e){} }
     function saveState(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
-    function resetState(){ state = { lang:'fi', name:'', color:'white', font:'Arial', interested:null, cvGameDone:false, answers:{}, chosenActivity:null, wheelSpins:3, contactMethod:null, contactValue:null }; localStorage.removeItem(LS_KEY); }
+    function resetState(){ state = { lang:'fi', name:'', color:'white', font:'', interested:null, cvGameDone:false, answers:{}, chosenActivity:null, wheelSpins:3, contactMethod:null, contactValue:null }; localStorage.removeItem(LS_KEY); }
 
     function steps(){ return Array.from(document.querySelectorAll('.step')); }
     const toast = document.getElementById('toast');
@@ -565,7 +565,7 @@
 
     function applyTheme(){ const pair = COLOR_MAP[state.color] || COLOR_MAP.blue; document.documentElement.style.setProperty('--bg-start', pair[0]); document.documentElement.style.setProperty('--bg-end', pair[1] || pair[0]); document.documentElement.style.setProperty('--accent', state.color === 'yellow' ? '#ffb703' : '#ff6b6b'); }
     function applyFont(){ let fam='Arial, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; if(state.font==='Times New Roman') fam='"Times New Roman", Times, serif'; if(state.font==='Calibri') fam='Calibri, Candara, Segoe, "Segoe UI", sans-serif'; if(state.font==='Aptos') fam='Aptos, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif'; document.body.style.fontFamily=fam; }
-    function applyAll(){ applyTheme(); applyFont(); const name = state.name || ''; if(name){ const cvIntro = document.getElementById('cv-intro-text'); if(cvIntro) cvIntro.textContent = (state.lang==='fi' ? `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Seuraavalla sivulla on vähän tietoa minusta.` : `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. On the next page there's a bit of info about me.`); } }
+    function applyAll(){ applyTheme(); applyFont(); const name = state.name || ''; if(name){ const cvIntro = document.getElementById('cv-intro-text'); if(cvIntro) cvIntro.textContent = (state.lang==='fi' ? `Terve ${name}, nyt kun asetukset on määritelty, voidaan siirtyä itse aiheeseen. On kuulkaa käynyt niin, että tämän nettisivun lähettäjä pitää teitä mielenkiintoisena ja viehättävänä ihmisenä ja haluaisi viedä teidät ulos. Seuraavalla sivulla on tietoa minusta, jotta huomaisit valloittavan persoonani.` : `Hey ${name}, now that settings are set, we can move to the main topic. The sender of this site finds you interesting and charming and would like to take you out. On the next page there's some info about me, so you can see just how irresistible I am.`); } }
 
     function buildQuestionSteps(){ const container = document.getElementById('questions-container'); container.innerHTML=''; const tc = TEXT_CONTENT[state.lang]; QUESTIONS.forEach((q,idx)=>{ const stepNum = 100+idx+1; const sec = document.createElement('section'); sec.setAttribute('data-step-dynamic', stepNum); sec.dataset.stepDynamic = stepNum; sec.className='step'; const qText = state.lang === 'fi' ? q.text : (QUESTIONS_EN[idx]?.text || q.text); const continueText = tc.continue; const backText = tc.back; const yesLabel = tc.yesLabel; const noLabel = tc.noLabel; const questionText = state.lang === 'fi' ? `Kysymys ${idx+1} / ${QUESTIONS.length}` : `Question ${idx+1} / ${QUESTIONS.length}`; const answerText = state.lang === 'fi' ? 'Valitse kyllä tai ei ennen jatkamista.' : 'Choose yes or no before proceeding.'; sec.innerHTML = `<div class="question-box"><h2>${questionText}</h2><p>${qText}</p><div class="yesno" data-qid="${q.id}"><button type="button" class="yesno-yes">${yesLabel}</button><button type="button" class="yesno-no">${noLabel}</button></div><div class="hint small" style="margin-top:10px;">${answerText}</div><div class="controls" style="margin-top:12px;"><button class="secondary btn-ques-prev">${backText}</button><button class="btn-ques-next">${continueText}</button></div></div>`; container.appendChild(sec); }); }
 
@@ -602,7 +602,7 @@
         let chosen = selectLang.value;
         if(chosen === 'fi'){ state.lang='fi'; } 
         else if(chosen === 'en'){ state.lang='en'; } 
-        else { state.lang='en'; showToast('Haha eipäs nyt hurjastella kielen kanssa — jatketaan englannilla.', 3500); }
+        else { state.lang='en'; showToast('Haha, no wild ideas with the language — continuing in English.', 3500); }
         saveState(); updateUILanguage(); applyAll(); renderFacts(); showStep(2);
       });
 
@@ -623,7 +623,10 @@
       // font
       selectFont.addEventListener('change', ()=> { state.font = selectFont.value; applyFont(); funfact.style.display='block'; const ff = state.lang === 'en' ? FUNFACTS_EN : FUNFACTS; funfact.textContent = ff[state.font]||''; saveState(); });
       if(state.font){ funfact.style.display='block'; const ff = state.lang === 'en' ? FUNFACTS_EN : FUNFACTS; funfact.textContent = ff[state.font]||''; }
-      btnFontNext.addEventListener('click', ()=> { state.font = selectFont.value; saveState(); applyFont(); showStep(5); });
+      btnFontNext.addEventListener('click', ()=> { 
+        if(!selectFont.value){ showToast(state.lang === 'fi' ? 'Valitse fontti ennen jatkamista.' : 'Choose a font before continuing.'); return; }
+        state.font = selectFont.value; saveState(); applyFont(); showStep(5); 
+      });
       btnFontPrev.addEventListener('click', ()=> showStep(3));
 
       // interest (force yes)
